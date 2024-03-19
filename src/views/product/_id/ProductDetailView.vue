@@ -98,7 +98,7 @@
         <div class="border-b-[1px] pb-4"></div>
       </div>
       <!-- reviews -->
-      <div class="w-full ">
+      <div class="w-full">
         <ReviewContainer />
       </div>
     </div>
