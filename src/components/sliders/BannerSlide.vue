@@ -31,7 +31,8 @@ const onSwiper = (swiper) => {
 const banners = [
   {
     id: 1,
-    image: 'https://d1csarkz8obe9u.cloudfront.net/posterpreviews/fashion-sale-banner-template-design-9db9afa9dc48742dd1f63f4b3e970eb1_screen.jpg?ts=1605628683',
+    image:
+      'https://d1csarkz8obe9u.cloudfront.net/posterpreviews/fashion-sale-banner-template-design-9db9afa9dc48742dd1f63f4b3e970eb1_screen.jpg?ts=1605628683',
   },
   {
     id: 2,

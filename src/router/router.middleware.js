@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import router from '.'
 import { useAuthStore } from '@/stores/auth.store'
 export const authMiddleware = () => {
