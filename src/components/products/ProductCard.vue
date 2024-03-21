@@ -10,7 +10,7 @@ const products = ref([]) // Ürünler için bir dizi ref oluşturun
 // Backend'den ürünleri almak için bir işlev veya API çağrısı yapın
 async function fetchProducts() {
   try {
-    const response = await fetch('/shopping/products')
+    const response = await fetch('/api/products')
     if (response.ok) {
       const data = await response.json()
       products.value = data // Ürünleri diziye atayın
@@ -28,9 +28,9 @@ fetchProducts()
 
 <template>
   <div>
-    <div v-for="product in products" :key="product.id">
+    <div v-for="product in products" :key="product._id.$oid">
       <div :class="`flex flex-col h-[330px] overflow-hidden product-card-shadow bg-white rounded-xl ${width}`">
-        <LazyImg class-style="h-[180px] object-cover w-full" :src="product.photos" alt="" />
+        <LazyImg class-style="h-[180px] object-cover w-full" :src="product.photos[0]" alt="" />
         <div class="flex-auto p-3">
           <p class="text-sm font-semibold text-[#363636] truncate-2">{{ product.name }}</p>
           <p v-if="product.cost" class="mt-1 font-bold text-lg">${{ product.price }}</p>
@@ -41,14 +41,14 @@ fetchProducts()
           <span class="text-primary-200 text-xs px-1 py-1">$100.00</span> -->
           <div>
             <i class="ri-map-pin-2-fill text-primary-200"></i>
-            <span class="ml-2 text-xs text-primary-200">{{ product.location }}</span>
+            <span class="ml-2 text-xs text-primary-200">{{ product.category_name }}</span>
           </div>
           <div class="text-primary-200 text-xs">
             <span>
               <i class="ri-star-fill text-[#ffaa28]"></i>
-              <span class="ml-2 mr-1">{{ product.averageRatings }}</span>
+              <span class="ml-2 mr-1">{{ product.ratingsAverage }}</span>
               <span>|</span>
-              <span class="ml-1">sold {{ product.sold }}</span>
+              <span class="ml-1">sold {{ product.ratingsAverage }}</span>
             </span>
           </div>
         </div>

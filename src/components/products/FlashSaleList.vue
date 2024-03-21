@@ -1,7 +1,8 @@
+<!-- eslint-disable no-unused-vars -->
 <script setup>
 import { ref, onBeforeMount } from 'vue'
 import { Swiper, SwiperSlide } from 'swiper/vue'
-import { searchProductsApi } from '@/services/product.service'
+import { getProductsApi, searchProductsApi } from '@/services/product.service'
 import 'swiper/css'
 const mySwiper = ref(null)
 
@@ -11,7 +12,8 @@ const onSwiper = (swiper) => {
 }
 onBeforeMount(async () => {
   try {
-    const res = await searchProductsApi()
+    const res = await getProductsApi()
+    console.log('messi')
     backendProduct.value = res.data.data
     console.log(res.data)
   } catch (error) {
@@ -24,8 +26,9 @@ const backendProduct = ref(null) // Backend'den gelen product nesnesi için bir 
 
 // Backend'den product nesnesini almak için bir işlev veya API çağrısı yapın
 async function fetchProduct() {
-  const response = await fetch('backend/api/products/123')
+  const response = await fetch('/api/products')
   backendProduct.value = await response.json()
+  console.log('response=>' + backendProduct.value)
 }
 
 // Sayfa yüklendiğinde backend'den product nesnesini almak için fetchProduct işlevini çağırabilirsiniz
@@ -49,7 +52,7 @@ fetchProduct()
     <!-- title flash sale -->
     <div class="w-full flex justify-between p-4">
       <div class="flex">
-        <h2 class="text-xl font-bold">Newest product</h2>
+        <h2 class="text-xl font-bold">Newest productsss</h2>
       </div>
       <div class="text-[#5a4098]">See more</div>
     </div>

@@ -36,7 +36,7 @@ const banners = [
   },
   {
     id: 2,
-    image: 'https://cdn0.fahasa.com/media/wysiwyg/Thang-11-2019/BannerTong.png',
+    image: './src/assets/images/1.jpg',
   },
   {
     id: 3,

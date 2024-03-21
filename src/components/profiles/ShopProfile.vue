@@ -3,10 +3,7 @@
     <div class="relative">
       <!-- cover -->
       <div>
-        <LazyImg
-          class-style="w-full h-[200px] object-cover rounded-md"
-          :src="user.coverUrl"
-        />
+        <LazyImg class-style="w-full h-[200px] object-cover rounded-md" :src="user.coverUrl" />
       </div>
       <div
         v-if="type === 'edit'"

@@ -14,7 +14,7 @@
           v-if="popupStore.state.isProcessing"
           class="absolute bg-[#97979770] top-0 left-0 w-full h-full rounded-3xl z-[9999] flex justify-center items-center"
         >
-          <img src="@src\assets\icons\loading.svg" alt="" />
+          <img src="@/assets/icons/loading.svg" alt="" />
         </div>
         <p class="text-2xl font-semibold">Confirm</p>
         <p class="text-sm text-primary-200">{{ popupStore.state.content }}</p>
