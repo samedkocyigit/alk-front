@@ -50,6 +50,7 @@
   </div>
 </template>
 <script setup>
+// eslint-disable-next-line no-unused-vars
 import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 const route = useRoute()

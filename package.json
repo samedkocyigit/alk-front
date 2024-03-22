@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "vite --port 3000",
     "build": "vite build",
-    "serve": "vite preview"
+    "serve": "vite preview --port 3000"
   },
   "dependencies": {
     "@hennge/vue3-pagination": "^1.0.17",

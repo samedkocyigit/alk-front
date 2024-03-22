@@ -12,7 +12,7 @@ const onSwiper = (swiper) => {
 }
 onBeforeMount(async () => {
   try {
-    const res = await getProductsApi()
+    const res = await searchProductsApi()
     console.log('messi')
     backendProduct.value = res.data.data
     console.log(res.data)
@@ -21,14 +21,27 @@ onBeforeMount(async () => {
   }
 })
 import ProductCard from './ProductCard.vue'
+console.log('ronaldo')
 
-const backendProduct = ref(null) // Backend'den gelen product nesnesi için bir referans oluşturun
+const backendProduct = ref([null]) // Backend'den gelen product nesnesi için bir referans oluşturun
 
 // Backend'den product nesnesini almak için bir işlev veya API çağrısı yapın
 async function fetchProduct() {
-  const response = await fetch('/api/products')
-  backendProduct.value = await response.json()
-  console.log('response=>' + backendProduct.value)
+  console.log('anderson')
+  try {
+    const response = await fetch('/api/products')
+    if (!response.ok) {
+      throw new Error('Fetch işlemi başarısız.')
+    }
+    const data = await response.json()
+    if (!data || !data.data) {
+      throw new Error('Gelen veriler istenilen formatta değil.')
+    }
+    backendProduct.value = data.data
+    console.log('response=>', backendProduct.value)
+  } catch (error) {
+    console.error('Hata:', error.message)
+  }
 }
 
 // Sayfa yüklendiğinde backend'den product nesnesini almak için fetchProduct işlevini çağırabilirsiniz
@@ -78,7 +91,7 @@ fetchProduct()
         :space-between="10"
         @swiper="onSwiper"
       >
-        <swiper-slide v-for="product in products" :key="product.name" style="width: auto" class="w-fit">
+        <swiper-slide v-for="product in backendProduct.data" :key="product.id" style="width: auto" class="w-fit">
           <RouterLink :to="`/products/${product.id}`">
             <ProductCard :product="product" />
           </RouterLink>

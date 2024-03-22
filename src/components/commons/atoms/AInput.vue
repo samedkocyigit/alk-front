@@ -57,7 +57,8 @@ defineEmits(['update:modelValue'])
     />
     <div class="w-full flex mt-2 items-center">
       <p class="text-rose-600 text-sm font-medium">
-        <i v-if="errorMessage" class="ri-error-warning-fill mr-1"></i>{{ errorMessage }}</p>
+        <i v-if="errorMessage" class="ri-error-warning-fill mr-1"></i>{{ errorMessage }}
+      </p>
     </div>
   </div>
 </template>

@@ -8,5 +8,3 @@ export const addToCartApi = async (data) => {
 export const getCartApi = async () => {
   return await axiosApiInstance.get(`${BASE_ENDPOINT_SALE}/users/me/cart`)
 }
-
-
