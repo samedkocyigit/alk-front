@@ -5,6 +5,7 @@ import { useMasterStore } from '@/stores/master.store'
 import ModalProfile from '@/components/profiles/ModalProfile.vue'
 import SearchWrapper from '@/components/search/SearchWrapper.vue'
 import CartModal from '../products/CartModal.vue'
+import HeaderBottom from './HeaderBottom.vue'
 const authStore = useAuthStore().state
 const masterStore = useMasterStore().state
 
@@ -21,11 +22,25 @@ const closeModalCart = () => {
   <div class="fixed top-0 left-0 z-50 border-b-[1px] w-full bg-white gb-shadow flex flex-col">
     <!-- top line -->
     <div class="max-md:h-[45px] h-[35px] w-full bg-[#f9f9f9] flex justify-between px-3 items-center">
-      <div class="max-md:hidden">Call us: 094619309</div>
+      <!-- <div class="max-md:hidden">Call us: 094619309</div> -->
       <div class="text-center">
-        <strong>Sale 100%</strong> to day only when you apply code <strong>superbad.store</strong>
+        <strong><a href="/siparislerim">Siparişlerim</a></strong>
+        <span style="margin-right: 3ch"></span>
+        <strong><a href="/kargo-takibi">Kargo Takibi</a></strong>
+        <span style="margin-right: 3ch"></span>
+        <strong><a href="/hakkimizda">Hakkımızda</a></strong>
+        <span style="margin-right: 3ch"></span>
+        <strong><a href="/iletisim">İletişim</a></strong>
+        <span style="margin-right: 3ch"></span>
+        <strong><a href="/iletim-formu">İletişim Formu</a></strong>
+        <span style="margin-right: 3ch"></span>
+        <strong><a href="/fiyat-listesi">Fiyat Listesi</a></strong>
+        <strong><a href="/blog">Blog</a></strong>
+        <span style="margin-right: 3ch"></span>
+        <strong><a href="/videolar">Videolar</a></strong>
+        <span style="margin-right: 3ch"></span>
       </div>
-      <div class="max-md:hidden">About us | help</div>
+      <!-- <div class="max-md:hidden">About us | help</div> -->
     </div>
     <!-- end top line -->
 
@@ -33,7 +48,7 @@ const closeModalCart = () => {
     <div class="py-3 flex justify-between w-full items-center px-10" style="flex: 1 1 auto">
       <!-- flex-auto -->
       <RouterLink to="/" class="font-bold text-lg mr-5"
-        >SUPERBAD.<span class="underlined underline-mask">STORE</span></RouterLink
+        >ALKANLAR<span class="underlined underline-mask">STORE</span></RouterLink
       >
       <SearchWrapper class="max-md:hidden" />
       <div class="flex">
@@ -76,5 +91,6 @@ const closeModalCart = () => {
         </div>
       </div>
     </div>
+    <HeaderBottom />
   </div>
 </template>

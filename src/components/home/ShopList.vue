@@ -9,13 +9,13 @@
     </div>
     <div class="w-full flex max-md:grid max-md:grid-cols-2 gap-5 max-md:gap-3 mt-5 flex-wrap">
       <RouterLink
-        v-for="(item, index) in shops"
-        :key="index"
+        v-for="item in brands.data"
+        :key="item._id"
         class="h-[220px] shadow-d-30 block bg-white rounded-md w-[183px] max-md:w-full"
         to="/"
       >
         <div class="w-full h-[140px] flex justify-center items-center bg-primary-400">
-          <img class="w-[70%] object-contain" :src="item.logo" alt="" />
+          <img class="w-[70%] object-contain" :src="item.photo[0]" alt="" />
         </div>
         <div class="flex py-3 flex-col items-center">
           <p class="font-medium">{{ item.name }}</p>
@@ -28,37 +28,29 @@
 <script setup>
 import { ref } from 'vue'
 
-// create list shop have logo, name, link
-const shops = ref([
-  {
-    logo: 'https://i0.wp.com/www.swafol.fr/wp-content/uploads/2017/09/Aukey_Logo.png?resize=825%2C363&ssl=1',
-    name: 'Aukey Official Store',
-    link: 'https://shopee.vn/mall',
-  },
-  {
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Samsung_wordmark.svg/7051px-Samsung_wordmark.svg.png',
-    name: 'Samsung Official',
-    link: 'https://shopee.vn/mall',
-  },
-  {
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Philips_logo_new.svg/2560px-Philips_logo_new.svg.png',
-    name: 'Philips',
-    link: 'https://shopee.vn/mall',
-  },
-  {
-    logo: 'https://asset-3s.3second.co.id/p/logo.png',
-    name: '#3Second Global',
-    link: 'https://shopee.vn/mall',
-  },
-  {
-    logo: 'https://inansaigon.vn/ckfinder/userfiles/images/logo-xiaomi-3.png',
-    name: 'Xiaomi global ',
-    link: 'https://shopee.vn/mall',
-  },
-  {
-    logo: 'https://1000logos.net/wp-content/uploads/2016/09/Acer-Logo.png',
-    name: 'Acer',
-    link: 'https://shope',
-  },
-])
+const brands = ref([])
+const loading = ref(true)
+
+async function fetchBrands() {
+  if (brands.value.length === 0) {
+    try {
+      const response = await fetch('/api/brands')
+      if (!response.ok) {
+        throw new Error('Fetch işlemi başarısız')
+      }
+      const data = await response.json()
+      if (!data || !data.data) throw new Error('Gelen veriler istenilen formatta değil')
+      brands.value = data.data
+      console.log('response=>', brands.value)
+      console.log('foti', brands.value.data[0].photo[0])
+
+      loading.value = false
+    } catch (error) {
+      console.log('hata:', error.message)
+      loading.value = false
+    }
+  }
+}
+
+fetchBrands()
 </script>
