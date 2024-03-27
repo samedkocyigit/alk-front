@@ -22,7 +22,7 @@ onBeforeMount(async () => {
 
 const products = ref([]) // Ürünler için bir dizi ref oluşturun
 const loading = ref(true)
-// Backend'den product nesnesini almak için bir işlev veya API çağrısı yapın
+//Backend'den product nesnesini almak için bir işlev veya API çağrısı yapın
 async function fetchProduct() {
   if (products.value.length === 0) {
     try {
@@ -35,7 +35,7 @@ async function fetchProduct() {
         throw new Error('Gelen veriler istenilen formatta değil.')
       }
       products.value = data.data
-      console.log(products.value.data[0].name)
+      console.log('response=>', products.value)
       loading.value = false
     } catch (error) {
       console.error('Hata:', error.message)
@@ -43,20 +43,10 @@ async function fetchProduct() {
     }
   }
 }
+
 import ProductCard from './ProductCard.vue'
 // Sayfa yüklendiğinde backend'den product nesnesini almak için fetchProduct işlevini çağırabilirsiniz
 fetchProduct()
-
-//   {
-//     name: 'Long Product Name 1 You Might Forget the BeginningYou Might Forget the Beginning',
-//     cost: 29.99,
-//     image:
-//       'https://images.unsplash.com/photo-1516762689617-e1cffcef479d?q=80&w=1911&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-//     discount: 5,
-//     location: 'Location 1',
-//     star: 4.2,
-//     sold: 50,
-//   },
 
 // render list product have properties: name, cost, image, discount, location, star, sold
 </script>
@@ -65,7 +55,7 @@ fetchProduct()
     <!-- title flash sale -->
     <div class="w-full flex justify-between p-4">
       <div class="flex">
-        <h2 class="text-xl font-bold">Newest productsss</h2>
+        <h2 class="text-xl font-bold">New Products</h2>
       </div>
       <div class="text-[#5a4098]">See more</div>
     </div>
@@ -92,7 +82,7 @@ fetchProduct()
         @swiper="onSwiper"
       >
         <swiper-slide v-for="product in products.data" :key="product.id" style="width: auto" class="w-fit">
-          <RouterLink :to="`/products/${product.id}`">
+          <RouterLink :to="`/brands/${product.id}`">
             <ProductCard :product="product" />
           </RouterLink>
         </swiper-slide>

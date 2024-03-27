@@ -22,7 +22,6 @@ const closeModalCart = () => {
   <div class="fixed top-0 left-0 z-50 border-b-[1px] w-full bg-white gb-shadow flex flex-col">
     <!-- top line -->
     <div class="max-md:h-[45px] h-[35px] w-full bg-[#f9f9f9] flex justify-between px-3 items-center">
-      <!-- <div class="max-md:hidden">Call us: 094619309</div> -->
       <div class="text-center">
         <strong><a href="/siparislerim">Siparişlerim</a></strong>
         <span style="margin-right: 3ch"></span>
@@ -35,12 +34,12 @@ const closeModalCart = () => {
         <strong><a href="/iletim-formu">İletişim Formu</a></strong>
         <span style="margin-right: 3ch"></span>
         <strong><a href="/fiyat-listesi">Fiyat Listesi</a></strong>
+        <span style="margin-right: 3ch"></span>
         <strong><a href="/blog">Blog</a></strong>
         <span style="margin-right: 3ch"></span>
         <strong><a href="/videolar">Videolar</a></strong>
         <span style="margin-right: 3ch"></span>
       </div>
-      <!-- <div class="max-md:hidden">About us | help</div> -->
     </div>
     <!-- end top line -->
 

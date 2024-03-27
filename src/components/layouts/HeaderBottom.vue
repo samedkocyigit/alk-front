@@ -7,7 +7,7 @@
             <ul class="d-flex justify-content-center p-0 mb-0">
               <li class="has-sub-category" data-selector="first-level-navigation">
                 <a href="/kategori/led-ampuller" class="text-center">
-                  <span class>Led Ampuller</span>
+                  <span class="multiline-center">Led Ampuller</span>
                 </a>
                 <div class="sub-category category-level-2">
                   <ul>
@@ -27,7 +27,6 @@
                     </li>
                     <li class="navigation-category-image">
                       <a href="/kategori/led-ampuller-e27">
-                        == $0
                         <div
                           class="rounded"
                           style="
@@ -42,7 +41,6 @@
                     </li>
                     <li class="navigation-category-image">
                       <a href="/kategori/led-flamentli-ve-rustik-ampuller">
-                        == $0
                         <div
                           class="rounded"
                           style="
@@ -57,7 +55,6 @@
                     </li>
                     <li class="navigation-category-image">
                       <a href="/kategori/led-gece-ampulleri">
-                        == $0
                         <div
                           class="rounded"
                           style="
@@ -72,7 +69,6 @@
                     </li>
                     <li class="navigation-category-image">
                       <a href="/kategori/led-spot-ampuller">
-                        == $0
                         <div
                           class="rounded"
                           style="
@@ -87,7 +83,6 @@
                     </li>
                     <li class="navigation-category-image">
                       <a href="/kategori/led-kapsul-ampuller">
-                        == $0
                         <div
                           class="rounded"
                           style="
@@ -102,7 +97,6 @@
                     </li>
                     <li class="navigation-category-image">
                       <a href="/kategori/led-ralina-ampuller">
-                        == $0
                         <div
                           class="rounded"
                           style="
@@ -117,7 +111,6 @@
                     </li>
                     <li class="navigation-category-image">
                       <a href="/kategori/led-yuksek-lumen-ampuller">
-                        == $0
                         <div
                           class="rounded"
                           style="
@@ -132,7 +125,6 @@
                     </li>
                     <li class="navigation-category-image">
                       <a href="/kategori/led-t-5-floresanlar">
-                        == $0
                         <div
                           class="rounded"
                           style="
@@ -147,7 +139,6 @@
                     </li>
                     <li class="navigation-category-image">
                       <a href="/kategori/led-t-8-floresanlar">
-                        == $0
                         <div
                           class="rounded"
                           style="
@@ -165,7 +156,7 @@
               </li>
               <li class="has-sub-category" data-selector="first-level-navigation">
                 <a href="/kategori/ic-mekan-led-armaturler" class="text-center">
-                  <span class>Ic Mekan Led Armatürler</span>
+                  <span class="multiline-center">Ic Mekan Led Armatürler</span>
                 </a>
                 <div class="sub-category category-level-2">
                   <ul>
@@ -255,7 +246,6 @@
                     </li>
                     <li class="navigation-category-image">
                       <a href=" /kategori/led-etanj-garaj-otopark-armaturleri">
-                        == $0
                         <div
                           class="rounded"
                           style="
@@ -271,16 +261,56 @@
                   </ul>
                 </div>
               </li>
-              <li class="has-sub-category" data-selector="firs-level-navigation"></li>
-              <li class="has-sub-category" data-selector="firs-level-navigation"></li>
-              <li class="has-sub-category" data-selector="firs-level-navigation"></li>
-              <li class="has-sub-category" data-selector="firs-level-navigation"></li>
-              <li class="has-sub-category" data-selector="firs-level-navigation"></li>
-              <li class="has-sub-category" data-selector="firs-level-navigation"></li>
-              <li class="has-sub-category" data-selector="firs-level-navigation"></li>
-              <li class="has-sub-category" data-selector="firs-level-navigation"></li>
-              <li class="has-sub-category" data-selector="firs-level-navigation"></li>
-              <li class="has-sub-category" data-selector="firs-level-navigation"></li>
+              <li class="has-sub-category" data-selector="firs-level-navigation">
+                <a href="/kategori/ic-mekan-led-armaturler" class="text-center">
+                  <span class="multiline-center">Ic Mekan Led Armatürler</span>
+                </a>
+              </li>
+              <li class="has-sub-category" data-selector="firs-level-navigation">
+                <a href="/kategori/ic-mekan-led-armaturler" class="text-center">
+                  <span class="multiline-center">Ic Mekan Led Armatürler</span>
+                </a>
+              </li>
+              <li class="has-sub-category" data-selector="firs-level-navigation">
+                <a href="/kategori/ic-mekan-led-armaturler" class="text-center">
+                  <span class="multiline-center">Ic Mekan Led Armatürler</span>
+                </a>
+              </li>
+              <li class="has-sub-category" data-selector="firs-level-navigation">
+                <a href="/kategori/ic-mekan-led-armaturler" class="text-center">
+                  <span class="multiline-center">Ic Mekan Led Armatürler</span>
+                </a>
+              </li>
+              <li class="has-sub-category" data-selector="firs-level-navigation">
+                <a href="/kategori/ic-mekan-led-armaturler" class="text-center">
+                  <span class="multiline-center">Ic Mekan Led Armatürler</span>
+                </a>
+              </li>
+              <li class="has-sub-category" data-selector="firs-level-navigation">
+                <a href="/kategori/ic-mekan-led-armaturler" class="text-center">
+                  <span class="multiline-center">Ic Mekan Led Armatürler</span>
+                </a>
+              </li>
+              <li class="has-sub-category" data-selector="firs-level-navigation">
+                <a href="/kategori/ic-mekan-led-armaturler" class="text-center">
+                  <span class="multiline-center">Ic Mekan Led Armatürler</span>
+                </a>
+              </li>
+              <li class="has-sub-category" data-selector="firs-level-navigation">
+                <a href="/kategori/ic-mekan-led-armaturler" class="text-center">
+                  <span class="multiline-center">Ic Mekan Led Armatürler</span>
+                </a>
+              </li>
+              <li class="has-sub-category" data-selector="firs-level-navigation">
+                <a href="/kategori/ic-mekan-led-armaturler" class="text-center">
+                  <span class="multiline-center">Ic Mekan Led Armatürler</span>
+                </a>
+              </li>
+              <li class="has-sub-category" data-selector="firs-level-navigation">
+                <a href="/kategori/ic-mekan-led-armaturler" class="text-center">
+                  <span class="multiline-center">Ic Mekan Led Armatürler</span>
+                </a>
+              </li>
             </ul>
           </div>
         </nav>
@@ -299,6 +329,7 @@ export default {
 .has-sub-category {
   position: relative; /* Alt menüyü konumlandırmak için */
   display: inline-block; /* Yan yana yerleştirmek için */
+  text-align: center;
 }
 
 .sub-category {
@@ -308,6 +339,7 @@ export default {
   left: 0;
   background-color: #f9f9f9;
   min-width: 200px;
+  text-align: center;
 }
 
 .has-sub-category:hover .sub-category {
@@ -320,9 +352,16 @@ export default {
   justify-content: center;
   list-style-type: none;
   padding: 0;
+  text-align: center;
 }
 
 .category-level-1 li {
   margin: 0 10px; /* Öğeler arasındaki boşluğu ayarlayabilirsiniz */
+  text-align: center;
+}
+
+.multiline-center {
+  display: block;
+  text-align: center;
 }
 </style>
