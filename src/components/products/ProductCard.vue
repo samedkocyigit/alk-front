@@ -6,7 +6,7 @@ defineProps({
   },
   width: {
     type: String,
-    default: 'w-[200px]',
+    default: 'w-[180px]',
   },
 })
 </script>
@@ -31,6 +31,15 @@ defineProps({
           <span>|</span>
           <span class="ml-1">sold {{ product.ratingsQuantity }}</span>
         </span>
+      </div>
+      <div class="mt-2 text-center">
+        <div class="inline-block">
+          <button
+            class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300"
+          >
+            Sepete Ekle
+          </button>
+        </div>
       </div>
     </div>
   </div>
