@@ -19,9 +19,22 @@ const closeSettings = () => {
   modal.value.isShowSettings = false
 }
 
-const logout = () => {
-  localStorage.removeItem('access_token')
-  localStorage.removeItem('refresh_token')
+// const logout = async () => {
+//   localStorage.removeItem('access_token')
+//   localStorage.removeItem('refresh_token')
+//   authStore.isLoggedIn = false
+//   authStore.user = null
+//   window.location.href = '/'
+// }
+const logout = async () => {
+  console.log('abdissamaeed')
+  await fetch('users/logout', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+  localStorage.removeItem('token')
   authStore.isLoggedIn = false
   authStore.user = null
   window.location.href = '/'
