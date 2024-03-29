@@ -26,7 +26,7 @@ const loading = ref(true)
 async function fetchProduct() {
   if (products.value.length === 0) {
     try {
-      const response = await fetch('/api/products')
+      const response = await fetch('/products')
       if (!response.ok) {
         throw new Error('Fetch işlemi başarısız.')
       }
@@ -61,32 +61,26 @@ fetchProduct()
     </div>
     <!-- end title header -->
     <!-- list product -->
-    <div class="w-full flex p-4 gap-4 relative">
-      <div
-        class="absolute z-10 flex justify-center items-center top-[45%] -right-5 w-[50px] h-[50px] cursor-pointer bg-white gb-shadow rounded-full"
-        @click="mySwiper.slideNext()"
+    <div class="w-full flex flex-wrap justify-start p-4 gap-2">
+      <RouterLink
+        v-for="product in products.data.slice(0, 12)"
+        :key="product.id"
+        :to="`/brands/${product.id}`"
+        class="w-[180px] flex justify-center"
       >
-        <i class="ri-arrow-right-s-line text-2xl"></i>
-      </div>
-      <div
-        class="absolute z-10 flex justify-center items-center top-[45%] -left-5 w-[50px] h-[50px] cursor-pointer bg-white gb-shadow rounded-full"
-        @click="mySwiper.slidePrev()"
-      >
-        <i class="ri-arrow-left-s-line text-2xl"></i>
-      </div>
-      <swiper
-        style="padding: 0 8px 10px 8px"
-        class="w-full pb-2"
-        :slides-per-view="'auto'"
-        :space-between="10"
-        @swiper="onSwiper"
-      >
-        <swiper-slide v-for="product in products.data" :key="product.id" style="width: auto" class="w-fit">
-          <RouterLink :to="`/brands/${product.id}`">
-            <ProductCard :product="product" />
-          </RouterLink>
-        </swiper-slide>
-      </swiper>
+        <ProductCard :product="product" />
+      </RouterLink>
     </div>
   </div>
 </template>
+
+<style scoped>
+.RouterLink {
+  display: flex;
+  justify-content: center;
+}
+
+.RouterLink > * {
+  margin: 0 auto; /* Dikeyde ortalama */
+}
+</style>
