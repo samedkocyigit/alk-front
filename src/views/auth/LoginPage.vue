@@ -16,16 +16,16 @@
               label="Email"
               style-custom="border-[#AFA2C3]"
               is-required
-              placeholder="Nhập email..."
+              placeholder="Enter Email..."
             />
           </div>
           <div class="w-full mt-5">
             <AInput
               name="password"
-              label="Mật khẩu"
+              label="Password"
               style-custom="border-[#AFA2C3]"
               is-required
-              placeholder="Nhập mật khẩu..."
+              placeholder="Enter Password..."
               type="password"
             />
           </div>
@@ -59,21 +59,54 @@ import { useForm } from 'vee-validate'
 import * as yup from 'yup'
 import { useRouter } from 'vue-router'
 import { initAuthStore } from '@/stores'
-import { loginApi } from '@/services/auth.service'
+// import { loginApi } from '@/services/auth.service'
 import AInput from '@/components/commons/atoms/AInput.vue'
 import { toast } from 'vue3-toastify'
 const router = useRouter()
 
+// const submit = async (val) => {
+//   console.log(val)
+//   const { email, password } = val
+//   try {
+//     await loginApi({ email, password }).then((res) => {
+//       const data = res['data']
+//       console.log(data)
+//       localStorage.setItem('access_token', data.token.accessToken)
+//       localStorage.setItem('refresh_token', data.token.refreshToken)
+//     })
+//     await initAuthStore()
+//     const redirect = localStorage.getItem('redirect')
+//     if (redirect) {
+//       router.push(redirect)
+//     } else {
+//       router.push('/')
+//       localStorage.removeItem('redirect')
+//     }
+//   } catch (error) {
+//     console.log(error)
+//     toast.error('Login failed, please check your login information')
+//   }
+// }
 const submit = async (val) => {
-  console.log(val)
+  console.log('messi')
   const { email, password } = val
+  console.log('alemdag')
+
   try {
-    await loginApi({ email, password }).then((res) => {
-      const data = res['data']
-      console.log(data)
-      localStorage.setItem('access_token', data.token.accessToken)
-      localStorage.setItem('refresh_token', data.token.refreshToken)
+    const response = await fetch('/users/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, password }),
     })
+    localStorage.setItem('access_token', response.token)
+
+    console.log('responseUser-->', response.token)
+    if (!response.ok) {
+      const errorMessage = await response.text()
+      throw new Error(errorMessage)
+    }
     await initAuthStore()
     const redirect = localStorage.getItem('redirect')
     if (redirect) {
@@ -83,8 +116,8 @@ const submit = async (val) => {
       localStorage.removeItem('redirect')
     }
   } catch (error) {
-    console.log(error)
-    toast.error('Login failed, please check your login information')
+    console.error(error)
+    toast.error('Giriş başarısız, lütfen bilgilerinizi kontrol edin')
   }
 }
 
@@ -92,13 +125,7 @@ const submit = async (val) => {
 const { handleSubmit } = useForm({
   validationSchema: yup.object({
     email: yup.string().required().email(),
-    password: yup
-      .string()
-      .required()
-      .matches(
-        /^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/,
-        'Password must contain at least 8 characters, 1 number and 1 letter'
-      ),
+    password: yup.string().required().min(8, 'Password must be at least 8 characters long'),
   }),
 })
 
