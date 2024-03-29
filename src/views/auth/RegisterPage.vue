@@ -12,6 +12,26 @@
         <div class="w-full flex flex-col items-center justify-center mt-10">
           <div class="w-full">
             <AInput
+              v-model="name"
+              label="Name"
+              name="name"
+              style-custom="border-[#AFA2C3]"
+              is-required
+              placeholder="Enter your name..."
+            />
+          </div>
+          <div class="w-full">
+            <AInput
+              v-model="surname"
+              label="Surname"
+              name="surname"
+              style-custom="border-[#AFA2C3]"
+              is-required
+              placeholder="Enter your surname..."
+            />
+          </div>
+          <div class="w-full">
+            <AInput
               v-model="email"
               label="Email"
               name="email"
@@ -21,36 +41,40 @@
               type="email"
             />
           </div>
-          <div class="w-full mt-5">
-            <AInput
-              v-model="name"
-              name="name"
-              label="Name"
-              style-custom="border-[#AFA2C3]"
-              is-required
-              placeholder="Enter your name..."
-            />
-          </div>
-          <div class="w-full mt-5">
+          <div class="w-full">
             <AInput
               v-model="password"
-              name="password"
               label="Password"
+              name="password"
               style-custom="border-[#AFA2C3]"
               is-required
-              placeholder="Nhập mật khẩu..."
+              placeholder="Enter your password..."
               type="password"
+            />
+          </div>
+          <!-- <div class="absolute inset-y-0 right-0 flex items-center justify-center h-full mr-2">
+              <button @click="togglePasswordVisibility">
+                <i v-if="isPassword && !showPassword" class="ri-eye-fill"></i>
+                <i v-else class="ri-eye-off-fill"></i>
+              </button>
+            </div> -->
+          <div class="w-full">
+            <AInput
+              v-model="gender"
+              label="Cinsiyet"
+              name="gender"
+              style-custom="border-[#AFA2C3]"
+              is-required
+              placeholder="Enter your gender..."
             />
           </div>
           <div class="w-full mt-5">
             <AInput
-              v-model="confirmPassword"
-              name="confirmPassword"
-              label="Confirm password"
+              v-model="phone"
+              name="phone"
+              label="İlgili Cep Telefonu"
               style-custom="border-[#AFA2C3]"
-              is-required
-              placeholder="Nhập mật khẩu..."
-              type="password"
+              placeholder="Enter your phone number..."
             />
           </div>
           <!-- forgot -->
@@ -79,52 +103,73 @@
 </template>
 
 <script setup>
+// import { ref } from 'vue'
 import { useForm } from 'vee-validate'
 import * as yup from 'yup'
 import { useRouter } from 'vue-router'
-import { registerApi } from '@/services/auth.service'
 import { toast } from 'vue3-toastify'
 import AInput from '@/components/commons/atoms/AInput.vue'
 const router = useRouter()
 
 const submit = async (val) => {
-  const { email, password, name, confirmPassword } = val
+  const { name, surname, email, password, gender, phone } = val
   try {
-    await registerApi({
-      email: email,
-      password: password,
-      confirmPassword: confirmPassword,
-      name: name,
-    }).then((res) => {
-      console.log(res)
-      toast.success('Register success!')
-      router.push('/login')
+    // // Önce veritabanından kullanıcı bilgilerini al
+    // const existingUser = await getUserByEmail(email)
+
+    // // Kullanıcı zaten varsa hata fırlat
+    // if (existingUser) {
+    //   throw new Error('User with this email already exists')
+    // }
+
+    // Kullanıcı yoksa yeni kullanıcı oluştur
+    const response = await fetch('/users/signup', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name: name,
+        surname: surname,
+        email: email,
+        password: password,
+        gender: gender,
+        phone: phone,
+      }),
     })
+
+    if (!response.ok) {
+      throw new Error('Failed to register user')
+    }
+
+    const responseData = await response.json()
+    console.log(responseData) // Gerekirse API'den dönen veriyi kontrol et
+
+    toast.success('Register success!')
+    router.push('/users/login')
   } catch (error) {
-    console.log(error)
+    console.error('Registration error:', error)
     toast.error('Register failed!')
   }
 }
 
 const { handleSubmit } = useForm({
   validationSchema: yup.object({
-    email: yup.string().required().email(),
     name: yup.string().required(),
-    password: yup
-      .string()
-      .required()
-      .matches(
-        /^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/,
-        'Password must contain at least 8 characters, 1 number and 1 letter'
-      ),
-    confirmPassword: yup
-      .string()
-      .required()
-      .oneOf([yup.ref('password'), null], 'Passwords must match'),
+    surname: yup.string().required(),
+    email: yup.string().required().email(),
+    password: yup.string().required().min(8, 'Password must contain at least 8 characters'),
+    gender: yup.string().required(),
+    phone: yup.number(),
   }),
 })
 
 const onRegister = () => {
   handleSubmit(submit)()
 }
+// const showPassword = ref(false)
+
+// const togglePasswordVisibility = () => {
+//   showPassword.value = !showPassword.value
+// }
 </script>
