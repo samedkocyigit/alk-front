@@ -6,8 +6,9 @@
           <SearchWrapper class="w-full" />
         </div>
         <HomePage />
-        <ShopList />
+        <FlashSaleList />
         <PromotionList />
+        <FlashSaleList />
       </div>
     </div>
   </div>
@@ -16,6 +17,6 @@
 <script setup>
 import SearchWrapper from '@/components/search/SearchWrapper.vue'
 import HomePage from '@/components/home/HomePage.vue'
-import ShopList from '@/components/home/ShopList.vue'
+import FlashSaleList from '@/components/products/FlashSaleList.vue'
 import PromotionList from '@/components/home/PromotionList.vue'
 </script>
