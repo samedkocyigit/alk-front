@@ -39,7 +39,6 @@ const props = defineProps({
   },
 })
 const { value, errorMessage } = useField(() => props.name)
-
 defineEmits(['update:modelValue'])
 </script>
 <template>
@@ -51,7 +50,7 @@ defineEmits(['update:modelValue'])
       v-model="value"
       :class="styleCustom"
       class="w-full rounded-md"
-      :type="isPassword ? 'password' : type"
+      :type="isPassword && showPassword ? 'text' : type"
       :placeholder="placeholder"
       :name="name"
     />

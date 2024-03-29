@@ -23,6 +23,7 @@ const closeModalCart = () => {
     <!-- top line -->
     <div class="max-md:h-[45px] h-[35px] w-full bg-[#f9f9f9] flex justify-between px-3 items-center">
       <div class="text-center">
+        <span style="margin-left: 60ch"></span>
         <strong><a href="/siparislerim">Siparişlerim</a></strong>
         <span style="margin-right: 3ch"></span>
         <strong><a href="/kargo-takibi">Kargo Takibi</a></strong>
@@ -52,7 +53,7 @@ const closeModalCart = () => {
       <SearchWrapper class="max-md:hidden" />
       <div class="flex">
         <div v-if="!authStore.isLoggedIn" class="flex gap-3">
-          <router-link to="/login">
+          <router-link to="/users/login">
             <button class="border-[#5a4098] border-[1px] h-[30px] px-3 rounded-[4px] font-base text-sm">Sign in</button>
           </router-link>
           <router-link to="/register">

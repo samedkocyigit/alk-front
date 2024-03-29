@@ -41,6 +41,7 @@
           <div class="border-b-[1px] mb-1"></div>
           <span
             class="flex items-center py-2 rounded-md hover:bg-[#f1f1f1] px-2 font-semibold text-base text-primary-200"
+            @click="logout"
             >Logout <i class="ri-logout-box-r-line"></i
           ></span>
         </div>
@@ -57,4 +58,17 @@ const route = useRoute()
 import { useAuthStore } from '@/stores/auth.store'
 const authStore = useAuthStore().state
 const tabRoute = ref(['create-product', 'manage-product', 'profile-settings'])
+const logout = async () => {
+  console.log('abdissamaeed')
+  await fetch('users/logout', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+  localStorage.removeItem('token')
+  authStore.isLoggedIn = false
+  authStore.user = null
+  window.location.href = '/'
+}
 </script>

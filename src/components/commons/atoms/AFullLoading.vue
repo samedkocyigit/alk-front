@@ -1,7 +1,8 @@
+<!-- eslint-disable vue/no-parsing-error -->
 <template>
   <div class="fadeIn w-screen h-screen fixed top-0 left-0 z-[999] flex justify-center items-center bg-[#e8e8e8b0]">
     <div class="flex flex-col gap-5 justify-center items-center">
-      <svg xmlns="http://www.w3.org/2000/svg" width="62" height="62" viewBox="0 0 24 24">
+      <svg xmlns="http://www.w  3.org/2000/svg" width="62" height="62" viewBox="0 0 24 24">
         <circle cx="12" cy="12" r="0" fill="#5145e5">
           <animate
             id="svgSpinnersPulse20"
