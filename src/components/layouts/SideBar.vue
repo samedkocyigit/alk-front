@@ -56,17 +56,17 @@ import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 const route = useRoute()
 import { useAuthStore } from '@/stores/auth.store'
+import axios from 'axios'
 const authStore = useAuthStore().state
 const tabRoute = ref(['create-product', 'manage-product', 'profile-settings'])
+
 const logout = async () => {
-  console.log('abdissamaeed')
-  await fetch('users/logout', {
+  await axios({
     method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    url: 'http://127.0.0.1:3000/users/logout',
+    data: null,
   })
-  localStorage.removeItem('token')
+  localStorage.removeItem('access_token')
   authStore.isLoggedIn = false
   authStore.user = null
   window.location.href = '/'

@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import { useAuthStore } from '@/stores/auth.store'
 import ModalInfo from './ModalInfo.vue'
 import ModalChangePassword from './ModalChangePassword.vue'
+import axios from 'axios'
 
 const authStore = useAuthStore().state
 const modal = ref({
@@ -27,17 +28,18 @@ const closeSettings = () => {
 //   window.location.href = '/'
 // }
 const logout = async () => {
-  console.log('abdissamaeed')
-  await fetch('users/logout', {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  })
-  localStorage.removeItem('token')
-  authStore.isLoggedIn = false
-  authStore.user = null
-  window.location.href = '/'
+  try {
+    await axios({
+      method: 'GET',
+      url: 'http://127.0.0.1:3000/users/logout',
+    })
+    localStorage.removeItem('access_token')
+    authStore.isLoggedIn = false
+    authStore.user = null
+    window.location.href = '/'
+  } catch (err) {
+    console.log(err)
+  }
 }
 </script>
 <template>
@@ -101,7 +103,7 @@ const logout = async () => {
         </div>
         <div class="flex gap-2 py-2 px-2 mt-2 hover:bg-slate-100 rounded-lg cursor-pointer" @click="logout">
           <i class="ri-login-box-line"></i>
-          <p>logout</p>
+          <p>Logout</p>
         </div>
       </div>
     </div>
