@@ -55,25 +55,32 @@
 </template>
 
 <script setup>
-import { useForm } from 'vee-validate'
-import * as yup from 'yup'
-import { useRouter } from 'vue-router'
-import { initAuthStore } from '@/stores'
-// import { loginApi } from '@/services/auth.service'
 import AInput from '@/components/commons/atoms/AInput.vue'
-import { toast } from 'vue3-toastify'
+import * as yup from 'yup'
+import axios from 'axios'
+import { useForm } from 'vee-validate'
+import { initAuthStore } from '@/stores'
+import { useRouter } from 'vue-router'
+
 const router = useRouter()
 
 // const submit = async (val) => {
-//   console.log(val)
 //   const { email, password } = val
 //   try {
-//     await loginApi({ email, password }).then((res) => {
-//       const data = res['data']
-//       console.log(data)
-//       localStorage.setItem('access_token', data.token.accessToken)
-//       localStorage.setItem('refresh_token', data.token.refreshToken)
+//     const response = await fetch('/users/login', {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//       body: JSON.stringify({ email, password }),
 //     })
+//     localStorage.setItem('access_token', response.token)
+
+//     console.log('responseUser-->', response.token)
+//     if (!response.ok) {
+//       const errorMessage = await response.text()
+//       throw new Error(errorMessage)
+//     }
 //     await initAuthStore()
 //     const redirect = localStorage.getItem('redirect')
 //     if (redirect) {
@@ -83,29 +90,27 @@ const router = useRouter()
 //       localStorage.removeItem('redirect')
 //     }
 //   } catch (error) {
-//     console.log(error)
-//     toast.error('Login failed, please check your login information')
+//     console.error(error)
+//     toast.error('Giriş başarısız, lütfen bilgilerinizi kontrol edin')
 //   }
 // }
+
 const submit = async (val) => {
-  console.log('messi')
   const { email, password } = val
-  console.log('alemdag')
-
   try {
-    const response = await fetch('/users/login', {
+    const res = await axios({
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
+      url: 'http://127.0.0.1:3000/users/login',
+      data: {
+        email,
+        password,
       },
-      body: JSON.stringify({ email, password }),
     })
-    localStorage.setItem('access_token', response.token)
+    localStorage.setItem('access_token', res.data.token)
 
-    console.log('responseUser-->', response.token)
-    if (!response.ok) {
-      const errorMessage = await response.text()
-      throw new Error(errorMessage)
+    console.log('responseUser-->', res.data.token)
+    if (res.status >= 400) {
+      throw new Error('HTTP Error: ' + res.statusText)
     }
     await initAuthStore()
     const redirect = localStorage.getItem('redirect')
@@ -115,9 +120,9 @@ const submit = async (val) => {
       router.push('/')
       localStorage.removeItem('redirect')
     }
-  } catch (error) {
-    console.error(error)
-    toast.error('Giriş başarısız, lütfen bilgilerinizi kontrol edin')
+    console.log(res)
+  } catch (err) {
+    console.log(err)
   }
 }
 

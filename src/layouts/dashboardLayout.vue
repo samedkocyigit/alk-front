@@ -1,10 +1,12 @@
 <template>
-  <div class="flex w-full justify-center">
+  <div class="flex flex-col w-full justify-center">
     <NavBar />
-
-    <div class="mb-auto flex h-[calc(100vh-90px)] justify-center overflow-y-auto w-full mt-[90px]">
+    <HeaderBottom />
+    <div class="flex flex-row w-full justify-center">
       <SideBar />
-      <slot></slot>
+      <div class="mb-auto overflow-y-auto w-full">
+        <slot></slot>
+      </div>
     </div>
   </div>
 </template>
@@ -12,6 +14,7 @@
 <script setup>
 import NavBar from '@/components/layouts/NavBar.vue'
 import SideBar from '@/components/layouts/SideBar.vue'
+import HeaderBottom from '@/components/layouts/HeaderBottom.vue'
 import { onBeforeMount } from 'vue'
 onBeforeMount(() => {
   console.log('default')
