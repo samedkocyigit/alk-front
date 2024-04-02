@@ -1,5 +1,6 @@
-import axiosApiInstance from '@/plugins/api'
 import axios from 'axios'
+import axiosApiInstance from '@/plugins/api'
+
 axios.defaults.baseURL = import.meta.env.VITE_API_URL
 const BASE_ENDPOINT = '/identity'
 
@@ -27,5 +28,5 @@ export const registerApi = async (data) => {
   return await axiosApiInstance.post(`${BASE_ENDPOINT}/auth/register`, data)
 }
 export const getInfo = async () => {
-  return await axiosApiInstance.get(`${BASE_ENDPOINT}/users/me`)
+  return await axiosApiInstance.get(`/users/me`)
 }

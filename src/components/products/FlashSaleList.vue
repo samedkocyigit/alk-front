@@ -65,7 +65,7 @@ fetchProduct()
       <RouterLink
         v-for="product in products.data.slice(0, 12)"
         :key="product.id"
-        :to="`/brands/${product.id}`"
+        :to="`/products/${product.id}`"
         class="w-[180px] flex justify-center"
       >
         <ProductCard :product="product" />

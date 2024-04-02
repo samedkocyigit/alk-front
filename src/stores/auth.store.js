@@ -1,4 +1,3 @@
-import { ref } from 'vue'
 // export const authStore = ref({
 //   user: null,
 //   isLoggedIn: false,
@@ -14,6 +13,7 @@ import { ref } from 'vue'
 // }
 
 // refactor user store
+import { ref } from 'vue'
 import { defineStore } from 'pinia'
 
 export const useAuthStore = defineStore('auth', () => {

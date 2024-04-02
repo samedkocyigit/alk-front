@@ -86,7 +86,7 @@
               Sign up
             </button>
             <RouterLink
-              to="/login"
+              to="/users/login"
               class="block text-center border-[1px] border-[#3E334E] text-[#3E334E] flex-[1] w-full font-bold py-3 rounded-lg"
             >
               Login

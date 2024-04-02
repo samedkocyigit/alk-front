@@ -18,8 +18,8 @@
         :autoplay="{ delay: 3000, disableOnInteraction: false }"
         @swiper="onSwiper"
       >
-        <swiper-slide v-for="brand in brands.data" :key="brand.id" style="width: auto" class="w-fit">
-          <RouterLink :to="`/brands/${brand.id}`">
+        <swiper-slide v-for="brand in brands.data" :key="brand._id" style="width: auto" class="w-fit">
+          <RouterLink :key="brand._id" :to="`/brands/${brand._id}`">
             <BrandCard :brand="brand" />
           </RouterLink>
         </swiper-slide>
