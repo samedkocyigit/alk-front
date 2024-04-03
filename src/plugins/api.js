@@ -4,7 +4,7 @@ import { refreshAccessToken } from '@/services/auth.service'
 const excludeUrls = ['/auth/login', '/auth/refresh-tokens', '/shopping/users/me/cart']
 const axiosApiInstance = axios.create()
 // set base api
-axiosApiInstance.defaults.baseURL = import.meta.env.VITE_API_URL
+axiosApiInstance.defaults.baseURL = 'http://127.0.0.1:3000/'
 // Request interceptor for API calls
 axiosApiInstance.interceptors.request.use(
   async (config) => {

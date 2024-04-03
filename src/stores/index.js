@@ -1,24 +1,9 @@
-import { useAuthStore } from './auth.store'
-import { getInfo } from '@/services/auth.service'
+/* eslint-disable no-unused-vars */
+import { AuthStore } from './auth.store'
 import { useMasterStore } from './master.store'
 
 export const initAuthStore = async () => {
-  const authStore = useAuthStore()
-  if (localStorage.getItem('access_token')) {
-    try {
-      const { data } = await getInfo()
-      authStore.setAuthStore({
-        user: data,
-        isLoggedIn: true,
-      })
-    } catch (error) {
-      console.log(error)
-      localStorage.removeItem('access_token')
-      localStorage.removeItem('refresh_token')
-      window.location.reload()
-    }
-    console.log('initAuthStore', authStore)
-  }
+  const authStore = AuthStore
 }
 
 export const initMasterStore = async () => {

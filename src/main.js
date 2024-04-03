@@ -4,7 +4,8 @@ import App from './App.vue'
 import './assets/css/tailwind.css'
 import './assets/css/global.css'
 import { createPinia } from 'pinia'
-import { initAuthStore, initMasterStore } from '@/stores'
+import { initMasterStore } from '@/stores'
+import { initAuthStore } from '@/stores'
 import { authMiddleware } from '@/router/router.middleware'
 // components
 import LazyImg from './components/commons/atoms/LazyImg.vue'
@@ -16,6 +17,7 @@ import 'remixicon/fonts/remixicon.css'
 import ACustomPopup from '@/components/commons/atoms/ACustomPopup.vue'
 import Vue3Toastify from 'vue3-toastify'
 import 'vue3-toastify/dist/index.css'
+// import { startAuthStore } from './stores/auth.store'
 
 const initApp = async () => {
   const app = createApp(App)
