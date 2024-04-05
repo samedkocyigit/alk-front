@@ -59,41 +59,10 @@ import AInput from '@/components/commons/atoms/AInput.vue'
 import * as yup from 'yup'
 import axios from 'axios'
 import { useForm } from 'vee-validate'
-import { initAuthStore } from '@/stores'
+import { loginAuthStore } from '@/stores/auth.store'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
-
-// const submit = async (val) => {
-//   const { email, password } = val
-//   try {
-//     const response = await fetch('/users/login', {
-//       method: 'POST',
-//       headers: {
-//         'Content-Type': 'application/json',
-//       },
-//       body: JSON.stringify({ email, password }),
-//     })
-//     localStorage.setItem('access_token', response.token)
-
-//     console.log('responseUser-->', response.token)
-//     if (!response.ok) {
-//       const errorMessage = await response.text()
-//       throw new Error(errorMessage)
-//     }
-//     await initAuthStore()
-//     const redirect = localStorage.getItem('redirect')
-//     if (redirect) {
-//       router.push(redirect)
-//     } else {
-//       router.push('/')
-//       localStorage.removeItem('redirect')
-//     }
-//   } catch (error) {
-//     console.error(error)
-//     toast.error('Giriş başarısız, lütfen bilgilerinizi kontrol edin')
-//   }
-// }
 
 const submit = async (val) => {
   const { email, password } = val
@@ -106,13 +75,17 @@ const submit = async (val) => {
         password,
       },
     })
-    localStorage.setItem('access_token', res.data.token)
+    const token = res.data.token
+    const user = res.data.data.data
+    localStorage.setItem('access_token', token)
 
-    console.log('responseUser-->', res.data.token)
+    console.log('responseUser-->', token)
     if (res.status >= 400) {
       throw new Error('HTTP Error: ' + res.statusText)
     }
-    await initAuthStore()
+
+    console.log('sonuc=>', user)
+    await loginAuthStore(user)
     const redirect = localStorage.getItem('redirect')
     if (redirect) {
       router.push(redirect)
@@ -120,7 +93,7 @@ const submit = async (val) => {
       router.push('/')
       localStorage.removeItem('redirect')
     }
-    console.log(res)
+    console.log('sonuc=>', res)
   } catch (err) {
     console.log(err)
   }

@@ -32,6 +32,7 @@
 import { ref } from 'vue'
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import 'swiper/css'
+import axios from 'axios'
 
 const mySwiper = ref(null)
 
@@ -45,15 +46,15 @@ const loading = ref(true)
 async function fetchBrands() {
   if (brands.value.length === 0) {
     try {
-      const response = await fetch('/brands')
-      if (!response.ok) {
-        throw new Error('Fetch işlemi başarısız')
-      }
-      const data = await response.json()
-      if (!data || !data.data) throw new Error('Gelen veriler istenilen formatta değil')
-      brands.value = data.data
+      const res = await axios({
+        method: 'GET',
+        url: 'http://127.0.0.1:3000/brands',
+      })
+      // const data = res.data
+      // if (!data || !data.data) throw new Error('Gelen veriler istenilen formatta değil')
+      brands.value = res.data.data
       console.log('response=>', brands.value)
-      console.log('foti', brands.value.data[0].photo[0])
+      console.log('foti', brands.value.data[0])
       loading.value = false
     } catch (error) {
       console.log('hata:', error.message)

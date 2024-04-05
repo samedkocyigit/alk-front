@@ -1,24 +1,7 @@
 <!-- eslint-disable no-unused-vars -->
 <script setup>
-import { ref, onBeforeMount } from 'vue'
-import { Swiper, SwiperSlide } from 'swiper/vue'
-import { getProductsApi, searchProductsApi } from '@/services/product.service'
+import { ref } from 'vue'
 import 'swiper/css'
-const mySwiper = ref(null)
-
-const onSwiper = (swiper) => {
-  mySwiper.value = swiper
-  console.log(swiper)
-}
-onBeforeMount(async () => {
-  try {
-    const res = await searchProductsApi()
-    products.value = res.data.data
-    console.log(res.data)
-  } catch (error) {
-    console.log(error)
-  }
-})
 
 const products = ref([]) // Ürünler için bir dizi ref oluşturun
 const loading = ref(true)
@@ -26,25 +9,22 @@ const loading = ref(true)
 async function fetchProduct() {
   if (products.value.length === 0) {
     try {
-      const response = await fetch('/products')
-      if (!response.ok) {
+      const response = await axios.get('http://127.0.0.1:3000/products')
+      if (response.status !== 200) {
+        // HTTP durum kodunu kontrol et
         throw new Error('Fetch işlemi başarısız.')
       }
-      const data = await response.json()
-      if (!data || !data.data) {
-        throw new Error('Gelen veriler istenilen formatta değil.')
-      }
-      products.value = data.data
-      console.log('response=>', products.value)
-      loading.value = false
+      products.value = response.data.data
     } catch (error) {
       console.error('Hata:', error.message)
-      loading.value = false
+    } finally {
+      loading.value = false // İşlem tamamlandığında loading değerini false olarak ayarla
     }
   }
 }
 
 import ProductCard from './ProductCard.vue'
+import axios from 'axios'
 // Sayfa yüklendiğinde backend'den product nesnesini almak için fetchProduct işlevini çağırabilirsiniz
 fetchProduct()
 
