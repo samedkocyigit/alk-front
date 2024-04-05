@@ -1,5 +1,9 @@
 <script setup>
-defineProps({
+// props olarak gelen product bilgisini al
+import { defineProps, ref, onMounted } from 'vue'
+import LazyImg from '../commons/atoms/LazyImg.vue'
+
+const props = defineProps({
   product: {
     type: Object,
     required: true,
@@ -9,15 +13,20 @@ defineProps({
     default: 'w-[180px]',
   },
 })
+
+const photoName = ref('') // Fotoğraf adı için bir referans oluştur
+
+// Bileşen yüklendiğinde fotoğraf adını consola yazdır
+onMounted(() => {
+  photoName.value = props.product.photos[0]
+  console.log('Fotoğraf Adı:', photoName.value)
+})
 </script>
 
 <template>
   <div :class="`flex flex-col h-[330px] overflow-hidden product-card-shadow bg-white rounded-xl ${width}`">
-    <img
-      class="h-[180px] object-cover w-full"
-      :src="`../../../../../backend/src/assets/images/product/product-65eac0bf17044a8d2013fe47-1711365988548-1.jpg`"
-      alt=""
-    />
+    <!-- <img :src="`./images/products/${photoName}`" alt="" /> -->
+    <LazyImg class-style="h-[180px] object-cover w-full" :src="`./images/products/${photoName}`" alt="" />
     <div class="flex-auto p-3">
       <p class="text-sm font-semibold text-[#363636] truncate-2">{{ product.name }}</p>
       <p v-if="product.price" class="mt-1 font-bold text-lg">${{ product.price }}</p>
