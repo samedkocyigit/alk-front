@@ -1,9 +1,9 @@
 /* eslint-disable no-unused-vars */
-import { AuthStore } from './auth.store'
+import { startAuthStore } from './auth.store'
 import { useMasterStore } from './master.store'
 
 export const initAuthStore = async () => {
-  const authStore = AuthStore
+  await startAuthStore()
 }
 
 export const initMasterStore = async () => {
