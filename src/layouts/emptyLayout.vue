@@ -4,6 +4,6 @@
   </div>
 </template>
 <script setup>
-import { useAuthStore } from '@/stores/auth.store'
-const authStore = useAuthStore()
+import { AuthStore } from '@/stores/auth.store'
+const authStore = AuthStore.value
 </script>

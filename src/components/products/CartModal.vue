@@ -2,14 +2,14 @@
   <div class="absolute bg-white shadow-d-10 top-10 right-0 w-[380px] h-fit rounded-lg border-[1px]">
     <div class="w-full flex px-5 pt-3 justify-between">
       <p class="text-base text-gray-700 font-medium">My cart</p>
-      <p class="text-sm text-gray-700 font-medium">Total: ${{ cart.totalPrice }}</p>
+      <p class="text-sm text-gray-700 font-medium">Total: ${{ cart }}</p>
     </div>
     <!-- line -->
     <div class="border-b-[1px] mt-3"></div>
     <!-- end line -->
     <div class="w-full p-1 px-2 h-[300px] overflow-y-auto">
       <div
-        v-for="item in cart.items"
+        v-for="item in cart"
         :key="item.id"
         class="flex gap-4 p-2 cursor-pointer hover:bg-slate-100 rounded-md justify-between"
       >
@@ -40,12 +40,12 @@
 </template>
 <script setup>
 import { computed } from 'vue'
-import { useMasterStore } from '@/stores/master.store'
-const masterStore = useMasterStore()
+// import { useMasterStore } from '@/stores/master.store'
+// const masterStore = useMasterStore().state
 defineEmits(['close'])
 // import { useCartStore } from '@/stores/cart.store'
 // const cartStore = useCartStore().state
-const cart = computed(() => masterStore.state.cart)
+const cart = computed(() => null)
 // const total = computed(() => {
 //   let total = 0
 //   cart.value.forEach((item) => {

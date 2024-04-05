@@ -24,11 +24,11 @@
   </div>
 </template>
 <script setup>
-import { useAuthStore } from '@/stores/auth.store'
+import { AuthStore } from '@/stores/auth.store'
 import { ref } from 'vue'
 import ShopProfile from '@/components/profiles/ShopProfile.vue'
 import ProductCard from '@/components/products/ProductCard.vue'
-const authStore = useAuthStore().state
+const authStore = AuthStore.value
 const products = ref([
   {
     name: 'Long Product Name 1 You Might Forget the BeginningYou Might Forget the Beginning',

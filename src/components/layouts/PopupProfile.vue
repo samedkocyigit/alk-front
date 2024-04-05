@@ -28,7 +28,7 @@
 </template>
 <script setup>
 import { defineEmits } from 'vue'
-import { useAuthStore } from '@/stores/auth.store'
-const authStore = useAuthStore()
+import { AuthStore } from '@/stores/auth.store'
+const authStore = AuthStore.value
 defineEmits(['close'])
 </script>

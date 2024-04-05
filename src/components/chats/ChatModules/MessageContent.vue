@@ -1,7 +1,7 @@
 <script setup>
 defineProps(['message'])
-import { useAuthStore } from '@/stores/auth.store'
-const authStore = useAuthStore().state
+import { AuthStore } from '@/stores/auth.store'
+const authStore = AuthStore.value
 </script>
 <template>
   <div class="flex items-end gap-3">

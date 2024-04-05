@@ -1,11 +1,11 @@
 <script setup>
 import { ref, onBeforeMount } from 'vue'
 import BreadCrumb from '@/components/commons/BreadCrumb.vue'
-import { useAuthStore } from '@/stores/auth.store'
+import { AuthStore } from '@/stores/auth.store'
 import AButton from '@/components/commons/atoms/AButton.vue'
 // services
 import { getMyProductsApi } from '@/services/product.service'
-const authStore = useAuthStore().state
+const authStore = AuthStore.value
 import { useRouter } from 'vue-router'
 const router = useRouter()
 // breadcrumb

@@ -1,13 +1,14 @@
+<!-- eslint-disable no-unused-vars -->
 <script setup>
 import { ref } from 'vue'
-import { useAuthStore } from '@/stores/auth.store'
-import { useMasterStore } from '@/stores/master.store'
+import { AuthStore } from '@/stores/auth.store'
 import ModalProfile from '@/components/profiles/ModalProfile.vue'
 import SearchWrapper from '@/components/search/SearchWrapper.vue'
 import CartModal from '../products/CartModal.vue'
 import HeaderBottom from './HeaderBottom.vue'
-const authStore = useAuthStore().state
-const masterStore = useMasterStore().state
+const authStore = AuthStore.value
+const sss = localStorage.getItem('access_token')
+console.log(authStore, sss)
 
 const modal = ref({
   changeAvatar: false,
@@ -52,7 +53,7 @@ const closeModalCart = () => {
       >
       <SearchWrapper class="max-md:hidden" />
       <div class="flex">
-        <div v-if="!authStore.isLoggedIn" class="flex gap-3">
+        <div v-if="authStore.isLoggedIn === false" class="flex gap-3">
           <router-link to="/users/login">
             <button class="border-[#5a4098] border-[1px] h-[30px] px-3 rounded-[4px] font-base text-sm">Sign in</button>
           </router-link>
@@ -64,9 +65,10 @@ const closeModalCart = () => {
             </button>
           </router-link>
         </div>
-        <div v-else class="ml-3 flex gap-5 items-center">
+        <div v-if="authStore.isLoggedIn === true" class="ml-3 flex gap-5 items-center">
           <!-- tool left -->
           <router-link
+            v-if="authStore.user.role === 'admin'"
             to="/dashboard/create-product"
             class="max-md:hidden border-[1px] bg-[#5a4098] text-white cursor-pointer hover:shadow-lg border-[#5a4098] py-1 px-2 rounded-md"
           >
@@ -75,10 +77,9 @@ const closeModalCart = () => {
           </router-link>
           <div class="relative">
             <div
-              v-if="masterStore.cart.items.length > 0"
               class="absolute -right-3 -top-2 bg-rose-600 text-white w-5 h-5 rounded-full flex justify-center items-center"
             >
-              {{ masterStore.cart.items.length }}
+              2
             </div>
             <i class="cursor-pointer ri-shopping-cart-line text-xl" @click.stop="modal.showCart = true"></i>
             <CartModal v-show="modal.showCart" v-touch-outside="closeModalCart" @close="closeModalCart" />

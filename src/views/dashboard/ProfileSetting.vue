@@ -7,8 +7,8 @@ import ModalChangeAvatar from '@/components/profiles/ModalChangeAvatar.vue'
 import AInput from '@/components/commons/atoms/AInput.vue'
 import AddShippingAddress from '@/components/profiles/AddShippingAddress.vue'
 import { fileToBase64 } from '@/utils/file'
-import { useAuthStore } from '@/stores/auth.store'
-const authStore = useAuthStore().state
+import { AuthStore } from '@/stores/auth.store'
+const authStore = AuthStore.value
 // services
 import { getLocationApi, getShippingAddressApi } from '@/services/order.service'
 defineProps({

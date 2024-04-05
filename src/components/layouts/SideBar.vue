@@ -3,7 +3,7 @@
     <div class="fixed flex flex-col top-[90px] left-0 h-[calc(100vh-90px)] w-[270px] bg-white border-r-2 z-[60]">
       <!-- header info -->
       <div class="flex p-4 border-b-[1px]">
-        <img class="w-[40px] h-[40px] rounded-full" src="@/assets/images/avatar-default.jpg" alt="" />
+        <img class="w-[40px] h-[40px] rounded-full" src="@/components/products/images/avatar-default.jpg" alt="" />
         <div class="flex flex-col ml-3">
           <span class="text-base font-bold">{{ authStore.user.name }}</span>
           <span class="text-xs text-primary-200">
@@ -55,9 +55,9 @@
 import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 const route = useRoute()
-import { useAuthStore } from '@/stores/auth.store'
+import { AuthStore } from '@/stores/auth.store'
 import axios from 'axios'
-const authStore = useAuthStore().state
+const authStore = AuthStore.value
 const tabRoute = ref(['create-product', 'manage-product', 'profile-settings'])
 
 const logout = async () => {

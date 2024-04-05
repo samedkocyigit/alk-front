@@ -1,11 +1,11 @@
 <script setup>
 import { ref } from 'vue'
-import { useAuthStore } from '@/stores/auth.store'
+import { AuthStore, logoutAuthStore } from '@/stores/auth.store'
 import ModalInfo from './ModalInfo.vue'
 import ModalChangePassword from './ModalChangePassword.vue'
 import axios from 'axios'
 
-const authStore = useAuthStore().state
+const authStore = AuthStore.value
 const modal = ref({
   isShowSettings: false,
   isShowProfile: false,
@@ -34,8 +34,7 @@ const logout = async () => {
       url: 'http://127.0.0.1:3000/users/logout',
     })
     localStorage.removeItem('access_token')
-    authStore.isLoggedIn = false
-    authStore.user = null
+    logoutAuthStore()
     window.location.href = '/'
   } catch (err) {
     console.log(err)

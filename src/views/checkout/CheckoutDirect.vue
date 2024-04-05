@@ -98,8 +98,8 @@ import { orderApi, addTrackingApi } from '@/services/order.service'
 import { toast } from 'vue3-toastify'
 import { usePopupStore } from '@/stores/common.store'
 const popupStore = usePopupStore()
-import { useAuthStore } from '@/stores/auth.store'
-const authStore = useAuthStore()
+import { AuthStore } from '@/stores/auth.store'
+const authStore = AuthStore.value
 import { useRoute, useRouter } from 'vue-router'
 const route = useRoute()
 const router = useRouter()
