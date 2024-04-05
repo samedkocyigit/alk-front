@@ -5,7 +5,7 @@
     :id="id"
     :alt="alt"
     :class="classStyle"
-    src="../../../../../backend/src/assets/images/C9BC77F4-69F3-41A4-9588-59E34869652B.jpg"
+    src="../../../../../backend/src/public/images/C9BC77F4-69F3-41A4-9588-59E34869652B.jpg"
   />
 </template>
 <script setup>

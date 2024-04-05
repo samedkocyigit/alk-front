@@ -1,6 +1,7 @@
 <script setup>
 import { computed } from 'vue'
-import { RouterView, useRoute } from 'vue-router'
+import { RouterView } from 'vue-router'
+import { useRoute } from 'vue-router'
 import ConfirmModal from './components/commons/modal/ConfirmModal.vue'
 
 const route = useRoute()

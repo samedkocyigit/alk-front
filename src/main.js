@@ -20,8 +20,9 @@ import 'vue3-toastify/dist/index.css'
 // import { startAuthStore } from './stores/auth.store'
 
 const initApp = async () => {
+  const pinia = createPinia()
   const app = createApp(App)
-  app.use(createPinia())
+  app.use(pinia)
   await initAuthStore()
   await initMasterStore()
   app.use(router)
