@@ -1,7 +1,8 @@
 <script setup>
-import LazyImg from '../commons/atoms/LazyImg.vue'
+import { defineProps, ref, onMounted } from 'vue'
+// import LazyImg from '../commons/atoms/LazyImg.vue'
 
-defineProps({
+const props = defineProps({
   brand: {
     type: Object,
     required: true,
@@ -11,15 +12,19 @@ defineProps({
     default: 'w-[260px]',
   },
 })
+
+const brandsImg = ref('')
+
+onMounted(() => {
+  brandsImg.value = props.brand.photo[0]
+  console.log('Brand Img Adi:', brandsImg.value)
+})
 </script>
 
 <template>
   <div :class="`flex flex-col h-[100px] overflow-hidden product-card-shadow bg-white rounded-xl ${width}`">
-    <LazyImg
-      class-style="h-[70px] object-cover w-full"
-      :src="`frontend/src/assets/images/brands/${brand.photo[0]}`"
-      alt=""
-    />
+    <img :src="`@@/images/brands/${brandsImg}`" alt="" />
+    <!-- <LazyImg class-style="h-[70px] object-cover w-full" :src="`@@/images/brands/${brandsImg}`" alt="" /> -->
     <div class="flex-auto p-3">
       <p class="text-sm font-semibold text-[#363636] truncate-2 text-center">{{ brand.name }}</p>
     </div>
