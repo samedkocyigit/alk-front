@@ -3,7 +3,7 @@ import { ref, onMounted, onBeforeMount, onBeforeUnmount, computed } from 'vue'
 import BreadCrumb from '@/components/commons/BreadCrumb.vue'
 import AButton from '@/components/commons/atoms/AButton.vue'
 import Quill from 'quill'
-import '@/assets/css/quill.snow.css'
+import '@@/css/quill.snow.css'
 // components
 import ImageByTypePicker from '@/components/products/CreatorModules/ImageByTypePicker.vue'
 import AFilePond from '@/components/commons/atoms/AFilePond.vue'

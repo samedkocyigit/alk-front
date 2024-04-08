@@ -48,7 +48,7 @@ const logout = async () => {
     <div class="flex items-center gap-2">
       <p>{{ authStore.user.name }}</p>
       <img
-        src="@/assets/images/avatar-default.jpg"
+        src="@@/images/avatar-default.jpg"
         class="w-8 h-8 rounded-full object-cover cursor-pointer"
         alt=""
         @click.stop="modal.isShowSettings = !modal.isShowSettings"
@@ -64,7 +64,7 @@ const logout = async () => {
       <div class="flex flex-col h-full p-4 px-2 pb-3">
         <!-- header -->
         <div class="flex gap-4 items-center border-b-[1px] pb-2 px-2">
-          <img src="@/assets/images/avatar-default.jpg" class="w-8 h-8 rounded-full object-cover" alt="" />
+          <img src="@@/images/avatar-default.jpg" class="w-8 h-8 rounded-full object-cover" alt="" />
           <div class="flex flex-col">
             <p class="">{{ authStore.user.name }}</p>
             <p class="text-xs">{{ authStore.user.email }}</p>

@@ -1,7 +1,7 @@
 <template>
   <div class="max-md:gap-3 max-md:flex-col min-h-screen h-screen flex">
     <div class="max-md:h-[250px] lg:flex-auto bg-[#191a24] flex items-center px-10">
-      <img class="w-full h-full object-cover opacity-[60%]" src="@/assets/icons/travel.svg" alt="" />
+      <img class="w-full h-full object-cover opacity-[60%]" src="@@/icons/travel.svg" alt="" />
     </div>
     <div class="max-md:w-full w-[45%] flex justify-start">
       <div class="max-md:w-full w-[80%] flex flex-col items-center justify-center h-full px-10">

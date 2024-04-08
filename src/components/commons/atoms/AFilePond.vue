@@ -21,7 +21,7 @@ import 'filepond/dist/filepond.min.css'
 
 // Import image preview plugin styles
 // import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css'
-import '@/assets/css/filepond.css'
+import '@@/css/filepond.css'
 // Import image preview and file type validation plugins
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type'
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview'

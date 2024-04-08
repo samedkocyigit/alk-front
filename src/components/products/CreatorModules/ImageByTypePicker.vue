@@ -83,7 +83,7 @@ const isUploading = ref(false)
                 v-if="isUploading"
                 class="absolute z-20 top-0 left-0 w-full flex justify-center items-center h-full bg-opacity-50"
               >
-                <img src="@/assets/icons/loading.svg" alt="" />
+                <img src="@@/icons/loading.svg" alt="" />
               </div>
               <i class="ri-image-add-fill text-xl"></i>
               <AFilePicker
