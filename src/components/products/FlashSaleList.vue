@@ -9,7 +9,8 @@ const loading = ref(true)
 async function fetchProduct() {
   if (products.value.length === 0) {
     try {
-      const response = await axios.get('http://127.0.0.1:3000/products')
+      // const response = await axios.get('http://127.0.0.1:3000/products')
+      const response = await getProductsApi()
       if (response.status !== 200) {
         // HTTP durum kodunu kontrol et
         throw new Error('Fetch işlemi başarısız.')
@@ -24,7 +25,7 @@ async function fetchProduct() {
 }
 
 import ProductCard from './ProductCard.vue'
-import axios from 'axios'
+import { getProductsApi } from '@/services/product.service'
 // Sayfa yüklendiğinde backend'den product nesnesini almak için fetchProduct işlevini çağırabilirsiniz
 fetchProduct()
 
