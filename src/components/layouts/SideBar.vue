@@ -7,8 +7,7 @@
         <div class="flex flex-col ml-3">
           <span class="text-base font-bold">{{ authStore.user.name }}</span>
           <span class="text-xs text-primary-200">
-            <i class="ri-map-pin-2-fill"></i>
-            <span class="ml-1">Hanoi, Vietnam</span>
+            <span class="ml-1">{{ authStore.user.email }}</span>
           </span>
         </div>
       </div>

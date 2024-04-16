@@ -17,11 +17,11 @@ const props = defineProps({
 })
 
 const listImages = computed(() => {
-  const imagesInTypes = props.product.types.map((type) => ({
-    url: type.imageUrl,
-    id: type.id,
-  }))
-  const imagesList = [...imagesInTypes, ...props.product.images]
+  // const imagesInTypes = props.product.types.map((type) => ({
+  //   url: type.imageUrl,
+  //   id: type.id,
+  // }))
+  const imagesList = props.product.data.photos.slice()
   console.log('list img -->>', imagesList)
   return imagesList
 })

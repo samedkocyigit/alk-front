@@ -13,6 +13,12 @@ const routes = [
     component: () => import('@/views/auth/LoginPage.vue'),
   },
   {
+    path: '/products/:id',
+    name: 'product',
+    meta: { layout: 'empty' },
+    component: () => import('@/views/product/_id/ProductDetailView.vue'),
+  },
+  {
     path: '/register',
     name: 'register',
     meta: { layout: 'empty' },
