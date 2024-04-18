@@ -15,7 +15,7 @@ export const uploadApi = async (formData) => {
 }
 
 export const createProductApi = async (data) => {
-  return await axiosApiInstance.post(`${BASE_INVENTORY_ENDPOINT}/products`, data)
+  return await axiosApiInstance.post(`/products`, data)
 }
 
 export const updateProductApi = async (id, data) => {

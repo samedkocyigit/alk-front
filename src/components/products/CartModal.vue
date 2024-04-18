@@ -40,12 +40,12 @@
 </template>
 <script setup>
 import { computed } from 'vue'
-// import { useMasterStore } from '@/stores/master.store'
-// const masterStore = useMasterStore().state
+import { useMasterStore } from '@/stores/master.store'
+const masterStore = useMasterStore()
 defineEmits(['close'])
 // import { useCartStore } from '@/stores/cart.store'
 // const cartStore = useCartStore().state
-const cart = computed(() => null)
+const cart = computed(() => masterStore.state.cart)
 // const total = computed(() => {
 //   let total = 0
 //   cart.value.forEach((item) => {

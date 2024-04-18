@@ -25,7 +25,7 @@ const mySwiper = ref(null)
 
 const onSwiper = (swiper) => {
   mySwiper.value = swiper
-  console.log(swiper)
+  console.log('Slider Swiper:', swiper)
 }
 
 const banners = [

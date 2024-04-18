@@ -61,6 +61,7 @@ import axios from 'axios'
 import { useForm } from 'vee-validate'
 import { loginAuthStore } from '@/stores/auth.store'
 import { useRouter } from 'vue-router'
+import { toast } from 'vue3-toastify'
 
 const router = useRouter()
 
@@ -96,6 +97,7 @@ const submit = async (val) => {
     console.log('sonuc=>', res)
   } catch (err) {
     console.log(err)
+    toast.error(' Incorrect email or password')
   }
 }
 

@@ -1,5 +1,5 @@
-<!-- eslint-disable no-unused-vars -->
 <script setup>
+// <!-- eslint-disable no-unused-vars -->
 import { ref } from 'vue'
 import { AuthStore } from '@/stores/auth.store'
 import ModalProfile from '@/components/profiles/ModalProfile.vue'

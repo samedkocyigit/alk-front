@@ -155,33 +155,35 @@ const getProduct = async () => {
     const res = await getProductApi(route.params.id)
     product.value = res.data.data
 
-    console.log(product.value.data)
-
-    // let routeSubCategory = {}
-    // const routeCategory = masterStore.state.categories.find((category) =>
-    //   category.subCategories.find((subCategory) => {
-    //     if (subCategory.id === product.value.categoryId) {
-    //       routeSubCategory = subCategory
-    //       return true
-    //     }
-    //     return false
-    //   })
+    // // Kategori ve alt kategori bilgilerini bulma
+    // const { routeCategory, routeSubCategory } = findCategoryAndSubCategory(
+    //   product.value.categoryID,
+    //   product.value.subCategoryID
     // )
+    // console.log('routeCategory:', routeCategory)
+    // console.log('routeSubCategory:', routeSubCategory)
 
-    //   routes.value.push(
-    //     {
-    //       name: routeCategory.name,
-    //       path: `/category/${routeCategory.id}`,
-    //     },
-    //     {
-    //       name: routeSubCategory.name,
-    //       path: `/category/${routeCategory.id}/sub-category/${routeSubCategory.id}`,
-    //     },
-    //     {
-    //       name: product.value.name,
-    //       path: `/product/${product.value.id}`,
-    //     }
-    //   )
+    // if (!routeCategory || !routeSubCategory) {
+    //   console.log('Kategori veya alt kategori bulunamadı.')
+    //   router.push({ name: 'not-found' })
+    //   return
+    // }
+
+    // // Routes'a kategori, alt kategori ve ürün bilgilerini ekleme
+    // routes.value.push(
+    //   {
+    //     name: routeCategory.category_name,
+    //     path: `/category/${routeCategory._id}`,
+    //   },
+    //   {
+    //     name: routeSubCategory.sub_category_name,
+    //     path: `/category/${routeCategory._id}/sub-category/${routeSubCategory._id}`,
+    //   },
+    //   {
+    //     name: product.value.name,
+    //     path: `/product/${product.value._id}`,
+    //   }
+    // )
   } catch (error) {
     router.push({ name: 'not-found' })
   }
