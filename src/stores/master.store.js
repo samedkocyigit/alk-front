@@ -1,12 +1,12 @@
 // refactor user store
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-// import { getCategoriesApi } from '@/services/master.service'
+import { getCategoriesApi } from '@/services/master.service'
 import { getCartApi } from '@/services/cart.service'
 
 export const useMasterStore = defineStore('master', () => {
   const state = ref({
-    // categories: [],
+    categories: [],
     products: [],
     cart: {
       items: [],
@@ -14,10 +14,16 @@ export const useMasterStore = defineStore('master', () => {
     },
   })
 
-  // const initCategories = async () => {
-  //   const { data } = await getCategoriesApi()
-  //   state.value.categories = data
-  // }
+  const initCategories = async () => {
+    try {
+      console.log('belkide giriyordur inite')
+      const { data } = await getCategoriesApi()
+      console.log('data:', data)
+      state.value.categories = data
+    } catch (error) {
+      console.error('Beklediğim initCategories Hata:', error)
+    }
+  }
 
   const setProducts = (data) => {
     state.value.products = data
@@ -39,7 +45,7 @@ export const useMasterStore = defineStore('master', () => {
 
   return {
     state,
-    // initCategories,
+    initCategories,
     setProducts,
     addToCart,
     removeFromCart,
