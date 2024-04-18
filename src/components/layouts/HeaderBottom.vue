@@ -263,17 +263,7 @@
               </li>
               <li class="has-sub-category" data-selector="firs-level-navigation">
                 <a href="/kategori/ic-mekan-led-armaturler" class="text-center">
-                  <span class="multiline-center">Ic Mekan Led Armatürler</span>
-                </a>
-              </li>
-              <li class="has-sub-category" data-selector="firs-level-navigation">
-                <a href="/kategori/ic-mekan-led-armaturler" class="text-center">
-                  <span class="multiline-center">Ic Mekan Led Armatürler</span>
-                </a>
-              </li>
-              <li class="has-sub-category" data-selector="firs-level-navigation">
-                <a href="/kategori/ic-mekan-led-armaturler" class="text-center">
-                  <span class="multiline-center">Ic Mekan Led Armatürler</span>
+                  <span class="multiline-center">Ic Mekan</span>
                 </a>
               </li>
               <li class="has-sub-category" data-selector="firs-level-navigation">
@@ -326,9 +316,14 @@ export default {
 </script>
 
 <style scoped>
+.header-bottom {
+  background-color: #5a4098;
+}
 .has-sub-category {
   position: relative; /* Alt menüyü konumlandırmak için */
   display: inline-block; /* Yan yana yerleştirmek için */
+  word-wrap: break-word; /* Kelimeleri kırarak alt satıra geç */
+  white-space: pre-line; /* Satır sonunda boşlukları koru */
   text-align: center;
 }
 
@@ -349,6 +344,8 @@ export default {
 /* Yan yana sıralamak ve ortalamak için */
 .category-level-1 {
   display: flex;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Beyaz renginde ve hafif saydamlıkta bir çizgi */
+
   justify-content: center;
   list-style-type: none;
   padding: 0;
@@ -358,10 +355,24 @@ export default {
 .category-level-1 li {
   margin: 0 10px; /* Öğeler arasındaki boşluğu ayarlayabilirsiniz */
   text-align: center;
+  display: inline-block; /* Öğeleri yan yana sırala */
+  margin-right: 10px; /* Yazılar arasında boşluk bırak */
+  padding-right: 10px; /* Çizgi ile yazı arasında boşluk bırak */
+  border-right: 2px solid rgba(255, 255, 255, 0.1); /* Beyaz renginde ve hafif saydamlıkta bir çizgi */
+  color: white;
+}
+.sub-category a {
+  color: black; /* Yazı rengini siyah yap */
+}
+
+/* Son öğenin sağ tarafına çizgi ekleme */
+.category-level-1 li:last-child {
+  border-right: none; /* Son öğenin sağ tarafındaki çizgiyi kaldır */
 }
 
 .multiline-center {
-  display: block;
+  display: table;
+  width: 100%;
   text-align: center;
 }
 </style>
