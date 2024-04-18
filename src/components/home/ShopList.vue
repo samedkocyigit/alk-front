@@ -32,12 +32,12 @@
 import { ref } from 'vue'
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import 'swiper/css'
-import axios from 'axios'
 
 const mySwiper = ref(null)
 
 const onSwiper = (swiper) => {
   mySwiper.value = swiper
+  console.log('Brands Swiper:', swiper)
 }
 
 const brands = ref([])
@@ -46,10 +46,7 @@ const loading = ref(true)
 async function fetchBrands() {
   if (brands.value.length === 0) {
     try {
-      const res = await axios({
-        method: 'GET',
-        url: 'http://127.0.0.1:3000/brands',
-      })
+      const res = await getBrandsApi()
       // const data = res.data
       // if (!data || !data.data) throw new Error('Gelen veriler istenilen formatta değil')
       brands.value = res.data.data
@@ -64,6 +61,7 @@ async function fetchBrands() {
 }
 
 import BrandCard from './BrandCard.vue'
+import { getBrandsApi } from '@/services/brand.service'
 
 fetchBrands()
 </script>
