@@ -1,7 +1,7 @@
 <script setup>
 // props olarak gelen product bilgisini al
 import { defineProps, ref, onMounted } from 'vue'
-// import LazyImg from '../commons/atoms/LazyImg.vue'
+import LazyImg from '../commons/atoms/LazyImg.vue'
 
 const props = defineProps({
   product: {

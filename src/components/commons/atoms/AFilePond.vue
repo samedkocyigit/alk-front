@@ -1,6 +1,8 @@
 <script setup>
-import { ref } from 'vue'
+import { defineProps, defineEmits, ref } from 'vue'
 import vueFilePond from 'vue-filepond'
+import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type'
+import FilePondPluginImagePreview from 'filepond-plugin-image-preview'
 
 const emits = defineEmits(['update:modelValue'])
 defineProps({
@@ -13,28 +15,22 @@ defineProps({
     default: null,
   },
 })
+
 // Import FilePond styles
 import 'filepond/dist/filepond.min.css'
+import '@@/css/filepond.css'
 
 // Import FilePond plugins
-// Please note that you need to install these plugins separately
-
-// Import image preview plugin styles
-// import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css'
-import '@@/css/filepond.css'
-// Import image preview and file type validation plugins
-import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type'
-import FilePondPluginImagePreview from 'filepond-plugin-image-preview'
 const FilePond = vueFilePond(FilePondPluginFileValidateType, FilePondPluginImagePreview)
 const myFiles = ref([])
+
 const handleFilePondInit = () => {
   console.log('FilePond has initialized')
-
-  // example of instance method call on pond reference
   pond.value.getFiles()
 }
+
 const filesChange = () => {
-  console.log('in filechange')
+  console.log('in filesChange')
 
   var files = pond.value.getFiles()
   emits('update:modelValue', files)
@@ -44,6 +40,7 @@ const filesChange = () => {
 }
 const pond = ref(null)
 </script>
+
 <template>
   <div id="app">
     <file-pond
