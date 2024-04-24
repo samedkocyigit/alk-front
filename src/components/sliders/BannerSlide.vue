@@ -11,48 +11,65 @@
       }"
       @swiper="onSwiper"
     >
-      <swiper-slide v-for="item in banners" :key="item.id" class="w-full">
-        <img class="w-full h-[380px] object-cover rounded-md" :src="item.image" alt="" />
+      <swiper-slide v-for="(item, index) in banners" :key="item.id" class="w-full">
+        <img
+          class="w-full h-[550px] object-cover rounded-md"
+          :src="`./images/campaigns/${getFirstPhotoUrl(item)}`"
+          alt=""
+        />
       </swiper-slide>
     </swiper>
   </div>
 </template>
+
 <script setup>
 import { ref } from 'vue'
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import 'swiper/css'
+import { getCampaignsApi } from '@/services/campaign.service'
+
 const mySwiper = ref(null)
+const banners = ref([])
+const loading = ref(true)
+
+async function fetchBanner() {
+  if (banners.value.length === 0) {
+    try {
+      const response = await getCampaignsApi()
+      if (response.status !== 200) {
+        throw new Error('Fetch işlemi başarısız')
+      }
+      banners.value = response.data.data
+      console.log('banneeeerrs->', banners.value)
+    } catch (err) {
+      console.error('Hata', err.message)
+    } finally {
+      loading.value = false
+    }
+  }
+}
 
 const onSwiper = (swiper) => {
   mySwiper.value = swiper
   console.log('Slider Swiper:', swiper)
 }
 
-const banners = [
-  {
-    id: 1,
-    image:
-      'https://d1csarkz8obe9u.cloudfront.net/posterpreviews/fashion-sale-banner-template-design-9db9afa9dc48742dd1f63f4b3e970eb1_screen.jpg?ts=1605628683',
-  },
-  {
-    id: 2,
-    image: './src/assets/images/1.jpg',
-  },
-  {
-    id: 3,
-    image: 'https://cdn0.fahasa.com/media/wysiwyg/Thang-11-2019/BannerTong.png',
-  },
-  {
-    id: 4,
-    image: 'https://cdn0.fahasa.com/media/wysiwyg/Thang-11-2019/BannerTong.png',
-  },
-  {
-    id: 5,
-    image: 'https://cdn0.fahasa.com/media/wysiwyg/Thang-11-2019/BannerTong.png',
-  },
-  {
-    id: 6,
-    image: 'https://cdn0.fahasa.com/media/wysiwyg/Thang-11-2019/BannerTong.png',
-  },
-]
+fetchBanner()
+
+const getFirstPhotoUrl = (item) => {
+  const itemArray = Array.isArray(item) ? item : Reflect.get(item, '[[Target]]')
+  return itemArray && itemArray.length > 0 && itemArray[0].photos && itemArray[0].photos.length > 0
+    ? itemArray[0].photos[0]
+    : ''
+}
 </script>
+
+<style scoped>
+.swiper {
+  width: 100%;
+}
+
+.swiper-slide {
+  width: 100%;
+}
+</style>
