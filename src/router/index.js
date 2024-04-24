@@ -81,6 +81,18 @@ const routes = [
         component: () => import('@/views/dashboard/CreateProductView.vue'),
       },
       {
+        path: 'create-brand',
+        name: 'create-brand',
+        meta: { requiresAuth: true },
+        component: () => import('@/views/dashboard/CreateBrandView.vue'),
+      },
+      {
+        path: 'create-campaign',
+        name: 'create-campaign',
+        meta: { requiresAuth: true },
+        component: () => import('@/views/dashboard/CreateCampaignView.vue'),
+      },
+      {
         path: 'update-product/:id',
         name: 'update-product',
         meta: { requiresAuth: true },
