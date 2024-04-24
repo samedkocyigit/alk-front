@@ -16,25 +16,37 @@
       <div class="flex flex-col justify-between flex-auto gap-3 px-5 py-5 pb-1">
         <!-- <span class="font-semibold text-lg text-[#5a4098]"><i class="ri-home-line"></i> Dashboard</span> -->
         <div class="flex flex-col gap-2 text-base text-primary-200">
-          <RouterLink
-            to="/dashboard/create-product"
-            :class="{ 'bg-secondary-100  text-white': tabRoute[0] === route.name }"
-            class="px-2 py-1 rounded-md"
-            ><i class="ri-shopping-bag-3-fill text-2xl mr-3"></i>Create new product</RouterLink
-          >
-          <RouterLink
-            to="/dashboard/manage-product"
-            :class="{ 'bg-secondary-100  text-white': tabRoute[1] === route.name }"
-            class="px-2 py-1 rounded-md"
-            ><i class="ri-handbag-fill text-2xl mr-3"></i>Manage products</RouterLink
-          >
-          <RouterLink
-            to="/dashboard/profile-settings"
-            :class="{ 'bg-secondary-100  text-white': tabRoute[2] === route.name }"
-            class="px-2 py-1 rounded-md"
-            ><i class="ri-user-fill text-2xl mr-3"></i>Your profile</RouterLink
-          >
-          <span class="px-2 py-1 rounded-md"><i class="ri-settings-2-fill text-2xl mr-3"></i>Setting account</span>
+          <div @click="toggleProductMenu" class="cursor-pointer">
+            <i class="ri-shopping-bag-3-fill text-2xl mr-3"></i>Create new product
+            <div v-if="showProductMenu" class="mt-3">
+              <RouterLink
+                v-for="(item, index) in productMenuItems"
+                :key="index"
+                :to="item.route"
+                :class="{ 'bg-secondary-100  text-white': tabRoute[0] === item.route.name }"
+                class="px-2 py-1 rounded-md"
+              >
+                <i :class="item.iconClass + ' text-2xl mr-3'"></i>{{ item.label }}
+              </RouterLink>
+            </div>
+          </div>
+          <div class="flex flex-col gap-2 text-base text-primary-200">
+            <RouterLink
+              to="/dashboard/manage-product"
+              :class="{ 'bg-secondary-100  text-white': tabRoute[1] === route.name }"
+              class="px-2 py-1 rounded-md"
+            >
+              <i class="ri-handbag-fill text-2xl mr-3"></i>Manage products
+            </RouterLink>
+            <RouterLink
+              to="/dashboard/profile-settings"
+              :class="{ 'bg-secondary-100  text-white': tabRoute[2] === route.name }"
+              class="px-2 py-1 rounded-md"
+            >
+              <i class="ri-user-fill text-2xl mr-3"></i>Your profile
+            </RouterLink>
+            <span class="px-2 py-1 rounded-md"><i class="ri-settings-2-fill text-2xl mr-3"></i>Setting account</span>
+          </div>
         </div>
         <div class="cursor-pointer pb-1">
           <div class="border-b-[1px] mb-1"></div>
@@ -58,6 +70,18 @@ import { AuthStore } from '@/stores/auth.store'
 import axios from 'axios'
 const authStore = AuthStore.value
 const tabRoute = ref(['create-product', 'manage-product', 'profile-settings'])
+
+const productMenuItems = [
+  { label: 'Create new product', route: '/dashboard/create-product', iconClass: 'ri-shopping-bag-3-fill' },
+  { label: 'Create new brand', route: '/dashboard/create-brand', iconClass: 'ri-shopping-bag-3-fill' },
+  { label: 'Create new campaign', route: '/dashboard/create-campaign', iconClass: 'ri-shopping-bag-3-fill' },
+]
+
+const showProductMenu = ref(false)
+
+const toggleProductMenu = () => {
+  showProductMenu.value = !showProductMenu.value
+}
 
 const logout = async () => {
   await axios({
