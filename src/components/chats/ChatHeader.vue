@@ -8,19 +8,19 @@ const currentTab = ref('chat')
       class="w-[45px] h-[45px] rounded-full flex justify-center items-center hover:bg-[var(--gray-hover)] cursor-pointer"
       :class="{ 'bg-[var(--gray-hover)]': currentTab == 'chat' }"
     >
-      <img src="@/assets/icons/chat.svg" alt="" />
+      <img src="@@/icons/chat.svg" alt="" />
     </div>
     <div
       class="w-[45px] h-[45px] rounded-full flex justify-center items-center hover:bg-[var(--gray-hover)] cursor-pointer"
       :class="{ 'bg-[var(--gray-hover)]': currentTab == 'list' }"
     >
-      <img src="@/assets/icons/list.svg" alt="" />
+      <img src="@@/icons/list.svg" alt="" />
     </div>
     <div
       class="w-[45px] h-[45px] rounded-full flex justify-center items-center hover:bg-[var(--gray-hover)] cursor-pointer"
       :class="{ 'bg-[var(--gray-hover)]': currentTab == 'camera' }"
     >
-      <img src="@/assets/icons/camera.svg" alt="" />
+      <img src="@@/icons/camera.svg" alt="" />
     </div>
   </div>
 </template>

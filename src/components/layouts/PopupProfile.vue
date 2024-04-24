@@ -7,11 +7,11 @@
     >
       <p class="border-b-[1px] pb-1 border-[#363636]">Hello, {{ authStore.user.name }}</p>
       <div class="hover:bg-[#1f1f21] rounded-[4px] py-[4px] px-1 mt-[2px] flex gap-2 cursor-pointer">
-        <img src="@/assets/icons/setting.svg" alt="" />
+        <img src="@@/icons/setting.svg" alt="" />
         Settings
       </div>
       <div class="hover:bg-[#1f1f21] rounded-[4px] py-[4px] px-1 flex gap-2 cursor-pointer">
-        <img src="@/assets/icons/logout.svg" alt="" />
+        <img src="@@/icons/logout.svg" alt="" />
         Logout
       </div>
     </div>
@@ -20,7 +20,7 @@
       class="relative z-[60] flex flex-col w-[200px] h-fit border-[1px] rounded-[10px] bg-[#121213] border-[#363636] p-2"
     >
       <div class="hover:bg-[#1f1f21] py-[4px] px-1 flex gap-2 cursor-pointer">
-        <img src="@/assets/icons/logout.svg" alt="" />
+        <img src="@@/icons/logout.svg" alt="" />
         Login
       </div>
     </div>

@@ -16,7 +16,7 @@ const props = defineProps({
 const brandsImg = ref('')
 
 onMounted(() => {
-  brandsImg.value = props.brand.photo[0]
+  brandsImg.value = props.brand.photos[0]
   console.log('Brand Img Adi:', brandsImg.value)
 })
 </script>

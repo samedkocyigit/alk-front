@@ -3,6 +3,9 @@
 import { ref } from 'vue'
 import 'swiper/css'
 
+import ProductCard from './ProductCard.vue'
+import { getProductsApi } from '@/services/product.service'
+
 const products = ref([]) // Ürünler için bir dizi ref oluşturun
 const loading = ref(true)
 //Backend'den product nesnesini almak için bir işlev veya API çağrısı yapın
@@ -23,14 +26,12 @@ async function fetchProduct() {
     }
   }
 }
-
-import ProductCard from './ProductCard.vue'
-import { getProductsApi } from '@/services/product.service'
 // Sayfa yüklendiğinde backend'den product nesnesini almak için fetchProduct işlevini çağırabilirsiniz
 fetchProduct()
 
 // render list product have properties: name, cost, image, discount, location, star, sold
 </script>
+
 <template>
   <div class="w-full h-fit bg-[#f9f9f9] rounded-md">
     <!-- title flash sale -->

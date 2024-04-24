@@ -40,7 +40,7 @@ const handleEmojiClick = (emoji) => {
     <div
       class="cursor-pointer hover:bg-[var(--bg-hover)] h-[40px] w-[40px] min-w-[40px] flex justify-center items-center rounded-full"
     >
-      <img src="@/assets/icons/send.svg" class="w-[30px] h-[30px]" alt="" />
+      <img src="@@/icons/send.svg" class="w-[30px] h-[30px]" alt="" />
     </div>
   </div>
 </template>

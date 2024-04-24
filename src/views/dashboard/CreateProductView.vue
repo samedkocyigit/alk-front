@@ -2,9 +2,9 @@
 import { ref } from 'vue'
 import BreadCrumb from '@/components/commons/BreadCrumb.vue'
 import AButton from '@/components/commons/atoms/AButton.vue'
-import AFilePond from '@/components/commons/atoms/AFilePond.vue'
+// import AFilePond from '@/components/commons/atoms/AFilePond.vue'
 // import Quill from 'quill'
-import '@/../public/css/quill.snow.css'
+import '@@/css/quill.snow.css'
 import AFullLoading from '@/components/commons/atoms/AFullLoading.vue'
 import AInput from '@/components/commons/atoms/AInput.vue'
 // services
@@ -12,7 +12,7 @@ import { useForm } from 'vee-validate'
 import * as yup from 'yup'
 import { toast } from 'vue3-toastify'
 import { createProductApi } from '@/services/product.service'
-import { errorMessages } from '@vue/compiler-sfc'
+// import { errorMessages } from '@vue/compiler-sfc'
 // breadcrumb
 const routes = ref([
   {
