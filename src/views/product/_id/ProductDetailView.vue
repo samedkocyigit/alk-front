@@ -111,9 +111,7 @@ import { addToCartApi } from '@/services/cart.service'
 import { toast } from 'vue3-toastify'
 // stores
 import { useMasterStore } from '@/stores/master.store'
-console.log('xavi')
 const masterStore = useMasterStore.value
-console.log('iniesta')
 import { usePopupStore } from '@/stores/common.store'
 const popupStore = usePopupStore()
 import { useRoute, useRouter } from 'vue-router'
