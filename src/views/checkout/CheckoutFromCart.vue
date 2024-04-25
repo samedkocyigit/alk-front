@@ -97,7 +97,7 @@ import BreadCrumb from '@/components/commons/BreadCrumb.vue'
 import { orderApi, addTrackingApi } from '@/services/order.service'
 // stores
 import { useMasterStore } from '@/stores/master.store'
-const masterStore = useMasterStore()
+const masterStore = useMasterStore.value
 import { usePopupStore } from '@/stores/common.store'
 const popupStore = usePopupStore()
 
