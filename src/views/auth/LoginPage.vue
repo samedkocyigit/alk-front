@@ -5,7 +5,12 @@
     </div>
     <div class="max-md:w-full w-[45%] flex justify-start">
       <div class="max-md:w-full w-[80%] flex flex-col items-center justify-center h-full px-10">
-        <div class="w-full flex flex-col items-center justify-center">
+        <div class="w-full flex flex-col items-center justify-center mt-10">
+          <RouterLink to="/" class="font-bold text-lg ml-2 mt-5">
+            <div class="logo-container">
+              <img src="../../../public/images/logo.png" alt="" class="logo-img" />
+            </div>
+          </RouterLink>
           <p class="text-3xl font-bold">Login</p>
           <p class="text-base font-medium mt-2">Login to your account</p>
         </div>

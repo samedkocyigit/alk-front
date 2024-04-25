@@ -1,32 +1,10 @@
-<template>
-  <div class="w-full">
-    <swiper
-      style="padding: 0 8px 10px 8px"
-      class="w-full pb-2"
-      :slides-per-view="1"
-      :space-between="10"
-      :loop="true"
-      :autoplay="{
-        delay: 2500,
-      }"
-      @swiper="onSwiper"
-    >
-      <swiper-slide v-for="(item, index) in banners" :key="item.id" class="w-full">
-        <img
-          class="w-full h-[550px] object-cover rounded-md"
-          :src="`./images/campaigns/${getFirstPhotoUrl(item)}`"
-          alt=""
-        />
-      </swiper-slide>
-    </swiper>
-  </div>
-</template>
-
 <script setup>
 import { ref } from 'vue'
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import 'swiper/css'
+
 import { getCampaignsApi } from '@/services/campaign.service'
+import BannerCard from './BannerCard.vue'
 
 const mySwiper = ref(null)
 const banners = ref([])
@@ -55,21 +33,27 @@ const onSwiper = (swiper) => {
 }
 
 fetchBanner()
-
-const getFirstPhotoUrl = (item) => {
-  const itemArray = Array.isArray(item) ? item : Reflect.get(item, '[[Target]]')
-  return itemArray && itemArray.length > 0 && itemArray[0].photos && itemArray[0].photos.length > 0
-    ? itemArray[0].photos[0]
-    : ''
-}
 </script>
 
-<style scoped>
-.swiper {
-  width: 100%;
-}
-
-.swiper-slide {
-  width: 100%;
-}
-</style>
+<template>
+  <div class="w-full">
+    <swiper
+      ref="mySwiper"
+      style="padding: 0 8px 10px 8px"
+      class="w-full pb-2"
+      :slides-per-view="1"
+      :space-between="10"
+      :loop="true"
+      :autoplay="{
+        delay: 2500,
+      }"
+      @swiper="onSwiper"
+    >
+      <swiper-slide v-for="campaign in banners.data" :key="campaign._id" style="width: auto" class="w-full">
+        <RouterLink :key="campaign._id" to="/">
+          <BannerCard :campaign="campaign" />
+        </RouterLink>
+      </swiper-slide>
+    </swiper>
+  </div>
+</template>

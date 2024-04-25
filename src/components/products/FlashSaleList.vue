@@ -43,7 +43,10 @@ fetchProduct()
     </div>
     <!-- end title header -->
     <!-- list product -->
-    <div class="w-full flex flex-wrap justify-start p-4 gap-2">
+    <div
+      v-if="products && products.data && products.data.length > 0"
+      class="w-full flex flex-wrap justify-start p-4 gap-2"
+    >
       <RouterLink
         v-for="product in products.data.slice(0, 12)"
         :key="product.id"

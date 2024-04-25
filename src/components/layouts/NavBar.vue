@@ -7,8 +7,6 @@ import SearchWrapper from '@/components/search/SearchWrapper.vue'
 import CartModal from '../products/CartModal.vue'
 import HeaderBottom from './HeaderBottom.vue'
 const authStore = AuthStore.value
-const sss = localStorage.getItem('access_token')
-console.log(authStore, sss)
 
 const modal = ref({
   changeAvatar: false,
@@ -48,10 +46,15 @@ const closeModalCart = () => {
     <!-- bottom line -->
     <div class="py-3 flex justify-between w-full items-center px-10" style="flex: 1 1 auto">
       <!-- flex-auto -->
-      <RouterLink to="/" class="font-bold text-lg mr-5"
-        >ALKANLAR<span class="underlined underline-mask">STORE</span></RouterLink
-      >
-      <SearchWrapper class="max-md:hidden" />
+      <div class="flex items-center">
+        <img src="../../../public/images/year.png" alt="" class="logo-img" />
+        <RouterLink to="/" class="font-bold text-lg ml-2">
+          <div class="logo-container">
+            <img src="../../../public/images/logo.png" alt="" class="logo-img" />
+          </div>
+        </RouterLink>
+      </div>
+      <SearchWrapper class="max-md:hidden mr-[250px]" />
       <div class="flex">
         <div v-if="authStore.isLoggedIn === false" class="flex gap-3">
           <router-link to="/users/login">
@@ -92,6 +95,28 @@ const closeModalCart = () => {
         </div>
       </div>
     </div>
-    <HeaderBottom />
+    <!-- header bottom  -->
+    <div class="flex justify-between w-full items-center" style="flex: 1 1 auto">
+      <div class="header-container">
+        <HeaderBottom />
+      </div>
+    </div>
+    <!-- end tool -->
   </div>
 </template>
+
+<style scoped>
+.logo-container {
+  display: flex; /* Flexbox'u etkinleştir */
+  align-items: center; /* Dikey hizalamayı ortala */
+}
+
+.logo-img {
+  margin-right: 5px; /* İki resim arasına boşluk ekleyebilirsiniz */
+}
+.header-container {
+  background: #5a4098;
+  height: 65px;
+  width: 100vw;
+}
+</style>

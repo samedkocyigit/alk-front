@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed, watch, onMounted } from 'vue'
 import { Swiper, SwiperSlide } from 'swiper/vue'
+import LazyImg from '../commons/atoms/LazyImg.vue'
 import 'swiper/css'
 import Viewer from 'viewerjs'
 import 'viewerjs/dist/viewer.css'
@@ -17,12 +18,11 @@ const props = defineProps({
 })
 
 const listImages = computed(() => {
-  // const imagesInTypes = props.product.types.map((type) => ({
-  //   url: type.imageUrl,
-  //   id: type.id,
-  // }))
-  const imagesList = props.product.data.photos.slice()
-  console.log('list img -->>', imagesList)
+  const baseUrl = './images/products/' // Resimlerin temel URL'si
+  const imagesList = props.product.data.photos.map((photo) => ({
+    url: `${baseUrl}${photo}`, // Tam URL oluşturma
+    // id: generateId(), // Örnek bir ID üretme işlemi
+  }))
   return imagesList
 })
 
@@ -68,7 +68,7 @@ const openImage = () => {
         class="w-full h-full object-cover cursor-zoom-in"
         @click="openImage"
       >
-        <LazyImg :id="thumb.id" class-style="w-full h-full object-cover cursor-zoom-in" :src="thumb.url" alt="" />
+        <img class="w-full h-full object-cover cursor-zoom-in" :src="thumb.url" alt="" />
       </div>
     </div>
 
@@ -78,7 +78,7 @@ const openImage = () => {
           class="hover:border-gray-700 border-[2px] border-transparent overflow-hidden cursor-zoom-in w-[80px] h-[80px] rounded-md"
           @mouseover="hoverOnChange(index)"
         >
-          <LazyImg class-style="w-full h-full object-cover" :src="thumb.url" alt="" />
+          <img class="w-full h-full object-cover" :src="thumb.url" alt="" />
         </div>
       </swiper-slide>
     </swiper>

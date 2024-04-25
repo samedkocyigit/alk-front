@@ -5,7 +5,8 @@
         <div class="px-2 pb-5 max-md:block hidden">
           <SearchWrapper class="w-full" />
         </div>
-        <HomePage />
+        <BannerSlide />
+        <ShopList />
         <FlashSaleList />
         <PromotionList />
         <FlashSaleList />
@@ -16,7 +17,8 @@
 
 <script setup>
 import SearchWrapper from '@/components/search/SearchWrapper.vue'
-import HomePage from '@/components/home/HomePage.vue'
+import BannerSlide from '@/components/sliders/BannerSlide.vue'
 import FlashSaleList from '@/components/products/FlashSaleList.vue'
 import PromotionList from '@/components/home/PromotionList.vue'
+import ShopList from '@/components/home/ShopList.vue'
 </script>

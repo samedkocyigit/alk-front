@@ -13,7 +13,7 @@ import ADropdown from '@/components/commons/atoms/ADropdown.vue'
 import ListProductImg from '@/components/products/ListProductImg.vue'
 // stores
 import { useMasterStore } from '@/stores/master.store'
-const masterStore = useMasterStore().state
+const masterStore = useMasterStore.value
 import { useRoute } from 'vue-router'
 const route = useRoute()
 // services

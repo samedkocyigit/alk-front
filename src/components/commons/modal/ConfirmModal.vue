@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="popupStore.state.isShow"
+    v-if="popupStore && popupStore.state && popupStore.state.isShow"
     class="fixed bg-opacity-50 top-0 left-0 w-full h-full z-[9999] flex items-center"
     @click="popupStore.close"
   >

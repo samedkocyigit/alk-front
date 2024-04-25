@@ -30,7 +30,7 @@ import { useRouter, useRoute } from 'vue-router'
 const route = useRoute()
 const router = useRouter()
 const routeQuery = computed(() => route.query)
-const masterStore = useMasterStore()
+const masterStore = useMasterStore.value
 const currentCategory = ref([])
 const currentCondition = ref(null)
 

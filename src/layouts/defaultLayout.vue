@@ -4,7 +4,7 @@
 
     <div
       ref="mainElement"
-      class="mb-auto flex flex-col items-center h-[calc(100vh-90px)] overflow-y-auto w-full mt-[90px]"
+      class="mb-auto flex flex-col items-center h-[calc(100vh-90px)] overflow-y-auto w-full mt-[130px]"
     >
       <slot></slot>
       <BottomFooter />

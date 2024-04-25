@@ -1,6 +1,6 @@
 <template>
   <div class="max-lg:hidden w-[270px] min-w-[270px]">
-    <div class="fixed flex flex-col top-[90px] left-0 h-[calc(100vh-90px)] w-[270px] bg-white border-r-2 z-[60]">
+    <div class="fixed flex flex-col top-[122px] left-0 h-[calc(100vh-90px)] w-[270px] bg-white border-r-2 z-[60]">
       <!-- header info -->
       <div class="flex p-4 border-b-[1px]">
         <img class="w-[40px] h-[40px] rounded-full" src="@@/images/avatar-default.jpg" alt="" />
