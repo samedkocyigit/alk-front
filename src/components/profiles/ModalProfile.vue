@@ -59,7 +59,7 @@ const logout = async () => {
     <div
       v-show="modal.isShowSettings"
       v-touch-outside="closeSettings"
-      class="absolute top-full right-2 w-[270px] bg-white gb-shadow rounded-xl"
+      class="absolute top-full right-2 w-[270px] bg-white gb-shadow rounded-xl z-[3]"
     >
       <div class="flex flex-col h-full p-4 px-2 pb-3">
         <!-- header -->
