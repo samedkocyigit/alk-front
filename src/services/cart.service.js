@@ -1,10 +1,17 @@
 import axiosApiInstance from '@/plugins/api'
-const BASE_ENDPOINT_SALE = '/shopping'
 
-export const addToCartApi = async (data) => {
-  return await axiosApiInstance.post(`${BASE_ENDPOINT_SALE}/users/cart`, data)
+export const addToCartApi = async (id, data) => {
+  return await axiosApiInstance.post(`/carts/${id}`, data)
 }
 
-export const getCartApi = async () => {
-  return await axiosApiInstance.get(`${BASE_ENDPOINT_SALE}/users/me/cart`)
+export const getCartApi = async (id) => {
+  return await axiosApiInstance.get(`/carts/${id}`)
+}
+
+export const createEmptyCartApi = async (data) => {
+  return await axiosApiInstance.post('/carts', data)
+}
+
+export const removeCartApi = async (id) => {
+  return await axiosApiInstance.delete(`/carts/${id}`)
 }
