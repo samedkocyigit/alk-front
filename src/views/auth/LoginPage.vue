@@ -62,44 +62,49 @@
 <script setup>
 import AInput from '@/components/commons/atoms/AInput.vue'
 import * as yup from 'yup'
-import axios from 'axios'
 import { useForm } from 'vee-validate'
 import { loginAuthStore } from '@/stores/auth.store'
 import { useRouter } from 'vue-router'
 import { toast } from 'vue3-toastify'
+import { loginApi } from '@/services/auth.service'
+import store from '@/stores/master.store'
+import { addToCartApi, getCartApi, removeCartApi } from '@/services/cart.service'
 
 const router = useRouter()
 
 const submit = async (val) => {
-  const { email, password } = val
   try {
-    const res = await axios({
-      method: 'POST',
-      url: 'http://127.0.0.1:3000/users/login',
-      data: {
-        email,
-        password,
-      },
-    })
+    const res = await loginApi(val)
+
     const token = res.data.token
     const user = res.data.data.data
     localStorage.setItem('access_token', token)
 
-    console.log('responseUser-->', token)
+    console.log('responseUser-->', user)
     if (res.status >= 400) {
       throw new Error('HTTP Error: ' + res.statusText)
     }
 
-    console.log('sonuc=>', user)
     await loginAuthStore(user)
     const redirect = localStorage.getItem('redirect')
+
+    if (store.state.cart.items.length > 0) {
+      await addToCartApi(user.cart, {
+        items: store.state.cart.items,
+      })
+    }
+
+    // await removeCartApi(store.state.cart._id)
+
+    const response = await getCartApi(user.cart)
+    store.dispatch('cartConvert', response.data.data.data)
+
     if (redirect) {
       router.push(redirect)
     } else {
       router.push('/')
       localStorage.removeItem('redirect')
     }
-    console.log('sonuc=>', res)
   } catch (err) {
     console.log(err)
     toast.error(' Incorrect email or password')

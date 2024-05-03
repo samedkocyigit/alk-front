@@ -1,47 +1,60 @@
 <script setup>
 // <!-- eslint-disable no-unused-vars -->
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { AuthStore } from '@/stores/auth.store'
+// import { useMasterStore } from '@/stores/master.store'
 import ModalProfile from '@/components/profiles/ModalProfile.vue'
 import SearchWrapper from '@/components/search/SearchWrapper.vue'
 import CartModal from '../products/CartModal.vue'
 import HeaderBottom from './HeaderBottom.vue'
+import store from '@/stores/master.store'
 const authStore = AuthStore.value
+// const masterStore = useMasterStore.value
 
 const modal = ref({
   changeAvatar: false,
   showCart: false,
 })
+
 const closeModalCart = () => {
   console.log('closeModalCart')
   modal.value.showCart = false
 }
 </script>
 <template>
-  <div class="fixed top-0 left-0 z-50 border-b-[1px] w-full bg-white gb-shadow flex flex-col">
-    <!-- top line -->
-    <div class="max-md:h-[45px] h-[35px] w-full bg-[#f9f9f9] flex justify-between px-3 items-center">
-      <div class="text-center">
-        <span style="margin-left: 60ch"></span>
-        <strong><a href="/siparislerim">Siparişlerim</a></strong>
-        <span style="margin-right: 3ch"></span>
-        <strong><a href="/kargo-takibi">Kargo Takibi</a></strong>
-        <span style="margin-right: 3ch"></span>
-        <strong><a href="/hakkimizda">Hakkımızda</a></strong>
-        <span style="margin-right: 3ch"></span>
-        <strong><a href="/iletisim">İletişim</a></strong>
-        <span style="margin-right: 3ch"></span>
-        <strong><a href="/iletim-formu">İletişim Formu</a></strong>
-        <span style="margin-right: 3ch"></span>
-        <strong><a href="/fiyat-listesi">Fiyat Listesi</a></strong>
-        <span style="margin-right: 3ch"></span>
-        <strong><a href="/blog">Blog</a></strong>
-        <span style="margin-right: 3ch"></span>
-        <strong><a href="/videolar">Videolar</a></strong>
-        <span style="margin-right: 3ch"></span>
+  <div class="nav-bar">
+    <div class="header">
+      <div class="container">
+        <nav>
+          <ul class="menu">
+            <li>
+              <a href="/siparislerim"> Siparişlerim </a>
+            </li>
+            <li>
+              <a href="/kargo-takibi">Kargo Takibi</a>
+            </li>
+            <li>
+              <a href="/hakkimizda">Hakkımızda</a>
+            </li>
+            <li>
+              <a href="/iletisim">İletişim</a>
+            </li>
+            <li>
+              <a href="/iletim-formu">İletişim Formu</a>
+            </li>
+            <li>
+              <a href="/fiyat-listesi">Fiyat Listesi</a>
+            </li>
+            <li>
+              <a href="/blog">Blog</a>
+            </li>
+            <li>
+              <a href="/videolar">Videolar</a>
+            </li>
+          </ul>
+        </nav>
       </div>
     </div>
-    <!-- end top line -->
 
     <!-- bottom line -->
     <div class="py-3 flex justify-between w-full items-center px-10" style="flex: 1 1 auto">
@@ -57,6 +70,17 @@ const closeModalCart = () => {
       <SearchWrapper class="max-md:hidden mr-[250px]" />
       <div class="flex">
         <div v-if="authStore.isLoggedIn === false" class="flex gap-3">
+          <div class="relative right-5 top-1">
+            <div
+              v-if="store.state.cart && store.state.cart.items && store.state.cart.items.length > 0"
+              class="absolute -right-3 -top-2 bg-rose-600 text-white w-5 h-5 rounded-full flex justify-center items-center"
+            >
+              {{ store.state.cart.items.length }}
+            </div>
+
+            <i class="cursor-pointer ri-shopping-cart-line text-xl" @click.stop="modal.showCart = true"></i>
+            <CartModal v-show="modal.showCart" v-touch-outside="closeModalCart" @close="closeModalCart" />
+          </div>
           <router-link to="/users/login">
             <button class="border-[#5a4098] border-[1px] h-[30px] px-3 rounded-[4px] font-base text-sm">Sign in</button>
           </router-link>
@@ -80,9 +104,10 @@ const closeModalCart = () => {
           </router-link>
           <div class="relative">
             <div
+              v-if="store.state.cart && store.state.cart.items && store.state.cart.items.length > 0"
               class="absolute -right-3 -top-2 bg-rose-600 text-white w-5 h-5 rounded-full flex justify-center items-center"
             >
-              2
+              {{ store.state.cart.items.length }}
             </div>
             <i class="cursor-pointer ri-shopping-cart-line text-xl" @click.stop="modal.showCart = true"></i>
             <CartModal v-show="modal.showCart" v-touch-outside="closeModalCart" @close="closeModalCart" />
@@ -106,6 +131,20 @@ const closeModalCart = () => {
 </template>
 
 <style scoped>
+.nav-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 50;
+  border-bottom-width: 1px;
+  width: 100%;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  z-index: 2;
+}
+/* <!-- <div class="fixed top-0 left-0 z-50 border-b-[1px] w-full bg-white gb-shadow flex flex-col"> --> */
 .logo-container {
   display: flex; /* Flexbox'u etkinleştir */
   align-items: center; /* Dikey hizalamayı ortala */
@@ -116,7 +155,43 @@ const closeModalCart = () => {
 }
 .header-container {
   background: #5a4098;
-  height: 65px;
+  /* height: 65px; */
   width: 100vw;
+}
+.header {
+  background-color: #fff;
+  color: #fff;
+  height: 35px;
+  padding: 10px 0;
+  text-align: center;
+}
+
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.menu {
+  list-style-type: none;
+  padding: 0;
+}
+
+.menu li {
+  display: inline;
+  margin-right: 20px;
+}
+
+.menu li:last-child {
+  margin-right: 0;
+}
+
+.menu li a {
+  color: #000;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.menu li a:hover {
+  color: #f90; /* Hover durumunda farklı bir renk kullanabilirsiniz */
 }
 </style>

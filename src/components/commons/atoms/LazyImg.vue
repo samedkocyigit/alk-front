@@ -1,12 +1,6 @@
 <template>
   <img v-show="src && isLoaded" :id="id" :alt="alt" :class="classStyle" :src="src" @load="onLoaded" />
-  <img
-    v-show="!src || !isLoaded"
-    :id="id"
-    :alt="alt"
-    :class="classStyle"
-    src="../../../../../backend/src/public/images/C9BC77F4-69F3-41A4-9588-59E34869652B.jpg"
-  />
+  <img v-show="!src || !isLoaded" :id="id" :alt="alt" :class="classStyle" src="@@/images/1.jpg" />
 </template>
 <script setup>
 import { ref } from 'vue'

@@ -23,7 +23,8 @@ const listImages = computed(() => {
     url: `${baseUrl}${photo}`, // Tam URL oluşturma
     // id: generateId(), // Örnek bir ID üretme işlemi
   }))
-  return imagesList
+  // return imagesList[0]
+  return imagesList[0]
 })
 
 watch(
@@ -38,6 +39,7 @@ watch(
 const currentImageSelected = ref(null)
 onMounted(() => {
   currentImageSelected.value = listImages.value[0]
+  // currentImageSelected.value = listImages.value
   // View an image.
 })
 
@@ -68,7 +70,7 @@ const openImage = () => {
         class="w-full h-full object-cover cursor-zoom-in"
         @click="openImage"
       >
-        <img class="w-full h-full object-cover cursor-zoom-in" :src="thumb.url" alt="" />
+        <LazyImg class-style="w-full h-full object-cover cursor-zoom-in" :src="thumb.url" alt="" />
       </div>
     </div>
 
@@ -78,7 +80,7 @@ const openImage = () => {
           class="hover:border-gray-700 border-[2px] border-transparent overflow-hidden cursor-zoom-in w-[80px] h-[80px] rounded-md"
           @mouseover="hoverOnChange(index)"
         >
-          <img class="w-full h-full object-cover" :src="thumb.url" alt="" />
+          <LazyImg class-style="w-full h-full object-cover" :src="thumb.url" alt="" />
         </div>
       </swiper-slide>
     </swiper>

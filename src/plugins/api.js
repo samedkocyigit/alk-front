@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { refreshAccessToken } from '@/services/auth.service'
+// import { refreshAccessToken } from '@/services/auth.service'
 
 const excludeUrls = ['/auth/login', '/auth/refresh-tokens', '/shopping/users/me/cart']
 const axiosApiInstance = axios.create()

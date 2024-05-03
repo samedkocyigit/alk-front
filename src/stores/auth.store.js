@@ -1,8 +1,3 @@
-/* eslint-disable no-unused-vars */
-// import { defineStore } from 'pinia'
-// auth.store.js
-
-import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
 export const AuthStore = ref({

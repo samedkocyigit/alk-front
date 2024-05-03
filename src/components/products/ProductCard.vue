@@ -2,6 +2,10 @@
 // props olarak gelen product bilgisini al
 import { defineProps, ref, onMounted } from 'vue'
 import LazyImg from '../commons/atoms/LazyImg.vue'
+// import { addToCart, useMasterStore } from '@/stores/master.store'
+import { addToCartApi } from '@/services/cart.service'
+import { toast } from 'vue3-toastify'
+import store from '@/stores/master.store'
 
 const props = defineProps({
   product: {
@@ -21,6 +25,20 @@ onMounted(() => {
   photoName.value = props.product.photos[0]
   console.log('Fotoğraf Adı:', props.product.photos[0])
 })
+
+const addItemToCart = async () => {
+  try {
+    const res = await addToCartApi(store.state.cart._id, {
+      items: props.product.id,
+    })
+    store.dispatch('addToCart', res.data.data.data)
+    // addToCart(res.data.items)
+    toast.success('Add to cart success')
+  } catch (error) {
+    console.log(error)
+    toast.error('Add to cart fail')
+  }
+}
 </script>
 
 <template>
@@ -29,9 +47,9 @@ onMounted(() => {
     <LazyImg class-style="h-[180px] object-cover w-full" :src="`./images/products/${photoName}`" alt="" />
     <div class="flex-auto p-3">
       <p class="text-sm font-semibold text-[#363636] truncate-2">{{ product.name }}</p>
-      <p v-if="product.price" class="mt-1 font-bold text-lg">${{ product.price }}</p>
+      <p v-if="product.price" class="mt-1 font-bold text-lg">{{ product.price }} TL</p>
       <p v-if="product?.maxPrice != undefined && product?.minPrice != undefined" class="mt-1 font-bold text-lg">
-        ${{ product?.minPrice }} - ${{ product?.maxPrice }}
+        {{ product?.minPrice }} - ${{ product?.maxPrice }} TL
       </p>
       <div>
         <i class="ri-map-pin-2-fill text-primary-200"></i>
@@ -49,6 +67,7 @@ onMounted(() => {
         <div class="inline-block">
           <button
             class="bg-[#5a4098] text-white py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300"
+            @click="addItemToCart"
           >
             Sepete Ekle
           </button>
