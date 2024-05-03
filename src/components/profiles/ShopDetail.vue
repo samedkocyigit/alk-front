@@ -1,19 +1,15 @@
 <template>
   <div class="w-full py-8 flex items-center">
     <div class="flex gap-4">
-      <img
-        class="w-[80px] h-[80px] rounded-full"
-        src="https://images.unsplash.com/photo-1516762689617-e1cffcef479d?q=80&w=1911&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-        alt=""
-      />
+      <LazyImg class-style="w-[200px] h-[120px] rounded-full" :src="`@@/images/brands/${brandsImg}`" alt="" />
+
       <div class="flex flex-col justify-center">
-        <p class="text-lg font-bold">{{ shop.name }}</p>
-        <p class="font-medium">Rombo shop</p>
+        <p class="text-lg font-bold">{{ props.shop.data.name }}</p>
       </div>
     </div>
     <div class="flex ml-5">
       <router-link
-        :to="`/shop/${shop.id}`"
+        :to="`/shop/${props.shop.data._id}`"
         class="border-[2px] border-third-100 h-fit text-third-100 py-2 px-3 rounded-md"
       >
         <i class="ri-store-2-fill"></i> View shop
@@ -23,10 +19,19 @@
   </div>
 </template>
 <script setup>
-defineProps({
+import { onMounted, defineProps, ref } from 'vue'
+import LazyImg from '../commons/atoms/LazyImg.vue'
+const brandsImg = ref('')
+
+const props = defineProps({
   shop: {
     type: Object,
     required: true,
   },
+})
+console.log('shopDetail içi', props.shop.data)
+
+onMounted(() => {
+  brandsImg.value = props.shop.data.photos[0]
 })
 </script>
