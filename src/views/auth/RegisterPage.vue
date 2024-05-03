@@ -109,10 +109,11 @@ import * as yup from 'yup'
 import { useRouter } from 'vue-router'
 import { toast } from 'vue3-toastify'
 import AInput from '@/components/commons/atoms/AInput.vue'
+import { signUpApi } from '@/services/auth.service'
 const router = useRouter()
 
 const submit = async (val) => {
-  const { name, surname, email, password, gender, phone } = val
+  // const { name, surname, email, password, gender, phone } = val
   try {
     // // Önce veritabanından kullanıcı bilgilerini al
     // const existingUser = await getUserByEmail(email)
@@ -123,27 +124,7 @@ const submit = async (val) => {
     // }
 
     // Kullanıcı yoksa yeni kullanıcı oluştur
-    const response = await fetch('/users/signup', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        name: name,
-        surname: surname,
-        email: email,
-        password: password,
-        gender: gender,
-        phone: phone,
-      }),
-    })
-
-    if (!response.ok) {
-      throw new Error('Failed to register user')
-    }
-
-    const responseData = await response.json()
-    console.log(responseData) // Gerekirse API'den dönen veriyi kontrol et
+    await signUpApi(val)
 
     toast.success('Register success!')
     router.push('/users/login')
