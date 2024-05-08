@@ -94,7 +94,10 @@ const submit = async (val) => {
       })
     }
 
-    // await removeCartApi(store.state.cart._id)
+    // if (store.state.cart.userId === null) {
+    //   console.log('bu nasıl null amk', store.state.cart)
+    //   await removeCartApi(store.state.cart._id)
+    // }
 
     const response = await getCartApi(user.cart)
     store.dispatch('cartConvert', response.data.data.data)

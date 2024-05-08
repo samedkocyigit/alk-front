@@ -4,6 +4,8 @@ import { AuthStore, logoutAuthStore } from '@/stores/auth.store'
 import ModalInfo from './ModalInfo.vue'
 import ModalChangePassword from './ModalChangePassword.vue'
 import axios from 'axios'
+import { logoutApi } from '@/services/auth.service'
+import store from '@/stores/master.store'
 
 const authStore = AuthStore.value
 const modal = ref({
@@ -29,10 +31,7 @@ const closeSettings = () => {
 // }
 const logout = async () => {
   try {
-    await axios({
-      method: 'GET',
-      url: 'http://127.0.0.1:3000/users/logout',
-    })
+    await logoutApi()
     localStorage.removeItem('access_token')
     logoutAuthStore()
     window.location.href = '/'
@@ -59,7 +58,7 @@ const logout = async () => {
     <div
       v-show="modal.isShowSettings"
       v-touch-outside="closeSettings"
-      class="absolute top-full right-2 w-[270px] bg-white gb-shadow rounded-xl z-[3]"
+      class="absolute top-full right-2 w-[270px] bg-white gb-shadow rounded-xl z-[4]"
     >
       <div class="flex flex-col h-full p-4 px-2 pb-3">
         <!-- header -->

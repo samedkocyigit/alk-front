@@ -81,10 +81,10 @@ const totalImageUploaded = ref({
 <template>
   <AFullLoading v-show="isCreating">
     <template #content>
-      <p v-if="totalImageUploaded.success !== files.length" class="text-lg">
+      <!-- <p v-if="totalImageUploaded.success !== files.length" class="text-lg">
         Uploading image... {{ totalImageUploaded.success }}/{{ files.length }}
-      </p>
-      <p v-else class="text-lg">Creating Campaign...</p>
+      </p> -->
+      <p class="text-lg">Creating Campaign...</p>
     </template>
   </AFullLoading>
   <!-- <div class="flex w-full px-5 pt-7 pb-10 justify-center gap-5"> -->
