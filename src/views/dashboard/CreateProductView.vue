@@ -1,7 +1,8 @@
 <script setup>
-import { ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import BreadCrumb from '@/components/commons/BreadCrumb.vue'
 import AButton from '@/components/commons/atoms/AButton.vue'
+import ADropdown from '@/components/commons/atoms/ADropdown.vue'
 // import AFilePond from '@/components/commons/atoms/AFilePond.vue'
 // import Quill from 'quill'
 import '@@/css/quill.snow.css'
@@ -12,8 +13,55 @@ import { useForm } from 'vee-validate'
 import * as yup from 'yup'
 import { toast } from 'vue3-toastify'
 import { createProductApi } from '@/services/product.service'
+import store from '@/stores/master.store'
+import { getBrandsApi } from '@/services/brand.service'
 // import { errorMessages } from '@vue/compiler-sfc'
 // breadcrumb
+
+let base64String = ref(null)
+const errorMessage = ref('')
+const fileInput = ref(null)
+const isCreating = ref(false)
+const totalImageUploaded = ref({
+  success: 0,
+  error: 0,
+})
+const categories = computed(() => store.state.categories)
+const categoryOptions = computed(() => {
+  return categories.value.data.map((category) => ({
+    id: category._id,
+    label: category.category_name,
+    subCategory: category.sub_category,
+  }))
+})
+
+const selectedCategory = ref(null)
+const subCategoryOptions = ref([])
+const selectedSubCategory = ref(null)
+const selectedBrand = ref(null)
+
+const brands = computed(() => store.state.brands)
+console.log('jkjkjkj', brands)
+const brandOptions = computed(() => {
+  return brands.value.data.map((brand) => ({
+    id: brand._id,
+    label: brand.name,
+  }))
+})
+
+watch(selectedCategory, (newValue, oldValue) => {
+  console.log('new category selected:', newValue)
+  const selectedCategoryObj = categoryOptions.value.find((category) => category.id === newValue)
+  if (selectedCategoryObj) {
+    subCategoryOptions.value = selectedCategoryObj.subCategory.map((subCategory) => ({
+      id: subCategory._id,
+      label: subCategory.sub_category_name,
+    }))
+  } else {
+    subCategoryOptions.value = []
+  }
+})
+
 const routes = ref([
   {
     name: 'Home',
@@ -42,7 +90,6 @@ const handleFileChange = () => {
 }
 
 const onCreate = async (val) => {
-  console.log('valll', val)
   const { name, brand, price, stock_code, manifuctorer_code, summary } = val
 
   const data = {
@@ -52,6 +99,8 @@ const onCreate = async (val) => {
     stock_code: stock_code,
     manifuctorer_code: manifuctorer_code,
     summary: summary,
+    categoryId: selectedCategory.value,
+    subCategoryId: selectedSubCategory.value,
     photos: base64String.value,
   }
   // create product
@@ -78,24 +127,15 @@ const { handleSubmit } = useForm({
 const onRegister = () => {
   handleSubmit(onCreate)()
 }
-
-let base64String = ref(null)
-const errorMessage = ref('')
-const fileInput = ref(null)
-const isCreating = ref(false)
-const totalImageUploaded = ref({
-  success: 0,
-  error: 0,
-})
 </script>
 
 <template>
   <AFullLoading v-show="isCreating">
     <template #content>
-      <p v-if="totalImageUploaded.success !== files.length" class="text-lg">
+      <!-- <p v-if="totalImageUploaded.success !== files.length" class="text-lg">
         Uploading image... {{ totalImageUploaded.success }}/{{ files.length }}
-      </p>
-      <p v-else class="text-lg">Creating product...</p>
+      </p> -->
+      <p class="text-lg">Creating product...</p>
     </template>
   </AFullLoading>
   <!-- <div class="flex w-full px-5 pt-7 pb-10 justify-center gap-5"> -->
@@ -153,10 +193,38 @@ const totalImageUploaded = ref({
             <AInput v-model="name" name="name" is-required label="Product Name" placeholder="Enter name..." />
           </div>
           <div class="w-full">
-            <AInput v-model="brand" name="brand" is-required label="Product Brand" placeholder="Enter Brand..." />
+            <ADropdown
+              v-model="selectedBrand"
+              class="w-full h-full"
+              is-required="true"
+              label="Brand"
+              :options="brandOptions"
+              placeholder="Select category..."
+              required
+            />
           </div>
           <div class="w-full">
             <AInput v-model="price" name="price" is-required label="Product Price" placeholder="Enter Price..." />
+          </div>
+          <div class="max-lg:flex-wrap flex gap-2">
+            <ADropdown
+              v-model="selectedCategory"
+              class="w-full h-full"
+              is-required="true"
+              label="Category"
+              :options="categoryOptions"
+              placeholder="Select category..."
+              required
+            />
+            <ADropdown
+              v-model="selectedSubCategory"
+              class="w-full h-full"
+              is-required="true"
+              label="Subcategory"
+              :options="subCategoryOptions"
+              placeholder="Select subcategory..."
+              required
+            />
           </div>
           <div class="w-full">
             <AInput
