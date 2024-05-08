@@ -14,6 +14,7 @@ export const initMasterStore = async () => {
       .catch((error) => {
         console.error('initCategories action çağrılırken hata oluştu:', error)
       })
+    store.dispatch('initBrands')
     await createEmptyCart()
   } catch (error) {
     console.log(error)

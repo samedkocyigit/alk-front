@@ -21,16 +21,16 @@ onMounted(() => {
 })
 </script>
 <template>
-  <div :class="`flex flex-col overflow-hidden product-card-shadow bg-white rounded-xl ${width}`" style="height: 100px">
+  <div
+    :class="`flex flex-col overflow-hidden product-card-shadow bg-white rounded-xl border ${width}`"
+    style="height: 100px"
+  >
     <!-- <img :src="`./images/brands/${brandsImg}`" alt="" style="max-height: 70px; width: auto" /> -->
     <LazyImg
-      class-style="h-[70px] object-cover w-full"
+      class-style="h-[100px] object-cover w-full"
       :src="`./images/brands/${brandsImg}`"
       alt=""
-      style="max-height: 70px; max-width: 100%"
+      style="max-height: 100px; max-width: 100%"
     />
-    <div class="flex-auto p-3">
-      <p class="text-sm font-semibold text-[#363636] truncate-2 text-center">{{ brand.name }}</p>
-    </div>
   </div>
 </template>

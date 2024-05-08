@@ -28,7 +28,6 @@ defineProps({
   },
 })
 const onLoaded = () => {
-  console.log('loaded')
   isLoaded.value = true
 }
 </script>

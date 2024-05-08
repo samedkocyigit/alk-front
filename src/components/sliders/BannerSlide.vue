@@ -18,7 +18,6 @@ async function fetchBanner() {
         throw new Error('Fetch işlemi başarısız')
       }
       banners.value = response.data.data
-      console.log('banneeeerrs->', banners.value)
     } catch (err) {
       console.error('Hata', err.message)
     } finally {
@@ -29,7 +28,6 @@ async function fetchBanner() {
 
 const onSwiper = (swiper) => {
   mySwiper.value = swiper
-  console.log('Slider Swiper:', swiper)
 }
 
 fetchBanner()

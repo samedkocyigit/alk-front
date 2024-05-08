@@ -5,7 +5,7 @@
         <BreadCrumb :routes="routes" />
       </div>
       <div class="w-full flex flex-col gap-10">
-        <p class="text-3xl font-bold">Checkout({{ masterStore.state.cart.items.length }})</p>
+        <p class="text-3xl font-bold">Checkout({{ store.state.cart.items.length }})</p>
         <div class="flex flex-row-reverse gap-20">
           <div>
             <ShippingAddressDropdown v-model="shippingAddressId" />
@@ -16,20 +16,20 @@
               <div class="p-5 flex flex-col gap-5 mt-3">
                 <div class="flex justify-between items-center">
                   <p class="text-base font-medium">Subtotal</p>
-                  <p class="text-base font-semibold">${{ totalSubPrice }}</p>
+                  <p class="text-base font-semibold">{{ store.state.cart.totalPrice }} TL</p>
                 </div>
                 <div class="flex justify-between items-center">
                   <p class="text-base font-medium">Shipping</p>
-                  <p class="text-base font-semibold">$0</p>
+                  <p class="text-base font-semibold">100 TL</p>
                 </div>
                 <div class="flex justify-between items-center">
                   <p class="text-base font-medium">Tax</p>
-                  <p class="text-base font-semibold">$0</p>
+                  <p class="text-base font-semibold">{{ store.state.cart.totalPrice * 0.2 }} TL</p>
                 </div>
               </div>
               <div class="p-5 py-3 border-t-[1px] flex justify-between items-center mt-3">
                 <p class="text-base font-medium">Total</p>
-                <p class="text-xl font-bold">${{ totalSubPrice }}</p>
+                <p class="text-xl font-bold">{{ store.state.cart.totalPrice * 1.2 + 100 }} TL</p>
               </div>
               <p class="text-rose-600 px-5">{{ errValidate }}</p>
               <div class="p-5 pt-2">
@@ -47,21 +47,24 @@
                 <div class="flex gap-4">
                   <input
                     :id="item.id"
-                    v-model="selectItems"
                     class="mt-3 rounded-sm w-5 h-5 text-[#ff7050]"
                     type="checkbox"
                     :value="item.id"
                     name=""
                   />
-                  <img class="w-[80px] h-[80px] rounded-md" :src="item.productType.product.imageUrl" alt="" />
+                  <LazyImg
+                    class-style="w-[80px] h-[80px] rounded-md"
+                    :src="`../../../public/images/products/${item.product.photos}`"
+                    alt=""
+                  />
                   <div>
-                    <RouterLink :to="`/products/${item.productType.product.id}`" class="font-medium text-base">{{
-                      item.productType.product.name
+                    <RouterLink :to="`/products/${item.product._id}`" class="font-medium text-base">{{
+                      item.product.name
                     }}</RouterLink>
-                    <p>{{ item.productType.name }}</p>
+                    <p>{{ item.product.name }}</p>
                     <!-- <ANumberInput @update:modelValue="onAddQuantity" v-model="item.quantity" /> -->
                   </div>
-                  <p class="ml-auto text-base font-semibold">${{ item.productType.price * item.quantity }}</p>
+                  <p class="ml-auto text-base font-semibold">{{ item.product.price * item.quantity }} TL</p>
                 </div>
                 <div class="flex justify-between items-center mt-3 pl-7">
                   <p class="text-third-100 font-medium">
@@ -96,12 +99,12 @@ import BreadCrumb from '@/components/commons/BreadCrumb.vue'
 // services
 import { orderApi, addTrackingApi } from '@/services/order.service'
 // stores
-import { useMasterStore } from '@/stores/master.store'
-const masterStore = useMasterStore.value
+import store from '@/stores/master.store'
 import { usePopupStore } from '@/stores/common.store'
 const popupStore = usePopupStore()
 
 import { useRoute, useRouter } from 'vue-router'
+import LazyImg from '@/components/commons/atoms/LazyImg.vue'
 const route = useRoute()
 const router = useRouter()
 // breadcrumb
@@ -117,26 +120,7 @@ const routes = ref([
 ])
 
 onBeforeMount(async () => {
-  // await getProduct()
-  // shopDetail.value = await userStore.addUser(product.value.userId)
-  listCheckout.value = masterStore.state.cart.items
-})
-const errValidate = computed(() => {
-  if (selectItems.value.length === 0) {
-    return "You haven't selected any product"
-  }
-  return ''
-})
-
-const selectItems = ref([])
-const totalSubPrice = computed(() => {
-  let total = 0
-  // selectItems is array of id
-  selectItems.value.forEach((item) => {
-    const product = listCheckout.value.find((product) => product.id === item)
-    total += product.productType.price * product.quantity
-  })
-  return total
+  listCheckout.value = store.state.cart.items
 })
 
 const shippingAddressId = ref('')
@@ -180,4 +164,3 @@ const addTracking = async (productId) => {
 }
 const listCheckout = ref([])
 </script>
-<style scoped></style>

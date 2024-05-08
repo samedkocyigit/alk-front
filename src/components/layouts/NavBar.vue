@@ -20,6 +20,15 @@ const closeModalCart = () => {
   console.log('closeModalCart')
   modal.value.showCart = false
 }
+
+const totalQuantity = computed(() => {
+  if (!store.state.cart || !store.state.cart.items) {
+    return 0
+  }
+
+  // Tüm quantity değerlerini topla
+  return store.state.cart.items.reduce((total, item) => total + item.quantity, 0)
+})
 </script>
 <template>
   <div class="nav-bar">
@@ -60,7 +69,9 @@ const closeModalCart = () => {
     <div class="py-3 flex justify-between w-full items-center px-10" style="flex: 1 1 auto">
       <!-- flex-auto -->
       <div class="flex items-center">
-        <img src="../../../public/images/year.png" alt="" class="logo-img" />
+        <div class="logo-container">
+          <img src="../../../public/images/year.png" alt="" class="logo-img" />
+        </div>
         <RouterLink to="/" class="font-bold text-lg ml-2">
           <div class="logo-container">
             <img src="../../../public/images/logo.png" alt="" class="logo-img" />
@@ -70,12 +81,16 @@ const closeModalCart = () => {
       <SearchWrapper class="max-md:hidden mr-[250px]" />
       <div class="flex">
         <div v-if="authStore.isLoggedIn === false" class="flex gap-3">
+          <router-link to="/users/login" class="cursor-pointer mt-1">
+            <i class="ri-heart-line text-xl mr-5"></i>
+          </router-link>
+
           <div class="relative right-5 top-1">
             <div
               v-if="store.state.cart && store.state.cart.items && store.state.cart.items.length > 0"
               class="absolute -right-3 -top-2 bg-rose-600 text-white w-5 h-5 rounded-full flex justify-center items-center"
             >
-              {{ store.state.cart.items.length }}
+              {{ totalQuantity }}
             </div>
 
             <i class="cursor-pointer ri-shopping-cart-line text-xl" @click.stop="modal.showCart = true"></i>
@@ -107,7 +122,7 @@ const closeModalCart = () => {
               v-if="store.state.cart && store.state.cart.items && store.state.cart.items.length > 0"
               class="absolute -right-3 -top-2 bg-rose-600 text-white w-5 h-5 rounded-full flex justify-center items-center"
             >
-              {{ store.state.cart.items.length }}
+              {{ totalQuantity }}
             </div>
             <i class="cursor-pointer ri-shopping-cart-line text-xl" @click.stop="modal.showCart = true"></i>
             <CartModal v-show="modal.showCart" v-touch-outside="closeModalCart" @close="closeModalCart" />
@@ -157,6 +172,7 @@ const closeModalCart = () => {
   background: #5a4098;
   /* height: 65px; */
   width: 100vw;
+  z-index: 3;
 }
 .header {
   background-color: #fff;

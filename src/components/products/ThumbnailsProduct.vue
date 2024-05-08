@@ -18,12 +18,10 @@ const props = defineProps({
 })
 
 const listImages = computed(() => {
-  const baseUrl = './images/products/' // Resimlerin temel URL'si
+  // const baseUrl = './images/products/' // Resimlerin temel URL'si
   const imagesList = props.product.data.photos.map((photo) => ({
-    url: `${baseUrl}${photo}`, // Tam URL oluşturma
-    // id: generateId(), // Örnek bir ID üretme işlemi
+    url: `${photo}`, // Tam URL oluşturma
   }))
-  // return imagesList[0]
   return imagesList[0]
 })
 
@@ -38,8 +36,10 @@ watch(
 
 const currentImageSelected = ref(null)
 onMounted(() => {
+  console.log('ne geliyo allah bilir', listImages.value.url)
   currentImageSelected.value = listImages.value[0]
   // currentImageSelected.value = listImages.value
+
   // View an image.
 })
 
@@ -70,7 +70,11 @@ const openImage = () => {
         class="w-full h-full object-cover cursor-zoom-in"
         @click="openImage"
       >
-        <LazyImg class-style="w-full h-full object-cover cursor-zoom-in" :src="thumb.url" alt="" />
+        <LazyImg
+          class-style="w-full h-full object-cover cursor-zoom-in"
+          :src="`../../../public/images/products/${thumb}`"
+          alt=""
+        />
       </div>
     </div>
 
@@ -80,7 +84,7 @@ const openImage = () => {
           class="hover:border-gray-700 border-[2px] border-transparent overflow-hidden cursor-zoom-in w-[80px] h-[80px] rounded-md"
           @mouseover="hoverOnChange(index)"
         >
-          <LazyImg class-style="w-full h-full object-cover" :src="thumb.url" alt="" />
+          <LazyImg class-style="w-full h-full object-cover" :src="`../../../public/images/products/${thumb}`" alt="" />
         </div>
       </swiper-slide>
     </swiper>

@@ -13,7 +13,7 @@
     >
       <option value="" disabled selected>{{ placeholder }}</option>
       <option v-for="option in options" :key="option.value" :value="option.id">
-        {{ option.name }}
+        {{ option.label }}
       </option>
     </select>
   </div>
@@ -46,6 +46,6 @@ defineEmits(['update:modelValue'])
 const value = ref(props.modelValue)
 onBeforeMount(() => {
   value.value = props.modelValue
-  console.log("----------->",value.value)
+  console.log('----------->', value.value)
 })
 </script>

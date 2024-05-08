@@ -51,43 +51,67 @@
 import { getCartApi } from '@/services/cart.service'
 import { createStore } from 'vuex'
 import { getCategoriesApi } from '@/services/master.service'
+import { getBrandsApi } from '@/services/brand.service'
 
 const store = createStore({
   state: {
     categories: [],
+    brands: [],
     cart: {
-      items: [],
+      items: [], // Her bir öğe için { product: {}, quantity: 0 } şeklinde olacak
       totalPrice: 0,
     },
   },
+  mutations: {
+    setCategories(state, categories) {
+      state.categories = categories
+    },
+    setBrands(state, brands) {
+      state.brands = brands
+    },
+    setCart(state, cart) {
+      state.cart = cart
+    },
+    setUserCart(state, cart) {
+      state.cart = cart
+    },
+    removeFromCart(state, id) {
+      state.cart.items = state.cart.items.filter((item) => item.product._id !== id)
+    },
+  },
   actions: {
-    async initCategories() {
+    async initCategories({ commit }) {
       try {
         const { data } = await getCategoriesApi()
-        this.state.categories = data.data
+        commit('setCategories', data.data)
       } catch (error) {
         console.error('initCategories Hata:', error)
       }
     },
-    async addToCart({ commit }, data) {
-      // const res = await getCartApi(data)
-      this.state.cart = data
+    async initBrands({ commit }) {
+      try {
+        const { data } = await getBrandsApi()
+        commit('setBrands', data.data)
+      } catch (err) {
+        console.log('setBrands Hatası', err)
+      }
     },
-
-    removeFromCart(id) {
-      this.state.cart.items = this.state.cart.items.filter((item) => item.id !== id)
+    async addToCart({ commit }, cart) {
+      commit('setCart', cart)
     },
-
     async initCart({ commit }, cart) {
-      const { data } = await getCartApi(cart._id)
-      this.state.cart = data.data.data
+      commit('setCart', cart)
     },
     async cartConvert({ commit }, cart) {
-      const { data } = await getCartApi(cart._id)
-      console.log('aktarımdan önce ', data.data.data)
-      this.state.cart = data.data.data
-      console.log('cartConvert fonk içinde cart:', this.state.cart)
+      try {
+        // const { data } = await getCartApi(cart._id)
+        // Her bir ürün için addToCart mutasyonunu kullanarak kartı güncelle
+        commit('setUserCart', cart)
+      } catch (error) {
+        console.error('cartConvert Hata:', error)
+      }
     },
   },
 })
+
 export default store

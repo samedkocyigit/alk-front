@@ -19,6 +19,8 @@ const props = defineProps({
 })
 
 const photoName = ref('') // Fotoğraf adı için bir referans oluştur
+const isFavorite = ref(false)
+const hovering = ref(false)
 
 // Bileşen yüklendiğinde fotoğraf adını consola yazdır
 onMounted(() => {
@@ -26,13 +28,23 @@ onMounted(() => {
   console.log('Fotoğraf Adı:', props.product.photos[0])
 })
 
+const toggleFavorite = () => {
+  isFavorite.value = !isFavorite.value
+  if (isFavorite.value) {
+  } else {
+  }
+}
 const addItemToCart = async () => {
   try {
     const res = await addToCartApi(store.state.cart._id, {
-      items: props.product.id,
+      items: [
+        {
+          product: props.product.id,
+          quantity: 1,
+        },
+      ],
     })
     store.dispatch('addToCart', res.data.data.data)
-    // addToCart(res.data.items)
     toast.success('Add to cart success')
   } catch (error) {
     console.log(error)
@@ -42,37 +54,129 @@ const addItemToCart = async () => {
 </script>
 
 <template>
-  <div :class="`flex flex-col h-[330px] overflow-hidden product-card-shadow bg-white rounded-xl ${width}`">
-    <!-- <img :src="`./images/products/${photoName}`" alt="" /> -->
-    <LazyImg class-style="h-[180px] object-cover w-full" :src="`./images/products/${photoName}`" alt="" />
-    <div class="flex-auto p-3">
-      <p class="text-sm font-semibold text-[#363636] truncate-2">{{ product.name }}</p>
-      <p v-if="product.price" class="mt-1 font-bold text-lg">{{ product.price }} TL</p>
-      <p v-if="product?.maxPrice != undefined && product?.minPrice != undefined" class="mt-1 font-bold text-lg">
-        {{ product?.minPrice }} - ${{ product?.maxPrice }} TL
-      </p>
+  <div
+    class="container"
+    :class="`flex flex-col h-[330px] overflow-hidden product-card-shadow bg-white rounded-xl ${width}`"
+  >
+    <div class="fav-icon-container" @mouseover="hovering = true" @mouseleave="hovering = false" @click="toggleFavorite">
+      <i
+        class="ri-heart-line"
+        :class="{ 'ri-heart-fill': isFavorite, 'text-yellow-500': isFavorite }"
+        :title="hovering ? 'Favorilere Ekle' : ''"
+      ></i>
+    </div>
+    <RouterLink :to="`/products/${product.id}`">
+      <LazyImg class-style="h-[180px] object-cover w-full" :src="`./images/products/${photoName}`" alt="" />
+    </RouterLink>
+    <div class="product-info">
       <div>
-        <i class="ri-map-pin-2-fill text-primary-200"></i>
-        <span class="ml-2 text-xs text-primary-200">{{ product.category_name }}</span>
-      </div>
-      <div class="text-primary-200 text-xs">
-        <span>
-          <i class="ri-star-fill text-[#ffaa28]"></i>
-          <span class="ml-2 mr-1">{{ product.ratingsAverage }}</span>
-          <span>|</span>
-          <span class="ml-1">sold {{ product.ratingsQuantity }}</span>
-        </span>
-      </div>
-      <div class="mt-2 text-center">
-        <div class="inline-block">
-          <button
-            class="bg-[#5a4098] text-white py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300"
-            @click="addItemToCart"
-          >
-            Sepete Ekle
-          </button>
+        <p class="product-name">{{ product.name }}</p>
+        <p class="product-price" v-if="product.price">{{ product.price }} TL</p>
+        <p class="product-price" v-else-if="product?.maxPrice != undefined && product?.minPrice != undefined">
+          {{ product?.minPrice }} - ${{ product?.maxPrice }} TL
+        </p>
+        <div class="product-category">
+          <i class="ri-map-pin-2-fill"></i>
+          <span class="category-name">{{ product.brand.name }}</span>
         </div>
+        <div class="product-ratings">
+          <i class="ri-star-fill text-[#ffaa28]"></i>
+          <span class="ratings-info">{{ product.ratingsAverage }} | sold {{ product.ratingsQuantity }}</span>
+        </div>
+      </div>
+      <div class="add-to-cart-button">
+        <button class="add-to-cart-btn" @click="addItemToCart">Sepete Ekle</button>
       </div>
     </div>
   </div>
 </template>
+
+<style scoped>
+.container {
+  position: relative;
+}
+
+.fav-icon-container {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  z-index: 1;
+}
+
+.fav-icon-container i {
+  cursor: pointer;
+  font-size: 24px;
+  transition: color 0.3s ease;
+}
+
+.fav-icon-container i.ri-heart-fill {
+  color: #ffcc00;
+}
+
+.product-info {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  height: 150px;
+  flex-grow: 1;
+}
+
+.product-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #363636;
+  margin-bottom: 8px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.product-price {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.product-category,
+.product-ratings {
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  color: #718096;
+  margin-bottom: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.category-name {
+  margin-left: 4px;
+}
+
+.ratings-info {
+  margin-left: 4px;
+}
+
+.add-to-cart-button {
+  margin-top: auto;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: auto;
+}
+
+.add-to-cart-btn {
+  background-color: #5a4098;
+  bottom: 0;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 8px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.add-to-cart-btn:hover {
+  background-color: #108de0;
+}
+</style>

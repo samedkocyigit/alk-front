@@ -19,11 +19,11 @@
           <div class="text-xl font-semibold mt-3">
             <span>{{ product.data.price + ' TL' }} </span>
           </div>
-          <div class="border-b-[1px] pb-4"></div>
+          <!-- <div class="border-b-[1px] pb-4"></div> -->
           <div class="mt-4">
-            <p class="text-lg text-gray-800 font-medium">
+            <!-- <p class="text-lg text-gray-800 font-medium">
               Kategori: <span class="text-base font-light">{{ product.data.category_name }}</span>
-            </p>
+            </p> -->
             <div class="flex gap-2 mt-2">
               <!-- <div
                 v-for="productType in product.types"
@@ -48,15 +48,15 @@
             <span>{{ 'Stok Kodu: ' + product.data.stock_code }}</span>
           </div>
           <div class="mt-4 flex justify-between items-center">
-            <span>{{ 'Üretici: ' + shopDetail.data.name }}</span>
+            <span>{{ 'Üretici: ' + product.data.brand.name }}</span>
           </div>
           <div class="mt-4 flex justify-between items-center">
             <p>Adet</p>
-            <ANumberInput v-model="cart.quantity" :max="20" />
+            <ANumberInput v-model="quantity" :max="20" />
           </div>
           <div class="mt-4 flex justify-between items-center">
             <p>Sub total</p>
-            <p class="font-bold text-lg">{{ product.data.price * cart.quantity }} TL</p>
+            <p class="font-bold text-lg">{{ product.data.price * quantity }} TL</p>
           </div>
           <p class="text-rose-500">{{ errValidate?.cart }}</p>
           <div
@@ -94,8 +94,6 @@
 </template>
 <script setup>
 import { ref, computed, onBeforeMount } from 'vue'
-let isFirstMount = true
-
 import { useRoute, useRouter } from 'vue-router'
 import { toast } from 'vue3-toastify'
 // components
@@ -128,11 +126,9 @@ const product = ref({})
 const shopDetail = ref({})
 const typeSelected = ref(null)
 const photoName = ref('')
-const cart = ref({
-  quantity: 1,
-})
+const quantity = ref(1)
+const cart = ref({})
 cart.value = store.state.cart
-
 // const priceComputed = computed(() => {
 //   return typeSelected.value
 //     ? {
@@ -148,23 +144,16 @@ const getProduct = async () => {
   try {
     const res = await getProductApi(route.params.id)
     product.value = res.data.data
-    const shopRes = await getBrandApi(product.value.data.brand)
-    shopDetail.value = shopRes.data.data
+    console.log('product brand', product.value.data.brand)
+    shopDetail.value = product.value.data.brand
 
     // // Kategori ve alt kategori bilgilerini bulma
     const routeCategory = await getCategoryApi(product.value.data.categoryId)
     const categoryPath = `/category/${routeCategory.data.data.data.slug}`
     const category_name = routeCategory.data.data.data.category_name
     const routeSubCategory = await getSubCategoryApi(product.value.data.categoryId, product.value.data.subCategoryId)
-    console.log('flan flam', routeSubCategory)
     const subCategoryPath = `/category/${routeCategory.data.data.data.slug}/sub_category/${routeSubCategory.data.data.subCategory.slug}`
     const subCategory_name = routeSubCategory.data.data.subCategory.sub_category_name
-
-    // if (!routeCategory || !routeSubCategory) {
-    //   console.log('Kategori veya alt kategori bulunamadı.')
-    //   router.push({ name: 'not-found' })
-    //   return
-    // }
 
     // Routes'a kategori, alt kategori ve ürün bilgilerini ekleme
     if (!routes.value.some((route) => route.path === categoryPath)) {
@@ -179,15 +168,6 @@ const getProduct = async () => {
         path: subCategoryPath,
       })
     }
-    console.log('tabiki :', routes.value)
-    // {
-    //   name: (await routeSubCategory).data.data.data.sub_category_name,
-    //   path: `/category/${(await routeCategory).data.data.data._id}/sub-category/${
-    //     (await routeSubCategory).data.data.data._id
-    //   }`,
-    // },
-
-    console.log('tabiki', routes.value)
   } catch (error) {
     console.log(error)
     router.push({ name: 'not-found' })
@@ -235,14 +215,15 @@ const addItemToCart = async () => {
     if (!product.value) {
       return
     }
-    console.log('quantity: ', cart.value)
     let res = ref({})
-    for await (const _ of Array(cart.value.quantity).fill()) {
-      res = await addToCartApi(cart.value._id, {
-        items: [product.value.data.id],
-      })
-    }
-    console.log('falanıma filan ', res.data.data.data)
+    res = await addToCartApi(cart.value._id, {
+      items: [
+        {
+          product: product.value.data.id,
+          quantity: quantity.value,
+        },
+      ],
+    })
     store.dispatch('addToCart', res.data.data.data)
     toast.success('Add to cart success')
   } catch (error) {
