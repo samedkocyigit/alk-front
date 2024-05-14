@@ -9,7 +9,7 @@ const props = defineProps({
   },
   width: {
     type: String,
-    default: 'w-[260px]',
+    default: 'w-[200px]',
   },
 })
 
@@ -23,7 +23,7 @@ onMounted(() => {
 <template>
   <div
     :class="`flex flex-col overflow-hidden product-card-shadow bg-white rounded-xl border ${width}`"
-    style="height: 100px"
+    style="height: 80px"
   >
     <!-- <img :src="`./images/brands/${brandsImg}`" alt="" style="max-height: 70px; width: auto" /> -->
     <LazyImg

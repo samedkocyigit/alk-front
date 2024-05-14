@@ -109,6 +109,7 @@ const productMenuItems = [
   { label: 'Create new product', route: '/dashboard/create-product', iconClass: 'ri-add-line' },
   { label: 'Create new brand', route: '/dashboard/create-brand', iconClass: 'ri-add-line' },
   { label: 'Create new campaign', route: '/dashboard/create-campaign', iconClass: 'ri-add-line' },
+  { label: 'Create new Category', route: '/dashboard/create-category', iconClass: 'ri-add-line' },
 ]
 
 const showProductMenu = ref(false)

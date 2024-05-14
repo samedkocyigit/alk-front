@@ -15,3 +15,7 @@ export const createEmptyCartApi = async (data) => {
 export const removeCartApi = async (id) => {
   return await axiosApiInstance.delete(`/carts/${id}`)
 }
+
+export const decreaseFromCartApi = async (id, data) => {
+  return await axiosApiInstance.patch(`/carts/${id}`, data)
+}

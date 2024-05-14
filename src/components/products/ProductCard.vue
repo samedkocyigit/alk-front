@@ -44,7 +44,7 @@ const addItemToCart = async () => {
         },
       ],
     })
-    store.dispatch('addToCart', res.data.data.data)
+    store.dispatch('updateCart', res.data.data.data)
     toast.success('Add to cart success')
   } catch (error) {
     console.log(error)

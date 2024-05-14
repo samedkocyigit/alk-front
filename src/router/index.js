@@ -87,6 +87,12 @@ const routes = [
         component: () => import('@/views/dashboard/CreateBrandView.vue'),
       },
       {
+        path: 'create-category',
+        name: 'create-category',
+        meta: { requiresAuth: true },
+        component: () => import('@/views/dashboard/CreateCategoryView.vue'),
+      },
+      {
         path: 'create-campaign',
         name: 'create-campaign',
         meta: { requiresAuth: true },

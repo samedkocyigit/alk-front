@@ -45,9 +45,9 @@ fetchProduct()
     <!-- list product -->
     <div
       v-if="products && products.data && products.data.length > 0"
-      class="w-full flex flex-wrap justify-start p-4 gap-2"
+      class="w-full flex flex-wrap justify-start p-10 gap-2"
     >
-      <div v-for="product in products.data.slice(0, 12)" :key="product.id" y class="w-[180px] flex justify-center">
+      <div v-for="product in products.data.slice(0, 14)" :key="product.id" y class="w-[180px] flex justify-center">
         <ProductCard :product="product" />
       </div>
     </div>
