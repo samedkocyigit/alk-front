@@ -24,6 +24,12 @@
               <div v-for="subcategory in category.sub_category" :key="subcategory._id" class="subcategories-container">
                 <RouterLink :to="'/categories/' + category.slug + '/sub_category/' + subcategory.slug">
                   <div class="subcategory-card">
+                    <div class="subcategory-photo">
+                      <img
+                        :src="`../../../public/images/categories/subCategories/${subcategory.photos}`"
+                        alt="Subcategory Photo"
+                      />
+                    </div>
                     <div class="subcategory-name">
                       {{ subcategory.sub_category_name }}
                     </div>
@@ -50,18 +56,30 @@ const windowLeft = ref(0)
 // Kategori referans noktaları
 const categoryRefs = ref([])
 
+let timer // Gecikme zamanlayıcısı
+
 const showSubcategories = (index) => {
-  visibleCategoryIndex.value = index
+  // Eğer bir gecikme zamanlayıcısı varsa, iptal et
+  if (timer) clearTimeout(timer)
 
-  // Kategori referans noktasının sol koordinatını al
-  const categoryRect = categoryRefs.value[index].getBoundingClientRect()
-  const wrapperRect = categoryRefs.value[0].parentElement.getBoundingClientRect()
+  // Gecikmeyi ayarla
+  timer = setTimeout(() => {
+    visibleCategoryIndex.value = index
 
-  // windowLeft değerini kategori referans noktasının sol koordinatı olarak ayarla
-  windowLeft.value = wrapperRect.left - categoryRect.left
+    // Kategori referans noktasının sol koordinatını al
+    const categoryRect = categoryRefs.value[index].getBoundingClientRect()
+    const wrapperRect = categoryRefs.value[0].parentElement.getBoundingClientRect()
+
+    // windowLeft değerini kategori referans noktasının sol koordinatı olarak ayarla
+    windowLeft.value = wrapperRect.left - categoryRect.left
+  }, 200) // 300 milisaniye gecikme süresi
 }
 
 const hideSubcategories = () => {
+  // Gecikme zamanlayıcısını iptal et
+  clearTimeout(timer)
+
+  // Alt kategori penceresini gizle
   visibleCategoryIndex.value = -1
 }
 </script>
@@ -127,12 +145,13 @@ const hideSubcategories = () => {
   flex-wrap: nowrap;
   padding: 5px;
   display: inline-block;
+  z-index: 3;
 }
 
 .subcategory-card {
   width: 150px;
-  height: 220px;
-  background-color: #f1f1f1;
+  height: 190px;
+  background-color: #ffffff;
   border-radius: 5px;
   border: 1px solid #ccc; /* Kartın etrafında ince bir border oluştur */
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
@@ -143,7 +162,15 @@ const hideSubcategories = () => {
   border-color: #f90; /* Hover durumunda farklı bir renk kullanabilirsiniz */
 }
 
+.subcategory-photo {
+  width: 60%; /* Genişlik %100 olsun */
+  height: auto; /* Otomatik yükseklik ayarı, oranı korur */
+  max-height: 70%;
+  margin-left: auto; /* Yükseklik, parent elementin %70'ine kadar */
+  margin-right: auto; /* Yükseklik, parent elementin %70'ine kadar */
+}
+
 .subcategory-name {
-  padding: 10px;
+  margin-top: 22px;
 }
 </style>

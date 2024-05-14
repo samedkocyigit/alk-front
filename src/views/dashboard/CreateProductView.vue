@@ -3,8 +3,6 @@ import { computed, ref, watch } from 'vue'
 import BreadCrumb from '@/components/commons/BreadCrumb.vue'
 import AButton from '@/components/commons/atoms/AButton.vue'
 import ADropdown from '@/components/commons/atoms/ADropdown.vue'
-// import AFilePond from '@/components/commons/atoms/AFilePond.vue'
-// import Quill from 'quill'
 import '@@/css/quill.snow.css'
 import AFullLoading from '@/components/commons/atoms/AFullLoading.vue'
 import AInput from '@/components/commons/atoms/AInput.vue'
@@ -14,8 +12,6 @@ import * as yup from 'yup'
 import { toast } from 'vue3-toastify'
 import { createProductApi } from '@/services/product.service'
 import store from '@/stores/master.store'
-import { getBrandsApi } from '@/services/brand.service'
-// import { errorMessages } from '@vue/compiler-sfc'
 // breadcrumb
 
 let base64String = ref(null)
@@ -41,7 +37,6 @@ const selectedSubCategory = ref(null)
 const selectedBrand = ref(null)
 
 const brands = computed(() => store.state.brands)
-console.log('jkjkjkj', brands)
 const brandOptions = computed(() => {
   return brands.value.data.map((brand) => ({
     id: brand._id,
@@ -50,7 +45,6 @@ const brandOptions = computed(() => {
 })
 
 watch(selectedCategory, (newValue, oldValue) => {
-  console.log('new category selected:', newValue)
   const selectedCategoryObj = categoryOptions.value.find((category) => category.id === newValue)
   if (selectedCategoryObj) {
     subCategoryOptions.value = selectedCategoryObj.subCategory.map((subCategory) => ({
@@ -90,11 +84,12 @@ const handleFileChange = () => {
 }
 
 const onCreate = async (val) => {
+  console.log('val', val)
   const { name, brand, price, stock_code, manifuctorer_code, summary } = val
 
   const data = {
     name: name,
-    brand: brand,
+    brand: selectedBrand.value,
     price: price,
     stock_code: stock_code,
     manifuctorer_code: manifuctorer_code,
@@ -116,7 +111,7 @@ const onCreate = async (val) => {
 const { handleSubmit } = useForm({
   validationSchema: yup.object({
     name: yup.string().required(),
-    brand: yup.string().required(),
+    // brand: yup.string().required(),
     price: yup.number().required(),
     stock_code: yup.number().required(),
     manifuctorer_code: yup.string(),
@@ -210,20 +205,16 @@ const onRegister = () => {
             <ADropdown
               v-model="selectedCategory"
               class="w-full h-full"
-              is-required="true"
               label="Category"
               :options="categoryOptions"
               placeholder="Select category..."
-              required
             />
             <ADropdown
               v-model="selectedSubCategory"
               class="w-full h-full"
-              is-required="true"
               label="Subcategory"
               :options="subCategoryOptions"
               placeholder="Select subcategory..."
-              required
             />
           </div>
           <div class="w-full">

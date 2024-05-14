@@ -42,47 +42,45 @@
             </div>
           </div>
           <div class="flex-auto flex flex-col gap-7">
-            <div v-for="item in listCheckout" :key="item.id">
-              <div>
-                <div class="flex gap-4">
-                  <input
-                    :id="item.id"
-                    class="mt-3 rounded-sm w-5 h-5 text-[#ff7050]"
-                    type="checkbox"
-                    :value="item.id"
-                    name=""
-                  />
-                  <LazyImg
-                    class-style="w-[80px] h-[80px] rounded-md"
-                    :src="`../../../public/images/products/${item.product.photos}`"
-                    alt=""
-                  />
-                  <div>
-                    <RouterLink :to="`/products/${item.product._id}`" class="font-medium text-base">{{
-                      item.product.name
-                    }}</RouterLink>
-                    <p>{{ item.product.name }}</p>
-                    <!-- <ANumberInput @update:modelValue="onAddQuantity" v-model="item.quantity" /> -->
-                  </div>
-                  <p class="ml-auto text-base font-semibold">{{ item.product.price * item.quantity }} TL</p>
-                </div>
-                <div class="flex justify-between items-center mt-3 pl-7">
-                  <p class="text-third-100 font-medium">
-                    <i class="ri-add-line font-bold"></i>
-                    Add notes
-                  </p>
-                  <div class="flex items-center gap-4 text-base">
-                    <p>
-                      <i class="ri-heart-line"></i>
-                      Add to white list
-                    </p>
-                    <span class="h-[20px] border-r-[1px]"></span>
-                    <i class="ri-delete-bin-6-line"></i>
+            <div v-for="item in store.state.cart.items" :key="item.id">
+              <div class="flex gap-4 items-center">
+                <input
+                  :id="item.id"
+                  class="mt-3 rounded-sm w-5 h-5 text-[#ff7050]"
+                  type="checkbox"
+                  :value="item.id"
+                  name=""
+                />
+                <LazyImg
+                  class-style="w-[80px] h-[80px] rounded-md"
+                  :src="`../../../public/images/products/${item.product.photos}`"
+                  alt=""
+                />
+                <div class="flex flex-col">
+                  <RouterLink :to="`/products/${item.product._id}`" class="font-medium text-base">{{
+                    item.product.name
+                  }}</RouterLink>
+                  <div style="width: 120px; height: 30px; margin-top: 10px">
+                    <ANumberInput :item="item" />
                   </div>
                 </div>
-                <!-- line -->
-                <div class="border-b-[1px] mt-7"></div>
+                <p class="ml-auto text-base font-semibold">{{ item.product.price * item.quantity }} TL</p>
               </div>
+              <div class="flex justify-between items-center mt-3 pl-7">
+                <p class="text-third-100 font-medium">
+                  <i class="ri-add-line font-bold"></i>
+                  Add notes
+                </p>
+                <div class="flex items-center gap-4 text-base">
+                  <p>
+                    <i class="ri-heart-line"></i>
+                    Add to white list
+                  </p>
+                  <span class="h-[20px] border-r-[1px]"></span>
+                  <i class="ri-delete-bin-6-line"></i>
+                </div>
+              </div>
+              <div class="border-b-[1px] mt-7"></div>
             </div>
           </div>
         </div>
@@ -94,6 +92,7 @@
 import { ref, onBeforeMount, computed } from 'vue'
 // components
 import AButton from '@/components/commons/atoms/AButton.vue'
+import ANumberInput from '@/components/commons/atoms/ANumberInput.vue'
 import ShippingAddressDropdown from '@/components/commons/atoms/ShippingAddressDropdown.vue'
 import BreadCrumb from '@/components/commons/BreadCrumb.vue'
 // services

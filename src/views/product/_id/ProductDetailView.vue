@@ -110,8 +110,7 @@ import { addToCartApi } from '@/services/cart.service'
 import store from '@/stores/master.store'
 import { usePopupStore } from '@/stores/common.store'
 const popupStore = usePopupStore()
-import { getBrandApi } from '@/services/brand.service'
-import { getCategoryApi, getSubCategoryApi } from '@/services/master.service'
+import { getCategoryApi, getSubCategoryApi } from '@/services/category.service'
 const route = useRoute()
 const router = useRouter()
 // breadcrumb
@@ -224,7 +223,7 @@ const addItemToCart = async () => {
         },
       ],
     })
-    store.dispatch('addToCart', res.data.data.data)
+    store.dispatch('updateCart', res.data.data.data)
     toast.success('Add to cart success')
   } catch (error) {
     console.log(error)

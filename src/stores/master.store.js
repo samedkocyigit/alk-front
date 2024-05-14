@@ -50,7 +50,7 @@
 // // refactor user store
 import { getCartApi } from '@/services/cart.service'
 import { createStore } from 'vuex'
-import { getCategoriesApi } from '@/services/master.service'
+import { getCategoriesApi } from '@/services/category.service'
 import { getBrandsApi } from '@/services/brand.service'
 
 const store = createStore({
@@ -96,7 +96,7 @@ const store = createStore({
         console.log('setBrands Hatası', err)
       }
     },
-    async addToCart({ commit }, cart) {
+    async updateCart({ commit }, cart) {
       commit('setCart', cart)
     },
     async initCart({ commit }, cart) {

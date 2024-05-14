@@ -3,8 +3,8 @@
     <div class="max-md:h-[250px] lg:flex-auto bg-[#191a24] flex items-center px-10">
       <img class="w-full h-full object-cover opacity-[60%]" src="@@/icons/travel.svg" alt="" />
     </div>
-    <div class="max-md:w-full w-[45%] flex justify-start">
-      <div class="max-md:w-full w-[80%] flex flex-col items-center justify-center h-full px-10">
+    <div class="max-md:w-full w-[45%]">
+      <div class="max-md:w-full w-[80%] mx-auto flex flex-col items-center justify-center h-full px-10">
         <div class="w-full flex flex-col items-center justify-center">
           <p class="text-3xl font-bold">Register</p>
           <p class="text-base font-medium mt-2">Register and explore the online market</p>
@@ -52,13 +52,7 @@
               type="password"
             />
           </div>
-          <!-- <div class="absolute inset-y-0 right-0 flex items-center justify-center h-full mr-2">
-              <button @click="togglePasswordVisibility">
-                <i v-if="isPassword && !showPassword" class="ri-eye-fill"></i>
-                <i v-else class="ri-eye-off-fill"></i>
-              </button>
-            </div> -->
-          <div class="w-full">
+          <!-- <div class="w-full">
             <AInput
               v-model="gender"
               label="Cinsiyet"
@@ -67,7 +61,42 @@
               is-required
               placeholder="Enter your gender..."
             />
+          </div> -->
+          <!-- <div class="w-full">
+            <div class="flex flex-col gap-0 w-full">
+              <p class="font-medium text-gray-700 text-base mb-2">Cinsiyet <span class="text-rose-600">*</span></p>
+            </div>
+            <div class="flex flex-row space-x-6">
+              <label class="inline-flex items-center" for="erkek">
+                <input v-model="gender" name="gender" type="radio" value="erkek" />
+                <span class="ml-2">Erkek</span>
+              </label>
+              <label class="inline-flex items-center" for="kadin">
+                <input v-model="gender" name="gender" type="radio" value="kadin" />
+                <span class="ml-2">Kadin</span>
+              </label>
+              <label class="inline-flex items-center" for="belirtmek">
+                <input v-model="gender" name="gender" type="radio" value="belirtmek-istemiyorum" />
+                <span class="ml-2">Belirtmek İstemiyorum</span>
+              </label>
+            </div>
+          </div> -->
+          <div class="w-full">
+            <AInput
+              v-model="gender"
+              name="gender"
+              label="Cinsiyet"
+              is-required
+              placeholder="Cinsiyetinizi seçin..."
+              :options="[
+                { value: 'erkek', label: 'Erkek' },
+                { value: 'kadin', label: 'Kadın' },
+                { value: 'belirtmek-istemiyorum', label: 'Belirtmek İstemiyorum' },
+              ]"
+              type="radio"
+            />
           </div>
+
           <div class="w-full mt-5">
             <AInput
               v-model="phone"
@@ -113,7 +142,6 @@ import { signUpApi } from '@/services/auth.service'
 const router = useRouter()
 
 const submit = async (val) => {
-  // const { name, surname, email, password, gender, phone } = val
   try {
     // // Önce veritabanından kullanıcı bilgilerini al
     // const existingUser = await getUserByEmail(email)
@@ -140,8 +168,8 @@ const { handleSubmit } = useForm({
     surname: yup.string().required(),
     email: yup.string().required().email(),
     password: yup.string().required().min(8, 'Password must contain at least 8 characters'),
-    gender: yup.string().required(),
     phone: yup.number(),
+    gender: yup.string().required(),
   }),
 })
 

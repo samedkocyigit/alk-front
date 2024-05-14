@@ -3,8 +3,8 @@
     <div class="max-md:h-[250px] lg:flex-auto bg-[#191a24] flex items-center px-10">
       <img class="w-full h-full object-cover opacity-[60%]" src="@@/icons/travel.svg" alt="" />
     </div>
-    <div class="max-md:w-full w-[45%] flex justify-start">
-      <div class="max-md:w-full w-[80%] flex flex-col items-center justify-center h-full px-10">
+    <div class="max-md:w-full w-[45%]">
+      <div class="max-md:w-[80%] mx-auto flex flex-col items-center justify-center h-full px-40">
         <div class="w-full flex flex-col items-center justify-center mt-10">
           <RouterLink to="/" class="font-bold text-lg ml-2 mt-5">
             <div class="logo-container">

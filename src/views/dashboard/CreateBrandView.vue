@@ -80,27 +80,10 @@ const totalImageUploaded = ref({
 <template>
   <AFullLoading v-show="isCreating">
     <template #content>
-      <!-- <p v-if="totalImageUploaded.success !== files.length" class="text-lg">
-        Uploading image... {{ totalImageUploaded.success }}/{{ files.length }}
-      </p> -->
       <p class="text-lg">Creating Brand...</p>
     </template>
   </AFullLoading>
-  <!-- <div class="flex w-full px-5 pt-7 pb-10 justify-center gap-5"> -->
   <div class="max-lg:p-5 max-md:pt-10 relative flex flex-col w-full h-fit p-10 bg-[#fafafa] pt-10 rounded-[8px] py-5">
-    <!-- <div class="absolute backdrop-blur w-full h-full flex justify-center top-0 left-0 z-10 pt-14">
-      <div class="p-7 h-fit bg-white gb-shadow rounded-3xl flex flex-col justify-center items-center">
-        <p class="text-lg font-semibold">Please confirm your email to create product</p>
-        <p class="text-sm text-primary-200">We have sent you an email to confirm your email</p>
-        <p class="text-sm text-primary-200">If you don't see the email, please check your spam folder</p>
-        <p class="text-sm text-primary-200">If you still don't see the email, please contact us</p>
-        <AButton title="Resend email" class="mt-5 w-fit text-white bg-blue-500">
-          <template #left>
-            <i class="ri-mail-send-line mr-2"></i>
-          </template>
-        </AButton>
-      </div>
-    </div> -->
     <!-- header -->
     <header class="max-md:flex-col flex gap-2 justify-between w-full border-b-2 pb-5">
       <div>
