@@ -55,11 +55,12 @@
           <span class="px-2 py-1 rounded-md flex items-center"
             ><i class="ri-settings-2-fill text-2xl mr-3"></i>Setting Account</span
           >
-          <span
+          <button
             class="flex items-center py-2 rounded-md hover:bg-[#f1f1f1] px-2 font-semibold text-base text-primary-200"
             @click="logout"
-            >Logout <i class="ri-logout-box-r-line"></i
-          ></span>
+          >
+            Logout <i class="ri-logout-box-r-line"></i>
+          </button>
         </div>
       </div>
       <div v-else class="flex flex-col justify-between flex-auto gap-3 px-5 py-5 pb-1">
@@ -80,9 +81,9 @@
           <span class="px-2 py-1 rounded-md flex items-center"
             ><i class="ri-shopping-cart-line text-2xl mr-3"></i>Sepetim</span
           >
-          <span class="px-2 py-1 rounded-md flex items-center"
-            ><i class="ri-heart-line text-2xl mr-3"></i>Favori Ürünlerim</span
-          >
+          <RouterLink to="/dashboard/favorite-items" class="px-2 py-1 rounded-md flex items-center">
+            <i class="ri-heart-line text-2xl mr-3"></i>Favori Ürünlerim
+          </RouterLink>
           <span
             class="flex items-center py-2 rounded-md hover:bg-[#f1f1f1] px-2 font-semibold text-base text-primary-200"
             @click="logout"
@@ -109,7 +110,8 @@ const productMenuItems = [
   { label: 'Create new product', route: '/dashboard/create-product', iconClass: 'ri-add-line' },
   { label: 'Create new brand', route: '/dashboard/create-brand', iconClass: 'ri-add-line' },
   { label: 'Create new campaign', route: '/dashboard/create-campaign', iconClass: 'ri-add-line' },
-  { label: 'Create new Category', route: '/dashboard/create-category', iconClass: 'ri-add-line' },
+  { label: 'Update campaign', route: '/dashboard/update-campaign', iconClass: 'ri-add-line' },
+  { label: 'Create new category', route: '/dashboard/create-category', iconClass: 'ri-add-line' },
 ]
 
 const showProductMenu = ref(false)

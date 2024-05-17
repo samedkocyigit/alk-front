@@ -128,7 +128,9 @@ const totalQuantity = computed(() => {
             <CartModal v-show="modal.showCart" v-touch-outside="closeModalCart" @close="closeModalCart" />
           </div>
           <div class="cursor-pointer">
-            <i class="ri-heart-line text-xl"></i>
+            <RouterLink to="/dashboard/favorite-items">
+              <i class="ri-heart-line text-xl"></i>
+            </RouterLink>
           </div>
           <ModalProfile />
           <!-- end tool left -->

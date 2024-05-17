@@ -1,5 +1,7 @@
 <script setup>
 import { ref, onBeforeMount, computed } from 'vue'
+import * as yup from 'yup'
+
 import BreadCrumb from '@/components/commons/BreadCrumb.vue'
 import AButton from '@/components/commons/atoms/AButton.vue'
 import ADropdown from '@/components/commons/atoms/ADropdown.vue'
@@ -11,6 +13,9 @@ import { AuthStore } from '@/stores/auth.store'
 const authStore = AuthStore.value
 // services
 import { getLocationApi, getShippingAddressApi } from '@/services/order.service'
+import { updateMeApi } from '@/services/user.service'
+import { toast } from 'vue3-toastify'
+import { useForm } from 'vee-validate'
 defineProps({
   type: {
     type: String,
@@ -35,8 +40,19 @@ onBeforeMount(() => {
   getShippingAddress()
   console.log('authStore', authStore)
   userData.value = { ...authStore?.user }
+  console.log('nedir :', userData.value)
 })
 
+const submit = async (val) => {
+  try {
+    console.log('val değeri', val)
+    await updateMeApi(userData.value._id, val)
+    toast.success('Güncelleme Başarılı')
+  } catch (err) {
+    console.log(err)
+    toast.error('Güncelleme Başarız')
+  }
+}
 const getLocation = async () => {
   const res = await getLocationApi()
   locations.value = res.data
@@ -99,6 +115,20 @@ const onAddNewShippingAddress = (val) => {
   console.log('onAddNewShippingAddress')
 }
 const isShowAddShippingAddress = ref(false)
+const { handleSubmit } = useForm({
+  validationSchema: yup.object({
+    name: yup.string(),
+    surname: yup.string(),
+    email: yup.string().email(),
+    phone: yup.number(),
+    gender: yup.string(),
+    taxOffice: yup.string(),
+    taxNumber: yup.number(),
+  }),
+})
+const onUpdate = () => {
+  handleSubmit(submit)()
+}
 </script>
 
 <template>
@@ -112,7 +142,7 @@ const isShowAddShippingAddress = ref(false)
     <header class="max-lg:flex-col flex gap-2 justify-between w-full pb-5">
       <!-- breadcrumb -->
       <div>
-        <h1 class="text-2xl font-semibold">Profile settings</h1>
+        <h1 class="text-2xl font-semibold">Profil Ayarları</h1>
         <BreadCrumb :routes="routes" />
       </div>
       <!-- action -->
@@ -122,7 +152,7 @@ const isShowAddShippingAddress = ref(false)
             <i class="ri-close-line"></i>
           </template>
         </AButton>
-        <AButton title="Create" class="w-fit h-fit py-2 px-3 text-white bg-blue-500" @click="onCreate">
+        <AButton title="Create" class="w-fit h-fit py-2 px-3 text-white bg-blue-500" @click="onUpdate">
           <template #left>
             <i class="ri-save-line"></i>
           </template>
@@ -130,46 +160,7 @@ const isShowAddShippingAddress = ref(false)
       </div>
     </header>
     <!-- avatar, bg -->
-    <div>
-      <div class="relative">
-        <!-- cover -->
-        <img
-          class="w-full h-[200px] object-cover rounded-md"
-          src="https://images.unsplash.com/photo-1679678691006-3afa56204979?q=80&w=1769&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          alt=""
-        />
-        <div
-          class="absolute flex items-center justify-center backdrop-blur-md top-2 left-2 rounded-lg bg-slate-100 h-8 px-3"
-        >
-          <i class="ri-image-edit-line text-primary-200 text-base"></i>
-          <span class="ml-1 text-primary-200">Change</span>
-        </div>
-        <div class="w-[120px] h-[120px] overflow-hidden rounded-full absolute -bottom-[70px] left-10 object-cover">
-          <div
-            class="absolute bottom-0 h-[40px] w-full flex justify-center items-center bg-[#a3a3a38a]"
-            @click="openChooseFile"
-          >
-            <i class="ri-image-edit-line text-white text-base"></i>
-          </div>
-          <img
-            v-if="!authStore.user.avatar"
-            class="w-full h-full rounded-full object-cover"
-            src="https://images.unsplash.com/photo-1604537529428-15bcbeecfe4d?q=80&w=1769&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-            alt=""
-          />
-          <img v-else class="w-full h-full rounded-full object-cover" :src="authStore.user.avatar" alt="" />
-          <input ref="inputFileElement" type="file" accept="image/*" style="display: none" @change="onChooseFile" />
-        </div>
-      </div>
-      <div class="pl-[180px] pt-3">
-        <div></div>
-        <p class="font-bold text-base">John Doe</p>
-        <span class="text-xs text-primary-200">
-          <i class="ri-map-pin-2-fill"></i>
-          <span class="ml-1">Hanoi, Vietnam</span>
-        </span>
-      </div>
-    </div>
+    <!--  -->
     <!-- information -->
     <div class="max-lg:flex-col w-full flex lg:flex-row-reverse gap-5 mt-10">
       <!-- position for shipping -->
@@ -215,17 +206,33 @@ const isShowAddShippingAddress = ref(false)
       </div>
       <!-- information -->
       <div class="flex-auto bg-white rounded-2xl p-5 flex flex-col gap-5">
-        <h2 class="text-lg font-semibold">Information</h2>
-        <AInput v-model="userData.name" label="Full name" placeholder="Enter your full name..." />
-        <AInput v-model="userData.email" label="Email" placeholder="Enter your email..." />
-        <AInput v-model="userData.phoneNumber" label="Phone number" placeholder="Enter your phone number..." />
-        <div class="w-full flex gap-5">
+        <h2 class="text-lg font-semibold">Üye Bilgilerim</h2>
+        <AInput v-model="name" name="name" label="Adı" :placeholder="userData.name" />
+        <AInput v-model="surname" name="surname" label="Soyadı" :placeholder="userData.surname" />
+        <AInput v-model="email" name="email" label="Email" :placeholder="userData.email" />
+        <div class="w-full">
+          <AInput
+            v-model="gender"
+            name="gender"
+            label="Cinsiyet"
+            :options="[
+              { value: 'erkek', label: 'Erkek' },
+              { value: 'kadin', label: 'Kadın' },
+              { value: 'belirtmek-istemiyorum', label: 'Belirtmek İstemiyorum' },
+            ]"
+            type="radio"
+          />
+        </div>
+        <AInput v-model="phone" name="phone" label="Telefon Numarası" :placeholder="userData.phone" />
+        <AInput v-model="taxOffice" name="taxOffice" label="Vergi Dairesi" :placeholder="userData.taxOffice" />
+        <AInput v-model="taxNumber" name="taxNumber" label="Vergi Numarası" :placeholder="userData.taxNumber" />
+        <!-- <div class="w-full flex gap-5">
           <ADropdown
             v-if="cities"
             v-model="userData.cityId"
             class="w-full h-full"
             is-required="true"
-            label="City"
+            label="Şehir"
             :options="cities"
             placeholder="Select category..."
             required
@@ -234,13 +241,13 @@ const isShowAddShippingAddress = ref(false)
             v-model="userData.districtId"
             class="w-full h-full"
             is-required="true"
-            label="District"
+            label="İlçe"
             :options="districts"
             placeholder="Select category..."
             required
           />
-        </div>
-        <AInput label="Address detail" placeholder="Enter your address..." />
+        </div> -->
+        <!-- <AInput label="Adres Detayı" placeholder="Enter your address..." /> -->
       </div>
     </div>
   </div>

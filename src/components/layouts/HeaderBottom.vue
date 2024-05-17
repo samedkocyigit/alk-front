@@ -8,7 +8,7 @@
             :key="category._id"
             class="category-container"
             :ref="(categoryRef) => (categoryRefs[index] = categoryRef)"
-            @mouseover="showSubcategories(index)"
+            @mouseenter="showSubcategories(index)"
             @mouseleave="hideSubcategories(index)"
           >
             <div class="category-item">
@@ -105,6 +105,7 @@ const hideSubcategories = () => {
 .categories-wrapper {
   display: flex;
   flex-wrap: wrap;
+  position: relative; /* Overlay'in konumunu categories-wrapper'ın içine göre belirlemek için */
 }
 
 .category-container {

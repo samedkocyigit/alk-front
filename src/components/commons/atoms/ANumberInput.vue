@@ -1,8 +1,7 @@
-<!-- ANumberInput.vue -->
 <template>
   <div class="flex border-[2px] rounded-md px-2 py-1">
     <input
-      v-model="quantity"
+      v-model="currentQuantity"
       class="py-0 border-none w-[40px]"
       style="outline: none"
       type="number"
@@ -11,7 +10,7 @@
       step="1"
       @input="updateQuantity"
     />
-    <div class="flex gap-2">
+    <div class="flex gap-3">
       <!-- decrease btn -->
       <button class="bg-primary-300 rounded-sm w-6 h-full" @click="decreaseQuantity">-</button>
       <!-- increase btn -->
@@ -21,7 +20,9 @@
 </template>
 
 <script setup>
-import { ref, defineProps, defineEmits } from 'vue'
+import { addToCartApi, decreaseFromCartApi } from '@/services/cart.service'
+import store from '@/stores/master.store'
+import { ref, computed, defineProps, defineEmits } from 'vue'
 
 const props = defineProps({
   maxQuantity: {
@@ -42,32 +43,61 @@ const emits = defineEmits(['update:modelValue'])
 
 const quantity = ref(props.initialValue)
 
+const currentQuantity = computed({
+  get() {
+    return props.item ? props.item.quantity : quantity.value
+  },
+  set(value) {
+    if (props.item) {
+      props.item.quantity = value
+    } else {
+      quantity.value = value
+    }
+    emits('update:modelValue', value)
+  },
+})
+
 const updateQuantity = (event) => {
   const newValue = parseInt(event.target.value)
-  quantity.value = isNaN(newValue) ? 1 : newValue
-  emits('update:modelValue', quantity.value)
+  currentQuantity.value = isNaN(newValue) ? 1 : newValue
 }
 
 const increaseAndAddToCart = () => {
   if (props.item) {
-    // Eğer item varsa, addToCart fonksiyonunu çağır
-    addToCart()
+    if (props.item.quantity >= 1) {
+      addToCart(props.item.product._id)
+    }
   } else {
-    // Eğer item yoksa, sadece quantity değerini artır
-    quantity.value++
-    emits('update:modelValue', quantity.value)
+    currentQuantity.value++
   }
 }
 
 const decreaseQuantity = () => {
-  if (quantity.value > 1) {
-    quantity.value--
-    emits('update:modelValue', quantity.value)
+  if (currentQuantity.value > 1) {
+    if (props.item) {
+      decreaseFromCart(props.item.product._id)
+    } else {
+      currentQuantity.value--
+    }
   }
 }
 
-const addToCart = () => {
-  // Burada item bilgisini kullanarak addToCart fonksiyonunu çağırabilirsiniz
+const decreaseFromCart = async (id) => {
+  const res = await decreaseFromCartApi(store.state.cart._id, {
+    items: [
+      {
+        product: id,
+        quantity: 1,
+      },
+    ],
+  })
+  store.dispatch('updateCart', res.data.data.data)
+}
+const addToCart = async (id) => {
+  const res = await addToCartApi(store.state.cart._id, {
+    items: [{ product: id, quantity: 1 }],
+  })
+  store.dispatch('updateCart', res.data.data.data)
 }
 </script>
 

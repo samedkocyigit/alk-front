@@ -143,7 +143,6 @@ const getProduct = async () => {
   try {
     const res = await getProductApi(route.params.id)
     product.value = res.data.data
-    console.log('product brand', product.value.data.brand)
     shopDetail.value = product.value.data.brand
 
     // // Kategori ve alt kategori bilgilerini bulma

@@ -5,7 +5,7 @@
         <BreadCrumb :routes="routes" />
       </div>
       <div class="w-full flex flex-col gap-10">
-        <p class="text-3xl font-bold">Checkout({{ store.state.cart.items.length }})</p>
+        <p class="text-3xl font-bold">Sepetim({{ store.state.cart.items.length }})</p>
         <div class="flex flex-row-reverse gap-20">
           <div>
             <ShippingAddressDropdown v-model="shippingAddressId" />
@@ -19,11 +19,11 @@
                   <p class="text-base font-semibold">{{ store.state.cart.totalPrice }} TL</p>
                 </div>
                 <div class="flex justify-between items-center">
-                  <p class="text-base font-medium">Shipping</p>
+                  <p class="text-base font-medium">Kargo</p>
                   <p class="text-base font-semibold">100 TL</p>
                 </div>
                 <div class="flex justify-between items-center">
-                  <p class="text-base font-medium">Tax</p>
+                  <p class="text-base font-medium">Kdv</p>
                   <p class="text-base font-semibold">{{ store.state.cart.totalPrice * 0.2 }} TL</p>
                 </div>
               </div>

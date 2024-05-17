@@ -6,14 +6,8 @@ import store from './master.store'
 
 export const initMasterStore = async () => {
   try {
-    store
-      .dispatch('initCategories')
-      .then(() => {
-        console.log('initCategories action başarıyla çağrıldı')
-      })
-      .catch((error) => {
-        console.error('initCategories action çağrılırken hata oluştu:', error)
-      })
+    store.dispatch('initCategories')
+    store.dispatch('initSliders')
     store.dispatch('initBrands')
     await createEmptyCart()
   } catch (error) {

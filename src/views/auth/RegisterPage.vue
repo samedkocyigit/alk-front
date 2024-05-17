@@ -11,24 +11,10 @@
         </div>
         <div class="w-full flex flex-col items-center justify-center mt-10">
           <div class="w-full">
-            <AInput
-              v-model="name"
-              label="Name"
-              name="name"
-              style-custom="border-[#AFA2C3]"
-              is-required
-              placeholder="Enter your name..."
-            />
+            <AInput v-model="name" label="Name" name="name" style-custom="border-[#AFA2C3]" is-required />
           </div>
           <div class="w-full">
-            <AInput
-              v-model="surname"
-              label="Surname"
-              name="surname"
-              style-custom="border-[#AFA2C3]"
-              is-required
-              placeholder="Enter your surname..."
-            />
+            <AInput v-model="surname" label="Surname" name="surname" style-custom="border-[#AFA2C3]" is-required />
           </div>
           <div class="w-full">
             <AInput
@@ -37,7 +23,6 @@
               name="email"
               style-custom="border-[#AFA2C3]"
               is-required
-              placeholder="Enter your email..."
               type="email"
             />
           </div>
@@ -48,46 +33,15 @@
               name="password"
               style-custom="border-[#AFA2C3]"
               is-required
-              placeholder="Enter your password..."
               type="password"
             />
           </div>
-          <!-- <div class="w-full">
-            <AInput
-              v-model="gender"
-              label="Cinsiyet"
-              name="gender"
-              style-custom="border-[#AFA2C3]"
-              is-required
-              placeholder="Enter your gender..."
-            />
-          </div> -->
-          <!-- <div class="w-full">
-            <div class="flex flex-col gap-0 w-full">
-              <p class="font-medium text-gray-700 text-base mb-2">Cinsiyet <span class="text-rose-600">*</span></p>
-            </div>
-            <div class="flex flex-row space-x-6">
-              <label class="inline-flex items-center" for="erkek">
-                <input v-model="gender" name="gender" type="radio" value="erkek" />
-                <span class="ml-2">Erkek</span>
-              </label>
-              <label class="inline-flex items-center" for="kadin">
-                <input v-model="gender" name="gender" type="radio" value="kadin" />
-                <span class="ml-2">Kadin</span>
-              </label>
-              <label class="inline-flex items-center" for="belirtmek">
-                <input v-model="gender" name="gender" type="radio" value="belirtmek-istemiyorum" />
-                <span class="ml-2">Belirtmek İstemiyorum</span>
-              </label>
-            </div>
-          </div> -->
           <div class="w-full">
             <AInput
               v-model="gender"
               name="gender"
               label="Cinsiyet"
               is-required
-              placeholder="Cinsiyetinizi seçin..."
               :options="[
                 { value: 'erkek', label: 'Erkek' },
                 { value: 'kadin', label: 'Kadın' },
@@ -103,8 +57,14 @@
               name="phone"
               label="İlgili Cep Telefonu"
               style-custom="border-[#AFA2C3]"
-              placeholder="Enter your phone number..."
+              placeholder="(5XX) XXX XX XX "
             />
+          </div>
+          <div class="w-full">
+            <AInput v-model="taxOffice" label="Vergi Dairesi" name="taxOffice" style-custom="border-[#AFA2C3]" />
+          </div>
+          <div class="w-full">
+            <AInput v-model="taxNumber" label="Vergi No" name="taxNumber" style-custom="border-[#AFA2C3]" />
           </div>
           <!-- forgot -->
           <div class="w-full flex justify-end mt-2">
@@ -170,6 +130,8 @@ const { handleSubmit } = useForm({
     password: yup.string().required().min(8, 'Password must contain at least 8 characters'),
     phone: yup.number(),
     gender: yup.string().required(),
+    taxOffice: yup.string(),
+    taxNumber: yup.number(),
   }),
 })
 
