@@ -43,6 +43,11 @@ const routes = [
     component: () => import('@/views/checkout/CheckoutFromCart.vue'),
   },
   {
+    path: '/favorite-items',
+    name: 'favorite-items',
+    component: () => import('@/views/dashboard/FavoriteItems.vue'),
+  },
+  {
     path: '/checkout/:id',
     name: 'checkout-direct',
     component: () => import('@/views/checkout/CheckoutDirect.vue'),
@@ -99,6 +104,12 @@ const routes = [
         component: () => import('@/views/dashboard/CreateCampaignView.vue'),
       },
       {
+        path: 'update-campaign',
+        name: 'update-campaign',
+        meta: { requiresAuth: true },
+        component: () => import('@/views/dashboard/UpdateCampaignView.vue'),
+      },
+      {
         path: 'update-product/:id',
         name: 'update-product',
         meta: { requiresAuth: true },
@@ -118,6 +129,12 @@ const routes = [
         },
         meta: { requiresAuth: true },
         component: () => import('@/views/dashboard/ProfileSetting.vue'),
+      },
+      {
+        path: 'favorite-items',
+        name: 'favorite-items',
+        meta: { requiresAuth: true },
+        component: () => import('@/views/dashboard/FavoriteItems.vue'),
       },
     ],
   },
