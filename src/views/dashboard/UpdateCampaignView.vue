@@ -11,7 +11,7 @@ import ADropdown from '@/components/commons/atoms/ADropdown.vue'
 import { useForm } from 'vee-validate'
 import * as yup from 'yup'
 import { toast } from 'vue3-toastify'
-import { createSliderApi } from '@/services/slider.service'
+import { updateSliderApi } from '@/services/slider.service'
 import store from '@/stores/master.store'
 
 const selectedSlider = ref(null)
@@ -60,16 +60,13 @@ const handleFileChange = (event, type) => {
   }
 }
 
-const onCreate = async (val) => {
-  const { name } = val
-
+const onCreate = async () => {
   const data = {
-    name: name,
     photos: [base64MainSlider.value, base64Thumbnail.value],
   }
-
+  console.log('sssssssss', selectedSlider.value)
   try {
-    await createSliderApi(data)
+    await updateSliderApi(selectedSlider.value, data)
     toast.success('Creation success!')
     base64MainSlider.value = ''
     base64Thumbnail.value = ''
@@ -81,7 +78,7 @@ const onCreate = async (val) => {
 
 const { handleSubmit } = useForm({
   validationSchema: yup.object({
-    name: yup.string().required(),
+    name: yup.string(),
   }),
 })
 
@@ -103,12 +100,7 @@ const onRegister = () => {
         <BreadCrumb :routes="routes" />
       </div>
       <div class="flex gap-2">
-        <AButton
-          title="Cancel"
-          type="cancel"
-          class="w-fit h-fit py-2 px-3 bg-slate-200 text-primary-200"
-          @click="onRegister"
-        >
+        <AButton title="Cancel" type="cancel" class="w-fit h-fit py-2 px-3 bg-slate-200 text-primary-200">
           <template #left>
             <i class="ri-close-line"></i>
           </template>
@@ -120,35 +112,11 @@ const onRegister = () => {
         </AButton>
       </div>
     </header>
+
     <div class="max-lg:flex-col flex w-full mt-5 gap-10 h-min">
       <div class="max-md:px-4 flex-1 h-full bg-white p-7 border-[1px] rounded-2xl">
         <div class="flex flex-col w-full gap-6">
-          <div class="w-full">
-            <AInput v-model="name" name="name" is-required label="Product Name" placeholder="Enter name..." />
-          </div>
-          <div>
-            <p>Select Main Slider Photo</p>
-            <input type="file" ref="fileInputMain" @change="(event) => handleFileChange(event, 'main')" />
-          </div>
-          <div>
-            <p>Select Thumbnail Photo</p>
-            <input type="file" ref="fileInputThumb" @change="(event) => handleFileChange(event, 'thumb')" />
-          </div>
-          <p class="text-red-500">{{ errorMessage }}</p>
-        </div>
-      </div>
-    </div>
-    <div class="max-lg:flex-col flex w-full mt-5 gap-10 h-min">
-      <div class="max-md:px-4 flex-1 h-full bg-white p-7 border-[1px] rounded-2xl">
-        <div class="flex flex-col w-full gap-6">
-          <ADropdown
-            v-model="selectedSlider"
-            class="w-full h-full"
-            is-required="true"
-            label="Başlıklar"
-            :options="slidersOptions"
-            required
-          />
+          <ADropdown v-model="selectedSlider" class="w-full h-full" label="Başlıklar" :options="slidersOptions" />
           <div>
             <p>Select Main Slider Photo</p>
             <input type="file" ref="fileInputMain" @change="(event) => handleFileChange(event, 'main')" />
