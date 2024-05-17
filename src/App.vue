@@ -16,7 +16,7 @@ const layout = computed(() => {
 <template>
   <component :is="layout">
     <router-view />
-    <ConfirmModal />
+    <!-- <ConfirmModal /> -->
   </component>
 </template>
 

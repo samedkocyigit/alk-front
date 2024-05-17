@@ -6,6 +6,9 @@ import LazyImg from '../commons/atoms/LazyImg.vue'
 import { addToCartApi } from '@/services/cart.service'
 import { toast } from 'vue3-toastify'
 import store from '@/stores/master.store'
+import { AuthStore } from '@/stores/auth.store'
+import { updateUserApi } from '@/services/user.service'
+const authStore = AuthStore.value
 
 const props = defineProps({
   product: {
@@ -28,10 +31,18 @@ onMounted(() => {
   console.log('Fotoğraf Adı:', props.product.photos[0])
 })
 
-const toggleFavorite = () => {
+const toggleFavorite = async () => {
+  const userId = authStore.user._id
+  const productId = props.product._id
   isFavorite.value = !isFavorite.value
   if (isFavorite.value) {
+    await updateUserApi(userId, {
+      $push: { favoriteItems: productId },
+    })
   } else {
+    await updateUserApi(userId, {
+      $pull: { favoriteItems: productId },
+    })
   }
 }
 const addItemToCart = async () => {
@@ -58,7 +69,22 @@ const addItemToCart = async () => {
     class="container"
     :class="`flex flex-col h-[330px] overflow-hidden product-card-shadow bg-white rounded-xl ${width}`"
   >
-    <div class="fav-icon-container" @mouseover="hovering = true" @mouseleave="hovering = false" @click="toggleFavorite">
+    <div
+      v-if="authStore.isLoggedIn === false"
+      class="fav-icon-container"
+      @mouseover="hovering = true"
+      @mouseleave="hovering = false"
+      @click="toggleFavorite"
+    >
+      <router-link to="/users/login">
+        <i
+          class="ri-heart-line"
+          :class="{ 'ri-heart-fill': isFavorite, 'text-yellow-500': isFavorite }"
+          :title="hovering ? 'Favorilere Ekle' : ''"
+        ></i>
+      </router-link>
+    </div>
+    <div v-else class="fav-icon-container" @click="toggleFavorite">
       <i
         class="ri-heart-line"
         :class="{ 'ri-heart-fill': isFavorite, 'text-yellow-500': isFavorite }"
@@ -66,7 +92,7 @@ const addItemToCart = async () => {
       ></i>
     </div>
     <RouterLink :to="`/products/${product.id}`">
-      <LazyImg class-style="h-[180px] object-cover w-full" :src="`./images/products/${photoName}`" alt="" />
+      <LazyImg class-style="h-[160px] object-cover w-full" :src="`./images/products/${photoName}`" alt="" />
     </RouterLink>
     <div class="product-info">
       <div>
@@ -110,6 +136,9 @@ const addItemToCart = async () => {
 }
 
 .fav-icon-container i.ri-heart-fill {
+  color: #ffcc00;
+}
+.fav-icon-container:hover {
   color: #ffcc00;
 }
 

@@ -36,7 +36,6 @@ watch(
 
 const currentImageSelected = ref(null)
 onMounted(() => {
-  console.log('ne geliyo allah bilir', listImages.value.url)
   currentImageSelected.value = listImages.value[0]
   // currentImageSelected.value = listImages.value
 
@@ -44,7 +43,6 @@ onMounted(() => {
 })
 
 const hoverOnChange = (index) => {
-  console.log('hoverOnChange', index)
   currentImageSelected.value = listImages.value[index]
 }
 
