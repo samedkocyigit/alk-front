@@ -52,11 +52,13 @@ import { getCartApi } from '@/services/cart.service'
 import { createStore } from 'vuex'
 import { getCategoriesApi } from '@/services/category.service'
 import { getBrandsApi } from '@/services/brand.service'
+import { getSlidersApi } from '@/services/slider.service'
 
 const store = createStore({
   state: {
     categories: [],
     brands: [],
+    sliders: [],
     cart: {
       items: [], // Her bir öğe için { product: {}, quantity: 0 } şeklinde olacak
       totalPrice: 0,
@@ -71,6 +73,9 @@ const store = createStore({
     },
     setCart(state, cart) {
       state.cart = cart
+    },
+    setSliders(state, sliders) {
+      state.sliders = sliders
     },
     setUserCart(state, cart) {
       state.cart = cart
@@ -92,6 +97,15 @@ const store = createStore({
       try {
         const { data } = await getBrandsApi()
         commit('setBrands', data.data)
+      } catch (err) {
+        console.log('setBrands Hatası', err)
+      }
+    },
+    async initSliders({ commit }) {
+      try {
+        const { data } = await getSlidersApi()
+        console.log('olmayacak iş ya', data.data)
+        commit('setSliders', data.data)
       } catch (err) {
         console.log('setBrands Hatası', err)
       }
