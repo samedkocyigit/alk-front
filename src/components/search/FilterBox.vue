@@ -25,12 +25,12 @@
 <script setup>
 import ADropdownStatic from '@/components/commons/atoms/ADropdownStatic.vue'
 import { computed, ref, watch, onBeforeMount } from 'vue'
-import { useMasterStore } from '@/stores/master.store'
+// import { useMasterStore } from '@/stores/master.store'
 import { useRouter, useRoute } from 'vue-router'
 const route = useRoute()
 const router = useRouter()
 const routeQuery = computed(() => route.query)
-const masterStore = useMasterStore.value
+// const masterStore = useMasterStore.value
 const currentCategory = ref([])
 const currentCondition = ref(null)
 

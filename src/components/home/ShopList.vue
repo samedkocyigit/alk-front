@@ -38,7 +38,7 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-  <div class="w-full mt-20">
+  <div class="w-full">
     <div class="w-full flex p-4 gap-4 relative">
       <swiper
         style="padding: 0 8px 10px 8px"

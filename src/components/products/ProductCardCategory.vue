@@ -17,7 +17,7 @@ const props = defineProps({
   },
   width: {
     type: String,
-    default: 'w-[180px]',
+    default: 'w-[250px]',
   },
 })
 
@@ -28,7 +28,6 @@ const hovering = ref(false)
 // Bileşen yüklendiğinde fotoğraf adını consola yazdır
 onMounted(() => {
   photoName.value = props.product.photos[0]
-  console.log('Fotoğraf Adı:', props.product.photos[0])
 })
 
 const toggleFavorite = async () => {
@@ -65,10 +64,7 @@ const addItemToCart = async () => {
 </script>
 
 <template>
-  <div
-    class="container"
-    :class="`flex flex-col h-[330px] overflow-hidden product-card-shadow bg-white rounded-xl ${width}`"
-  >
+  <div class="container" :class="`flex flex-col overflow-hidden bg-white rounded-xl ${width}`">
     <div
       v-if="authStore.isLoggedIn === false"
       class="fav-icon-container"
