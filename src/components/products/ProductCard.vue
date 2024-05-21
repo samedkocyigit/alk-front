@@ -92,7 +92,11 @@ const addItemToCart = async () => {
       ></i>
     </div>
     <RouterLink :to="`/products/${product.id}`">
-      <LazyImg class-style="h-[160px] object-cover w-full" :src="`./images/products/${photoName}`" alt="" />
+      <LazyImg
+        class-style="h-[160px] object-cover w-full"
+        :src="`../../../public/images/products/${photoName}`"
+        alt=""
+      />
     </RouterLink>
     <div class="product-info">
       <div>

@@ -20,9 +20,10 @@ onMounted(() => {
   console.log('Brand Img Adi:', brandsImg.value)
 })
 </script>
+
 <template>
   <div
-    :class="`flex flex-col overflow-hidden product-card-shadow bg-white rounded-xl border ${width}`"
+    :class="`flex flex-col overflow-hidden product-card-shadow bg-white rounded-xl border-2 ${width}`"
     style="height: 80px"
   >
     <!-- <img :src="`./images/brands/${brandsImg}`" alt="" style="max-height: 70px; width: auto" /> -->
