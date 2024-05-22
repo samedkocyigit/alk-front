@@ -78,15 +78,13 @@
           <span class="px-2 py-1 rounded-md flex items-center"
             ><i class="ri-handbag-fill text-2xl mr-3"></i>Siparişlerim</span
           >
-          <span class="px-2 py-1 rounded-md flex items-center"
-            ><i class="ri-shopping-cart-line text-2xl mr-3"></i>Sepetim</span
-          >
+          <RouterLink to="/checkout" class="px-2 py-1 rounded-md flex items-start">
+            <i class="ri-shopping-cart-line text-2xl mr-3"></i>Sepetim
+          </RouterLink>
           <RouterLink to="/dashboard/favorite-items" class="px-2 py-1 rounded-md flex items-center">
             <i class="ri-heart-line text-2xl mr-3"></i>Favori Ürünlerim
           </RouterLink>
-          <span
-            class="flex items-center py-2 rounded-md hover:bg-[#f1f1f1] px-2 font-semibold text-base text-primary-200"
-            @click="logout"
+          <span class="flex gap-2 py-2 px-2 mt-2 hover:bg-slate-100 rounded-lg cursor-pointer" @click="logout"
             >Logout <i class="ri-logout-box-r-line"></i
           ></span>
         </div>
@@ -98,11 +96,11 @@
 </template>
 <script setup>
 // eslint-disable-next-line no-unused-vars
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 const route = useRoute()
 import { AuthStore } from '@/stores/auth.store'
-import axios from 'axios'
+import { logoutApi } from '@/services/auth.service'
 const authStore = AuthStore.value
 const tabRoute = ref(['create-product', 'manage-product', 'profile-settings'])
 
@@ -121,11 +119,7 @@ const toggleProductMenu = () => {
 }
 
 const logout = async () => {
-  await axios({
-    method: 'GET',
-    url: 'http://127.0.0.1:3000/users/logout',
-    data: null,
-  })
+  await logoutApi()
   localStorage.removeItem('access_token')
   authStore.isLoggedIn = false
   authStore.user = null

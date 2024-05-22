@@ -11,8 +11,8 @@
               <img src="../../../public/images/logo.png" alt="" class="logo-img" />
             </div>
           </RouterLink>
-          <p class="text-3xl font-bold">Login</p>
-          <p class="text-base font-medium mt-2">Login to your account</p>
+          <p class="text-3xl font-bold">Üye Girişi</p>
+          <p class="text-base font-medium mt-2">Hesabınıza Giriş Yapın</p>
         </div>
         <div class="w-full flex flex-col items-center justify-center mt-10">
           <div class="w-full">
@@ -21,37 +21,37 @@
               label="Email"
               style-custom="border-[#AFA2C3]"
               is-required
-              placeholder="Enter Email..."
+              placeholder="Email giriniz..."
             />
           </div>
           <div class="w-full mt-5">
             <AInput
               name="password"
-              label="Password"
+              label="Şifre"
               style-custom="border-[#AFA2C3]"
               is-required
-              placeholder="Enter Password..."
+              placeholder="Şifrenizi giriniz..."
               type="password"
             />
           </div>
           <!-- forgot -->
           <div class="w-full flex justify-end mt-2">
-            <RouterLink to="/forgot-password" class="text-[#3E334E] text-sm font-medium">Forgot password?</RouterLink>
+            <RouterLink to="/forgot-password" class="text-[#3E334E] text-sm font-medium">Şifremi Unuttum</RouterLink>
           </div>
           <div class="w-full flex gap-3 mt-5">
             <button class="bg-[#3E334E] text-white flex-[1] w-full py-3 font-bold rounded-lg" @click="onLogin">
-              Login
+              Giriş Yap
             </button>
             <RouterLink
               to="/register"
               class="block text-center border-[1px] border-[#3E334E] text-[#3E334E] flex-[1] w-full font-bold py-3 rounded-lg"
             >
-              Sign up
+              Üye Ol
             </RouterLink>
           </div>
           <!-- copyright -->
           <div class="w-full flex justify-center mt-5">
-            <p class="text-[#3E334E] text-sm font-medium">© 2021 superbadstore</p>
+            <p class="text-[#3E334E] text-sm font-medium">© 2024 superbadstore</p>
           </div>
         </div>
       </div>
@@ -75,42 +75,38 @@ const router = useRouter()
 const submit = async (val) => {
   try {
     const res = await loginApi(val)
+    if (res.status === 200) {
+      const token = res.data.token
+      const user = res.data.data.data
+      localStorage.setItem('access_token', token)
+      console.log('responseUser-->', user)
 
-    const token = res.data.token
-    const user = res.data.data.data
-    localStorage.setItem('access_token', token)
+      await loginAuthStore(user)
+      const redirect = localStorage.getItem('redirect')
 
-    console.log('responseUser-->', user)
-    if (res.status >= 400) {
-      throw new Error('HTTP Error: ' + res.statusText)
-    }
-
-    await loginAuthStore(user)
-    const redirect = localStorage.getItem('redirect')
-
-    if (store.state.cart.items.length > 0) {
-      await addToCartApi(user.cart, {
-        items: store.state.cart.items,
-      })
-    }
-
-    // if (store.state.cart.userId === null) {
-    //   console.log('bu nasıl null amk', store.state.cart)
-    //   await removeCartApi(store.state.cart._id)
-    // }
-
-    const response = await getCartApi(user.cart)
-    store.dispatch('cartConvert', response.data.data.data)
-
-    if (redirect) {
-      router.push(redirect)
+      if (store.state.cart.items.length > 0) {
+        await addToCartApi(user.cart, {
+          items: store.state.cart.items,
+        })
+      }
+      const response = await getCartApi(user.cart)
+      store.dispatch('cartConvert', response.data.data.data)
+      if (redirect) {
+        // router.push(redirect)
+      } else {
+        // router.push('/')
+        localStorage.removeItem('redirect')
+      }
     } else {
-      router.push('/')
-      localStorage.removeItem('redirect')
+      console.log('girmiyo mu la')
+      // throw new Error('Invalid response status: ' + res.status)
     }
   } catch (err) {
-    console.log(err)
-    toast.error(' Incorrect email or password')
+    console.error(err) // Hata detaylarını konsola yazdır
+    if (router.currentRoute.value.path !== '/login') {
+      router.push('/login')
+    }
+    toast.error('Incorrect email or password')
   }
 }
 

@@ -3,7 +3,7 @@
     <input
       v-model="keyword"
       type="text"
-      placeholder="Enter product..."
+      placeholder="Site içi ürün arama..."
       style="outline: none; border: none !important"
       class="h-full w-full border-0 bg-transparent rounded-md"
       @keyup.enter="onSearch"
