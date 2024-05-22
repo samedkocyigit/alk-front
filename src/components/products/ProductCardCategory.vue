@@ -17,7 +17,7 @@ const props = defineProps({
   },
   width: {
     type: String,
-    default: 'w-[250px]',
+    default: 'w-[220px]',
   },
 })
 
@@ -28,6 +28,13 @@ const hovering = ref(false)
 // Bileşen yüklendiğinde fotoğraf adını consola yazdır
 onMounted(() => {
   photoName.value = props.product.photos[0]
+
+  if (authStore.isLoggedIn) {
+    const favoriteItems = Array.from(authStore.user.favoriteItems)
+    const productId = props.product._id
+    const isFavoriteProduct = favoriteItems.some((item) => item._id === productId)
+    isFavorite.value = isFavoriteProduct
+  }
 })
 
 const toggleFavorite = async () => {
@@ -64,7 +71,7 @@ const addItemToCart = async () => {
 </script>
 
 <template>
-  <div class="container" :class="`flex flex-col overflow-hidden bg-white rounded-xl ${width}`">
+  <div class="container" :class="`flex flex-col h-[330px] overflow-hidden bg-white rounded-xl ${width}`">
     <div
       v-if="authStore.isLoggedIn === false"
       class="fav-icon-container"
@@ -89,7 +96,7 @@ const addItemToCart = async () => {
     </div>
     <RouterLink :to="`/products/${product.id}`">
       <LazyImg
-        class-style="h-[160px] object-cover w-full"
+        class-style="h-[180px] object-cover w-full"
         :src="`../../../public/images/products/${photoName}`"
         alt=""
       />
