@@ -1,60 +1,76 @@
-<script setup>
-import { ref, onBeforeMount, nextTick } from 'vue'
+<script>
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import 'swiper/css'
 
+// install Swiper modules
+
 import { getBrandsApi } from '@/services/brand.service'
-import BrandCard from './BrandCard.vue'
 
-const mySwiper = ref(null)
-const brands = ref([])
-const loading = ref(true)
-
-async function fetchBrands() {
-  try {
-    const res = await getBrandsApi()
-    brands.value = res.data.data
-    loading.value = false
-  } catch (error) {
-    console.log('hata:', error.message)
-    loading.value = false
-  }
-}
-
-const onSwiper = (swiper) => {
-  mySwiper.value = swiper
-  console.log('mySwiper', mySwiper.value)
-}
-
-onBeforeMount(async () => {
-  await fetchBrands()
-  // mySwiper ref'i null olmadığından ve autoplay özelliğine sahip olduğundan emin olun
-  nextTick(() => {
-    if (mySwiper.value && mySwiper.value.autoplay) {
-      mySwiper.value.autoplay.start()
+export default {
+  name: 'BrandSlider',
+  components: {
+    Swiper,
+    SwiperSlide,
+  },
+  data() {
+    return {
+      mySwiper: null,
+      brands: [],
+      loading: true,
     }
-  })
-})
+  },
+  methods: {
+    async fetchBrands() {
+      try {
+        const res = await getBrandsApi()
+        this.brands = res.data.data
+        this.loading = false
+      } catch (error) {
+        console.log('hata:', error.message)
+        this.loading = false
+      }
+    },
+    onSwiper(swiper) {
+      this.mySwiper = swiper
+      console.log('mySwiper', this.mySwiper)
+    },
+  },
+  mounted() {
+    this.fetchBrands()
+  },
+}
 </script>
 
 <template>
   <div class="w-full">
     <div class="w-full flex p-4 gap-4 relative">
-      <swiper
+      <Swiper
         style="padding: 0 8px 10px 8px"
         class="w-full pb-2"
         :slides-per-view="'auto'"
         :space-between="10"
         :loop="true"
-        :autoplay="{ delay: 3000, disableOnInteraction: false }"
-        @Swiper="onSwiper"
+        :autoplay="{ delay: 3000 }"
+        @swiper="onSwiper"
       >
-        <swiper-slide v-for="brand in brands.data" :key="brand._id" style="width: auto" class="w-fit">
-          <RouterLink :key="brand._id" :to="`/brands/${brand._id}`">
-            <BrandCard :brand="brand" />
+        <SwiperSlide v-for="brand in brands.data" :key="brand._id" style="width: auto" class="w-fit">
+          <RouterLink :to="`/brands/${brand._id}`">
+            <div class="rounded-xl border-2">
+              <img
+                v-if="brand.photos && brand.photos.length > 0"
+                class="h-[70px] object-cover w-full"
+                :src="`/images/brands/${brand.photos[0]}`"
+                alt=""
+                style="max-height: 100px; max-width: 100%"
+              />
+            </div>
           </RouterLink>
-        </swiper-slide>
-      </swiper>
+        </SwiperSlide>
+      </Swiper>
     </div>
   </div>
 </template>
+
+<style scoped>
+/* Add any custom styles here */
+</style>
