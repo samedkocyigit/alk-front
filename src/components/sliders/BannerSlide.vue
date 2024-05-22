@@ -1,69 +1,3 @@
-<script setup>
-import { ref } from 'vue'
-import { Swiper, SwiperSlide } from 'swiper/vue'
-import 'swiper/css'
-
-import { getSlidersApi } from '@/services/slider.service'
-import LazyImg from '../commons/atoms/LazyImg.vue'
-
-const mySwiper = ref(null)
-const banners = ref([])
-const loading = ref(true)
-const filteredImages = ref([])
-const selectedSliderType = ref('Kampanyalar')
-
-const filterImagesBySliderType = () => {
-  const selectedSlider = banners.value.data.find((slider) => slider.name === selectedSliderType.value)
-  filteredImages.value = selectedSlider ? selectedSlider.photos : []
-}
-
-async function fetchBanner() {
-  try {
-    const response = await getSlidersApi()
-    if (response.status !== 200) {
-      throw new Error('Fetch işlemi başarısız')
-    }
-    banners.value = response.data.data
-    filterImagesBySliderType()
-  } catch (err) {
-    console.error('Hata', err.message)
-  } finally {
-    loading.value = false
-  }
-}
-
-const onSwiper = (swiper) => {
-  mySwiper.value = swiper
-}
-
-fetchBanner()
-
-const selectSlider = (sliderName) => {
-  selectedSliderType.value = sliderName
-  filterImagesBySliderType()
-}
-
-const slideToPrev = () => {
-  if (mySwiper.value) {
-    mySwiper.value.slidePrev()
-  }
-}
-
-const slideToNext = () => {
-  if (mySwiper.value) {
-    mySwiper.value.slideNext()
-  }
-}
-
-const showImage = (index) => {
-  if (mySwiper.value) {
-    mySwiper.value.slideTo(index)
-  } else {
-    console.error('Swiper nesnesi henüz yüklenmedi.')
-  }
-}
-</script>
-
 <template>
   <div class="w-full relative z-[1]">
     <div class="absolute top-0 left-0 w-full flex justify-center space-x-4 p-2 z-[3]">
@@ -88,7 +22,7 @@ const showImage = (index) => {
       @swiper="onSwiper"
     >
       <SwiperSlide v-for="(image, index) in filteredImages" :key="index" class="w-full">
-        <img :src="`../../../public/images/campaigns/${image.url}`" alt="Campaign Image" class="w-full" />
+        <img :src="`/images/campaigns/${image.url}`" alt="Campaign Image" class="w-full" />
       </SwiperSlide>
     </Swiper>
     <div
@@ -101,9 +35,9 @@ const showImage = (index) => {
       <img
         v-for="(image, index) in filteredImages"
         :key="index"
-        :src="`../../../public/images/campaigns/${image.thumbNail}`"
-        class="thumb"
-        @click="showImage(index)"
+        :src="`/images/campaigns/${image.thumbNail}`"
+        :class="{ thumb: true, selected: index === selectedIndex }"
+        @mouseover="showImage(index)"
       />
       <div class="arrow-right" @click="slideToNext">
         <i class="ri-arrow-right-s-line" style="font-size: 40px; color: white"></i>
@@ -111,6 +45,95 @@ const showImage = (index) => {
     </div>
   </div>
 </template>
+
+<script>
+import { Swiper, SwiperSlide } from 'swiper/vue'
+import 'swiper/css'
+import { getSlidersApi } from '@/services/slider.service'
+
+export default {
+  name: 'BannerSlider',
+  components: {
+    Swiper,
+    SwiperSlide,
+  },
+  data() {
+    return {
+      mySwiper: null,
+      banners: [],
+      loading: true,
+      filteredImages: [],
+      selectedSliderType: 'Kampanyalar',
+      selectedIndex: 0,
+      ignoreNextSlideChange: false, // Swiper olayını tetiklememek için bayrak
+    }
+  },
+  methods: {
+    async fetchBanner() {
+      try {
+        const response = await getSlidersApi()
+        if (response.status !== 200) {
+          throw new Error('Fetch işlemi başarısız')
+        }
+        this.banners = response.data.data
+        this.filterImagesBySliderType()
+      } catch (err) {
+        console.error('Hata', err.message)
+      } finally {
+        this.loading = false
+      }
+    },
+    filterImagesBySliderType() {
+      const selectedSlider = this.banners.data.find((slider) => slider.name === this.selectedSliderType)
+      this.filteredImages = selectedSlider ? selectedSlider.photos : []
+      this.selectedIndex = 0
+      if (this.mySwiper) {
+        this.mySwiper.slideToLoop(0)
+      }
+    },
+    onSwiper(swiper) {
+      this.mySwiper = swiper
+      swiper.on('slideChange', () => {
+        if (!this.ignoreNextSlideChange) {
+          this.selectedIndex = swiper.realIndex
+        }
+        this.ignoreNextSlideChange = false
+      })
+    },
+    selectSlider(sliderName) {
+      this.selectedSliderType = sliderName
+      this.filterImagesBySliderType()
+    },
+    slideToPrev() {
+      if (this.mySwiper) {
+        this.ignoreNextSlideChange = true
+        this.mySwiper.slidePrev()
+        this.updateSelectedIndex(this.mySwiper.realIndex)
+      }
+    },
+    slideToNext() {
+      if (this.mySwiper) {
+        this.ignoreNextSlideChange = true
+        this.mySwiper.slideNext()
+        this.updateSelectedIndex(this.mySwiper.realIndex)
+      }
+    },
+    showImage(index) {
+      if (this.mySwiper) {
+        this.ignoreNextSlideChange = true
+        this.mySwiper.slideToLoop(index)
+        this.updateSelectedIndex(index)
+      }
+    },
+    updateSelectedIndex(index) {
+      this.selectedIndex = index
+    },
+  },
+  mounted() {
+    this.fetchBanner()
+  },
+}
+</script>
 
 <style scoped>
 .btn {
@@ -142,7 +165,6 @@ const showImage = (index) => {
   object-fit: cover;
   border-radius: 0.5rem;
   cursor: pointer;
-  border: 2px solid white;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -157,7 +179,8 @@ const showImage = (index) => {
   border: 2px solid white;
 }
 
-.thumb:hover {
+.thumb:hover,
+.thumb.selected {
   border-color: #f90;
 }
 </style>
