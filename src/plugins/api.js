@@ -2,7 +2,11 @@ import axios from 'axios'
 // import { refreshAccessToken } from '@/services/auth.service'
 
 const excludeUrls = ['/auth/login', '/auth/refresh-tokens', '/shopping/users/me/cart']
-const axiosApiInstance = axios.create()
+const axiosApiInstance = axios.create({
+  validateStatus: function (status) {
+    return status >= 200 && status < 300 // Tüm status kodları kabul edilsin
+  },
+})
 // set base api
 axiosApiInstance.defaults.baseURL = 'http://127.0.0.1:3000/'
 // Request interceptor for API calls

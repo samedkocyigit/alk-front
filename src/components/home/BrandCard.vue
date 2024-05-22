@@ -17,7 +17,6 @@ const brandsImg = ref('')
 
 onMounted(() => {
   brandsImg.value = props.brand.photos[0]
-  console.log('Brand Img Adi:', brandsImg.value)
 })
 </script>
 
