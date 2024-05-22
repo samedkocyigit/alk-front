@@ -6,15 +6,15 @@
     <div class="max-md:w-full w-[45%]">
       <div class="max-md:w-full w-[80%] mx-auto flex flex-col items-center justify-center h-full px-10">
         <div class="w-full flex flex-col items-center justify-center">
-          <p class="text-3xl font-bold">Register</p>
-          <p class="text-base font-medium mt-2">Register and explore the online market</p>
+          <p class="text-3xl font-bold">Üye Ol</p>
+          <p class="text-base font-medium mt-2">Fırsatlardan Yararlanabilmek İçin Üye Olun</p>
         </div>
         <div class="w-full flex flex-col items-center justify-center mt-10">
           <div class="w-full">
-            <AInput v-model="name" label="Name" name="name" style-custom="border-[#AFA2C3]" is-required />
+            <AInput v-model="name" label="Ad" name="name" style-custom="border-[#AFA2C3]" is-required />
           </div>
           <div class="w-full">
-            <AInput v-model="surname" label="Surname" name="surname" style-custom="border-[#AFA2C3]" is-required />
+            <AInput v-model="surname" label="Soyad" name="surname" style-custom="border-[#AFA2C3]" is-required />
           </div>
           <div class="w-full">
             <AInput
@@ -29,7 +29,7 @@
           <div class="w-full">
             <AInput
               v-model="password"
-              label="Password"
+              label="Şifre"
               name="password"
               style-custom="border-[#AFA2C3]"
               is-required
@@ -67,18 +67,15 @@
             <AInput v-model="taxNumber" label="Vergi No" name="taxNumber" style-custom="border-[#AFA2C3]" />
           </div>
           <!-- forgot -->
-          <div class="w-full flex justify-end mt-2">
-            <RouterLink to="/forgot-password" class="text-[#3E334E] text-sm font-medium">Forgot password?</RouterLink>
-          </div>
           <div class="w-full flex gap-3 mt-5">
             <button class="bg-[#3E334E] text-white flex-[1] w-full py-3 font-bold rounded-lg" @click="onRegister">
-              Sign up
+              Üye Ol
             </button>
             <RouterLink
               to="/users/login"
               class="block text-center border-[1px] border-[#3E334E] text-[#3E334E] flex-[1] w-full font-bold py-3 rounded-lg"
             >
-              Login
+              Giriş
             </RouterLink>
           </div>
           <!-- copyright -->

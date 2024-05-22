@@ -97,13 +97,15 @@ const totalQuantity = computed(() => {
             <CartModal v-show="modal.showCart" v-touch-outside="closeModalCart" @close="closeModalCart" />
           </div>
           <router-link to="/users/login">
-            <button class="border-[#5a4098] border-[1px] h-[30px] px-3 rounded-[4px] font-base text-sm">Sign in</button>
+            <button class="border-[#5a4098] border-[1px] h-[30px] px-3 rounded-[4px] font-base text-sm">
+              Giriş Yap
+            </button>
           </router-link>
           <router-link to="/register">
             <button
               class="bg-[#5a4098] border-[#5a4098] text-white border-[1px] h-[30px] px-3 rounded-[4px] font-base text-sm"
             >
-              Sign up
+              Üye Ol
             </button>
           </router-link>
         </div>

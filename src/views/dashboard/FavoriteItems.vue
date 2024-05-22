@@ -52,8 +52,6 @@ const removeItem = async (id) => {
   const res = await updateUserApi(userId, {
     $pull: { favoriteItems: id },
   })
-  console.log('laaaaaaaaan', res.data.data.data.favoriteItems, authStore.user.favoriteItems)
-
   authStore.user.favoriteItems = res.data.data.data.favoriteItems
 }
 </script>

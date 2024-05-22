@@ -1,8 +1,8 @@
 <template>
   <div class="absolute bg-white shadow-d-10 top-10 right-0 w-[380px] h-fit rounded-lg border-[1px] z-[4]">
     <div class="w-full flex px-5 pt-3 justify-between">
-      <p class="text-base text-gray-700 font-medium">My cart</p>
-      <p class="text-sm text-gray-700 font-medium">Total: {{ store.state.cart.totalPrice }} TL</p>
+      <p class="text-base text-gray-700 font-medium">Sepetim</p>
+      <p class="text-sm text-gray-700 font-medium">Toplam: {{ store.state.cart.totalPrice }} TL</p>
     </div>
     <!-- line -->
     <div class="border-b-[1px] mt-3"></div>
@@ -40,7 +40,7 @@
         class="flex items-center justify-center rounded-md text-white text-base font-medium flex-auto bg-third-100 w-full h-[40px]"
         @click="$emit('close')"
       >
-        Checkout
+        Sepetim
       </RouterLink>
     </div>
   </div>

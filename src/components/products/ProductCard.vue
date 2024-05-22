@@ -8,6 +8,7 @@ import { toast } from 'vue3-toastify'
 import store from '@/stores/master.store'
 import { AuthStore } from '@/stores/auth.store'
 import { updateUserApi } from '@/services/user.service'
+import { RouterLink } from 'vue-router'
 const authStore = AuthStore.value
 
 const props = defineProps({
@@ -17,7 +18,7 @@ const props = defineProps({
   },
   width: {
     type: String,
-    default: 'w-[180px]',
+    default: 'w-[220px]',
   },
 })
 
@@ -28,7 +29,13 @@ const hovering = ref(false)
 // Bileşen yüklendiğinde fotoğraf adını consola yazdır
 onMounted(() => {
   photoName.value = props.product.photos[0]
-  console.log('Fotoğraf Adı:', props.product.photos[0])
+
+  if (authStore.isLoggedIn) {
+    const favoriteItems = Array.from(authStore.user.favoriteItems)
+    const productId = props.product._id
+    const isFavoriteProduct = favoriteItems.some((item) => item._id === productId)
+    isFavorite.value = isFavoriteProduct
+  }
 })
 
 const toggleFavorite = async () => {
@@ -36,13 +43,15 @@ const toggleFavorite = async () => {
   const productId = props.product._id
   isFavorite.value = !isFavorite.value
   if (isFavorite.value) {
-    await updateUserApi(userId, {
+    const res = await updateUserApi(userId, {
       $push: { favoriteItems: productId },
     })
+    authStore.user.favoriteItems = res.data.data.data.favoriteItems
   } else {
-    await updateUserApi(userId, {
+    const res = await updateUserApi(userId, {
       $pull: { favoriteItems: productId },
     })
+    authStore.user.favoriteItems = res.data.data.data.favoriteItems
   }
 }
 const addItemToCart = async () => {
@@ -76,13 +85,13 @@ const addItemToCart = async () => {
       @mouseleave="hovering = false"
       @click="toggleFavorite"
     >
-      <router-link to="/users/login">
+      <RouterLink to="/users/login">
         <i
           class="ri-heart-line"
           :class="{ 'ri-heart-fill': isFavorite, 'text-yellow-500': isFavorite }"
           :title="hovering ? 'Favorilere Ekle' : ''"
         ></i>
-      </router-link>
+      </RouterLink>
     </div>
     <div v-else class="fav-icon-container" @click="toggleFavorite">
       <i
