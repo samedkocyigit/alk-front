@@ -18,6 +18,15 @@ export const getCategoryBySlugApi = async (slug) => {
   return await axiosApiInstance.get(`/categories/slug/${slug}`)
 }
 
+export const getSubCategoryBySlugApi = async (slug) => {
+  return await axiosApiInstance.get(`/categories/subcategoryslug/${slug}`)
+}
+
+export const getSubCategoryForProductsApi = async (id, subId, filters) => {
+  return await axiosApiInstance.get(`/categories/for-products/${id}/sub_category/${subId}`, {
+    params: filters,
+  })
+}
 export const getSubCategoryApi = async (id, subId) => {
   return await axiosApiInstance.get(`/categories/${id}/sub_category/${subId}`)
 }

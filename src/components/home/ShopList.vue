@@ -32,7 +32,6 @@ export default {
     },
     onSwiper(swiper) {
       this.mySwiper = swiper
-      console.log('mySwiper', this.mySwiper)
     },
   },
   mounted() {
