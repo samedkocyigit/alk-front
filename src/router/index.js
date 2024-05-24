@@ -77,6 +77,11 @@ const routes = [
     name: 'category-products',
     component: () => import('@/views/ListCategoryProducts.vue'),
   },
+  {
+    path: '/categories/:id/sub_category/:subId',
+    name: 'sub-category-products',
+    component: () => import('@/views/ListCategoryProducts.vue'),
+  },
   //create nested routes use for dashboard ex create & manage product
   {
     path: '/dashboard',
