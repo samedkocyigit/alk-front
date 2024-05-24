@@ -92,14 +92,14 @@ const submit = async (val) => {
       const response = await getCartApi(user.cart)
       store.dispatch('cartConvert', response.data.data.data)
       if (redirect) {
-        // router.push(redirect)
+        router.push(redirect)
       } else {
-        // router.push('/')
+        router.push('/')
         localStorage.removeItem('redirect')
       }
     } else {
       console.log('girmiyo mu la')
-      // throw new Error('Invalid response status: ' + res.status)
+      throw new Error('Invalid response status: ' + res.status)
     }
   } catch (err) {
     console.error(err) // Hata detaylarını konsola yazdır
