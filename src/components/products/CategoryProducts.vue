@@ -8,13 +8,31 @@
       <div class="text-[#5a4098]">See more</div>
     </div>
     <!-- end title header -->
-    <!-- Filtre Seçenekleri -->
     <div class="flex items-start">
-      <!-- Filtre Seçenekleri -->
+      <!--Filtre Seçenekleri -->
       <div class="w-1/4 p-4">
         <h3 class="text-lg font-bold">Filtreler</h3>
         <div class="border-b-[1px] mt-2 mb-2"></div>
-        <!-- En Az ve En Çok Fiyat Giriş Kutuları -->
+        <div v-for="filtre in filtreler" :key="filtre._id">
+          <h4 class="text-lg font-semibold">{{ filtre.name }}</h4>
+          <ul>
+            <li v-for="value in filtre.values" :key="value.name">
+              <input
+                type="checkbox"
+                :value="value.slug"
+                :checked="isChecked(filtre.slug, value.slug)"
+                @change="updateFilters(filtre.slug, value.slug, $event)"
+              />
+              <label v-if="filtre.name === 'Price'"> {{ ' ' + value.name + ' TL' }}</label>
+              <label v-else> {{ ' ' + value.name }}</label>
+            </li>
+            <div class="border-b-[1px] mt-2 mb-2"></div>
+          </ul>
+        </div>
+      </div>
+      <!-- <div class="w-1/4 p-4">
+        <h3 class="text-lg font-bold">Filtreler</h3>
+        <div class="border-b-[1px] mt-2 mb-2"></div>
         <label style="font-weight: 800" for="priceRange">Fiyat Aralığı</label>
         <div class="flex items-center space-x-4">
           <input
@@ -71,13 +89,13 @@
               @click="updatePriceFilter('351-650')"
             />
             <label class="ml-1" for="priceRange3">351 - 650 TL</label>
-          </div>
-          <!-- Diğer fiyat aralığı seçenekleri buraya eklenmeli -->
-        </div>
-      </div>
+          </div> -->
+      <!-- Diğer fiyat aralığı seçenekleri buraya eklenmeli -->
+      <!-- </div> -->
+      <!-- </div> -->
       <!-- list product -->
       <div
-        v-if="products && products.data && products.data.length > 0"
+        v-if="products && products.data && products.data.length >= 0"
         class="w-full flex flex-wrap justify-start p-15 gap-5"
       >
         <div v-for="product in products.data.slice(0, 14)" :key="product.id" class="w-[220px] flex justify-center">
@@ -94,48 +112,106 @@ import { useRoute, useRouter } from 'vue-router'
 import 'swiper/css'
 
 import ProductCardCatrgory from './ProductCardCategory.vue'
-import { getCategoryBySlugApi, getCategoryForProductsApi } from '@/services/category.service'
+import {
+  getCategoryBySlugApi,
+  getCategoryForProductsApi,
+  getSubCategoryForProductsApi,
+  getSubCategoryBySlugApi,
+} from '@/services/category.service'
+import store from '@/stores/master.store'
 
 const products = ref([]) // Ürünler için bir dizi ref oluşturun
 const loading = ref(true)
-const filters = ref({
-  minPrice: null,
-  maxPrice: null,
-})
-const selectedPriceRange = ref(null) // Seçili fiyat aralığı için bir ref oluşturun
 
+const selectedFilters = ref({})
+const filtreler = ref(store.state.categories.data[0].filter)
 const route = useRoute()
 const router = useRouter()
+
+const isChecked = (filterSlug, valueSlug) => {
+  return selectedFilters.value[filterSlug]?.includes(valueSlug) || false
+}
+
+const updateFilters = (filterSlug, valueSlug, event) => {
+  if (!selectedFilters.value[filterSlug]) {
+    selectedFilters.value[filterSlug] = []
+  }
+  if (event.target.checked) {
+    if (!selectedFilters.value[filterSlug].includes(valueSlug)) {
+      selectedFilters.value[filterSlug].push(valueSlug)
+    }
+  } else {
+    const index = selectedFilters.value[filterSlug].indexOf(valueSlug)
+    if (index > -1) {
+      selectedFilters.value[filterSlug].splice(index, 1)
+    }
+    if (selectedFilters.value[filterSlug].length === 0) {
+      delete selectedFilters.value[filterSlug]
+    }
+  }
+  updateUrl()
+}
+
+const updateUrl = () => {
+  const params = new URLSearchParams(route.query)
+
+  const filterStrings = []
+  Object.keys(selectedFilters.value).forEach((filterSlug) => {
+    selectedFilters.value[filterSlug].forEach((valueSlug) => {
+      filterStrings.push(`${filterSlug}:${valueSlug}`)
+    })
+  })
+
+  if (filterStrings.length > 0) {
+    params.set('filtreler', filterStrings.join(','))
+  } else {
+    params.delete('filtreler')
+  }
+
+  router.replace({ path: route.path, query: Object.fromEntries(params) })
+  fetchProducts()
+}
 
 // Backend'den product nesnesini almak için bir işlev veya API çağrısı yapın
 async function fetchProducts() {
   try {
     loading.value = true
     const slug = route.params.id // Urlden slug değerini al
-
     const categoryRes = await getCategoryBySlugApi(slug)
     if (categoryRes.status !== 200) {
       throw new Error('Kategori fetch işlemi başarısız.')
     }
-
     const categoryId = categoryRes.data.data.category[0]._id // Kategorinin id değerini al
 
-    const params = new URLSearchParams()
+    if (route.params.subId) {
+      const subSlug = route.params.subId
 
-    if (filters.value.minPrice) {
-      params.append('price[gte]', filters.value.minPrice)
-    }
-    if (filters.value.maxPrice) {
-      params.append('price[lte]', filters.value.maxPrice)
-    }
+      const subCategoryRes = await getSubCategoryBySlugApi(subSlug)
 
-    const response = await getCategoryForProductsApi(categoryId, params)
-    console.log('response', response.data.data)
-    if (response.status !== 200) {
-      throw new Error('Fetch işlemi başarısız.')
+      if (subCategoryRes.status !== 200) {
+        throw new Error('Alt Kategori fetch işlemi başarısız')
+      }
+      const subCategoryId = subCategoryRes.data.data.sub_category._id
+
+      const params = new URLSearchParams()
+
+      const response = await getSubCategoryForProductsApi(categoryId, subCategoryId, params)
+      if (response.status !== 200) {
+        throw new Error('Fetch işlemi başarısız')
+      }
+      products.value = response.data.data
+      console.log('response ', products.value)
+    } else {
+      const params = new URLSearchParams()
+
+      const response = await getCategoryForProductsApi(categoryId, params)
+      // console.log('response', response.data.data)
+      if (response.status !== 200) {
+        throw new Error('Fetch işlemi başarısız.')
+      }
+      products.value = response.data.data
+      console.log('products', products.value)
     }
-    products.value = response.data.data
-    console.log('products', products.value)
   } catch (error) {
     console.error('Hata:', error.message)
   } finally {
@@ -143,57 +219,34 @@ async function fetchProducts() {
   }
 }
 
-function filterProducts() {
-  const params = new URLSearchParams()
-
-  if (filters.value.minPrice) {
-    params.set('fiyat:min', filters.value.minPrice)
+const setSelectedFiltersFromQuery = () => {
+  const query = route.query
+  const filters = query.filtreler
+  selectedFilters.value = {}
+  if (filters) {
+    const filterArray = Array.isArray(filters) ? filters : [filters]
+    filterArray.forEach((filter) => {
+      const [filterSlug, valueSlug] = filter.split(':')
+      if (!selectedFilters.value[filterSlug]) {
+        selectedFilters.value[filterSlug] = []
+      }
+      if (!selectedFilters.value[filterSlug].includes(valueSlug)) {
+        selectedFilters.value[filterSlug].push(valueSlug)
+      }
+    })
   }
-  if (filters.value.maxPrice) {
-    params.set('fiyat:max', filters.value.maxPrice)
-  }
-
-  router.push({ query: Object.fromEntries(params) })
-  fetchProducts()
-}
-
-function updatePriceFilter(priceRange) {
-  if (selectedPriceRange.value === priceRange) {
-    // Zaten seçiliyse seçimi kaldır
-    selectedPriceRange.value = null
-    filters.value.minPrice = null
-    filters.value.maxPrice = null
-  } else {
-    // Seçili fiyat aralığını belirle ve filtreleri güncelle
-    selectedPriceRange.value = priceRange
-    if (priceRange === '0-150') {
-      filters.value.minPrice = 0
-      filters.value.maxPrice = 150
-    } else if (priceRange === '151-350') {
-      filters.value.minPrice = 151
-      filters.value.maxPrice = 350
-    } else if (priceRange === '351-650') {
-      filters.value.minPrice = 351
-      filters.value.maxPrice = 650
-    }
-  }
-  fetchProducts()
-}
-
-function validateNumericInput(field, event) {
-  const value = event.target.value.replace(/\D/g, '')
-  filters.value[field] = value
-  event.target.value = value
 }
 
 onMounted(() => {
+  setSelectedFiltersFromQuery()
   fetchProducts()
 })
 
 // URL'deki slug değişikliklerini izleyerek fetchProducts'ı yeniden çağır
 watch(
-  () => route.params.id,
+  () => [route.params.id, route.params.subId],
   () => {
+    setSelectedFiltersFromQuery()
     fetchProducts()
   }
 )
