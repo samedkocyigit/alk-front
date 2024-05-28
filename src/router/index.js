@@ -9,20 +9,18 @@ const routes = [
   {
     path: '/users/login',
     name: 'login',
-    meta: { layout: 'empty' },
     component: () => import('@/views/auth/LoginPage.vue'),
+  },
+  {
+    path: '/register',
+    name: 'register',
+    component: () => import('@/views/auth/RegisterPage.vue'),
   },
   {
     path: '/products/:id',
     name: 'product',
     // meta: { layout: 'empty' },
     component: () => import('@/views/product/_id/ProductDetailView.vue'),
-  },
-  {
-    path: '/register',
-    name: 'register',
-    meta: { layout: 'empty' },
-    component: () => import('@/views/auth/RegisterPage.vue'),
   },
   {
     path: '/profiles/:id',

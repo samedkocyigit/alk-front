@@ -190,7 +190,7 @@ const totalImageUploaded = ref({
               <div class="max-md:w-full">
                 <AInput
                   v-model="sub_category_name"
-                  name="sub_category_name"
+                  name="sub_categoryName"
                   is-required
                   label="Alt Kategori Adı"
                   placeholder="Enter name..."

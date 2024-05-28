@@ -71,7 +71,7 @@ const addItemToCart = async () => {
 </script>
 
 <template>
-  <div class="container" :class="`flex flex-col h-[330px] overflow-hidden bg-white rounded-xl ${width}`">
+  <div class="container" :class="`flex flex-col h-[330px] overflow-hidden bg-white rounded-xl border-2 ${width}`">
     <div
       v-if="authStore.isLoggedIn === false"
       class="fav-icon-container"
