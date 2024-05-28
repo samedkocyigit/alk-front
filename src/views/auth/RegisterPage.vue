@@ -1,11 +1,13 @@
 <template>
-  <div class="max-md:gap-3 max-md:flex-col min-h-screen h-screen flex">
-    <div class="max-md:h-[250px] lg:flex-auto bg-[#191a24] flex items-center px-10">
-      <img class="w-full h-full object-cover opacity-[60%]" src="@@/icons/travel.svg" alt="" />
-    </div>
-    <div class="max-md:w-full w-[45%]">
-      <div class="max-md:w-full w-[80%] mx-auto flex flex-col items-center justify-center h-full px-10">
+  <div class="w-[80%] border">
+    <div class="w-[70%] mx-auto">
+      <div class="w-full">
         <div class="w-full flex flex-col items-center justify-center">
+          <RouterLink to="/" class="font-bold text-lg ml-2 mt-5">
+            <div class="logo-container">
+              <img src="../../../public/images/logo.png" alt="" class="logo-img" />
+            </div>
+          </RouterLink>
           <p class="text-3xl font-bold">Üye Ol</p>
           <p class="text-base font-medium mt-2">Fırsatlardan Yararlanabilmek İçin Üye Olun</p>
         </div>
