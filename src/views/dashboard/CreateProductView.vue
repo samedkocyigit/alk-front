@@ -12,7 +12,6 @@ import * as yup from 'yup'
 import { toast } from 'vue3-toastify'
 import { createProductApi } from '@/services/product.service'
 import store from '@/stores/master.store'
-// breadcrumb
 
 let base64String = ref(null)
 const errorMessage = ref('')
@@ -44,7 +43,7 @@ const brandOptions = computed(() => {
   }))
 })
 
-watch(selectedCategory, (newValue, oldValue) => {
+watch(selectedCategory, (newValue) => {
   const selectedCategoryObj = categoryOptions.value.find((category) => category.id === newValue)
   if (selectedCategoryObj) {
     subCategoryOptions.value = selectedCategoryObj.subCategory.map((subCategory) => ({
@@ -71,84 +70,88 @@ const handleFileChange = () => {
   if (fileInput.value.files.length > 0) {
     const file = fileInput.value.files[0]
     if (file.size > 5 * 1024 * 1024) {
-      errorMessage.value = 'Dosya boyutu çok büyük' // Hata mesajı gösterilebilir
-      return // Fonksiyondan çık
+      errorMessage.value = 'Dosya boyutu çok büyük'
+      return
     }
-    // Dosya boyutu uygunsa devam et
     const reader = new FileReader()
-    reader.readAsDataURL(file) // Dosyayı base64 formatına çevir
+    reader.readAsDataURL(file)
     reader.onload = () => {
-      base64String.value = reader.result // Base64 formatındaki veri
+      base64String.value = reader.result
     }
   }
 }
 
-const onCreate = async (val) => {
-  console.log('val', val)
-  const { name, brand, price, stock_code, manifuctorer_code, summary } = val
+const { handleSubmit, values } = useForm({
+  validationSchema: yup.object({
+    name: yup.string().required(),
+    price: yup.number().required(),
+    stock_code: yup.number().required(),
+    manufacturer_code: yup.string(),
+    summary: yup.string().required(),
+  }),
+})
+
+const onCreate = async () => {
+  console.log('Attributes:', attributes.value)
+  const { name, price, stock_code, manufacturer_code, summary } = values
+  const ozelliklerData = attributes.value.map((attribute) => ({
+    name: attribute.name,
+    value: attribute.value,
+  }))
 
   const data = {
     name: name,
     brand: selectedBrand.value,
     price: price,
     stock_code: stock_code,
-    manifuctorer_code: manifuctorer_code,
+    manufacturer_code: manufacturer_code,
     summary: summary,
     categoryId: selectedCategory.value,
     subCategoryId: selectedSubCategory.value,
     photos: base64String.value,
+    ozellikler: ozelliklerData,
   }
-  // create product
+
+  isCreating.value = true
   try {
     await createProductApi(data)
     toast.success('Register success!')
   } catch (error) {
     console.error('Registration error:', error)
     toast.error('Register failed!')
+  } finally {
+    isCreating.value = false
   }
 }
 
-const { handleSubmit } = useForm({
-  validationSchema: yup.object({
-    name: yup.string().required(),
-    // brand: yup.string().required(),
-    price: yup.number().required(),
-    stock_code: yup.number().required(),
-    manifuctorer_code: yup.string(),
-    summary: yup.string().required(),
-  }),
-})
+const onRegister = handleSubmit(onCreate)
 
-const onRegister = () => {
-  handleSubmit(onCreate)()
+const attributes = ref([
+  {
+    name: '',
+    value: '',
+  },
+])
+
+const addAttribute = () => {
+  attributes.value.push({
+    name: '',
+    value: '',
+  })
+}
+
+const removeAttribute = (index) => {
+  attributes.value.splice(index, 1)
 }
 </script>
 
 <template>
   <AFullLoading v-show="isCreating">
     <template #content>
-      <!-- <p v-if="totalImageUploaded.success !== files.length" class="text-lg">
-        Uploading image... {{ totalImageUploaded.success }}/{{ files.length }}
-      </p> -->
       <p class="text-lg">Creating product...</p>
     </template>
   </AFullLoading>
-  <!-- <div class="flex w-full px-5 pt-7 pb-10 justify-center gap-5"> -->
   <div class="max-lg:p-5 max-md:pt-10 relative flex flex-col w-full h-fit p-10 bg-[#fafafa] pt-10 rounded-[8px] py-5">
-    <!-- <div class="absolute backdrop-blur w-full h-full flex justify-center top-0 left-0 z-10 pt-14">
-      <div class="p-7 h-fit bg-white gb-shadow rounded-3xl flex flex-col justify-center items-center">
-        <p class="text-lg font-semibold">Please confirm your email to create product</p>
-        <p class="text-sm text-primary-200">We have sent you an email to confirm your email</p>
-        <p class="text-sm text-primary-200">If you don't see the email, please check your spam folder</p>
-        <p class="text-sm text-primary-200">If you still don't see the email, please contact us</p>
-        <AButton title="Resend email" class="mt-5 w-fit text-white bg-blue-500">
-          <template #left>
-            <i class="ri-mail-send-line mr-2"></i>
-          </template>
-        </AButton>
-      </div>
-    </div> -->
-    <!-- header -->
     <header class="max-md:flex-col flex gap-2 justify-between w-full border-b-2 pb-5">
       <div>
         <h1 class="text-2xl font-semibold">Create new product</h1>
@@ -172,20 +175,17 @@ const onRegister = () => {
         </AButton>
       </div>
     </header>
-    <!-- body -->
     <div class="max-lg:flex-col flex w-full mt-5 gap-10 h-min">
-      <!-- information -->
       <div class="max-md:px-4 flex-1 h-full bg-white p-7 border-[1px] rounded-2xl">
         <p class="text-lg font-medium mb-2">
           Basic information
           <span>
-            <!-- icon -->
             <i class="ri-information-line"></i>
           </span>
         </p>
         <div class="flex flex-col w-full gap-6">
           <div class="w-full">
-            <AInput v-model="name" name="name" is-required label="Product Name" placeholder="Enter name..." />
+            <AInput v-model="values.name" name="name" is-required label="Product Name" placeholder="Enter name..." />
           </div>
           <div class="w-full">
             <ADropdown
@@ -194,12 +194,18 @@ const onRegister = () => {
               is-required="true"
               label="Brand"
               :options="brandOptions"
-              placeholder="Select category..."
+              placeholder="Select brand..."
               required
             />
           </div>
           <div class="w-full">
-            <AInput v-model="price" name="price" is-required label="Product Price" placeholder="Enter Price..." />
+            <AInput
+              v-model="values.price"
+              name="price"
+              is-required
+              label="Product Price"
+              placeholder="Enter Price..."
+            />
           </div>
           <div class="max-lg:flex-wrap flex gap-2">
             <ADropdown
@@ -219,7 +225,7 @@ const onRegister = () => {
           </div>
           <div class="w-full">
             <AInput
-              v-model="stock_code"
+              v-model="values.stock_code"
               name="stock_code"
               is-required
               label="Product Stock Code"
@@ -228,27 +234,47 @@ const onRegister = () => {
           </div>
           <div class="w-full">
             <AInput
-              v-model="manifuctorer_code"
-              name="manifuctorer_code"
+              v-model="values.manufacturer_code"
+              name="manufacturer_code"
               is-required
-              label="Product Manifuctorer Code"
-              placeholder="Enter Manifuctorer Code..."
+              label="Product Manufacturer Code"
+              placeholder="Enter Manufacturer Code..."
             />
           </div>
           <div class="w-full">
-            <AInput v-model="summary" name="summary" label="Product Summary" placeholder="Enter Summary..." />
+            <AInput v-model="values.summary" name="summary" label="Product Summary" placeholder="Enter Summary..." />
           </div>
+          <!-- Attributes Section -->
+          <div class="w-full">
+            <p class="text-lg font-medium mb-2">Attributes</p>
+            <div v-for="(attribute, index) in attributes" :key="index" class="flex flex-col gap-2">
+              <input
+                v-model="attribute.name"
+                placeholder="Attribute Name"
+                class="w-full h-10 px-3 py-2 border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              />
+              <input
+                v-model="attribute.value"
+                placeholder="Attribute Value"
+                class="w-full h-10 px-3 py-2 border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              />
+              <button @click="removeAttribute(index)" class="mt-2 py-1 px-3 bg-red-500 text-white rounded-md">
+                Remove Attribute
+              </button>
+            </div>
+            <button @click="addAttribute" class="mt-2 py-1 px-3 bg-blue-500 text-white rounded-md">
+              Add Attribute
+            </button>
+          </div>
+
+          <!-- End Attributes Section -->
         </div>
-        <!-- image by type -->
       </div>
-      <!-- end upload -->
-      <!-- image upload -->
       <div>
         <input type="file" ref="fileInput" @change="handleFileChange" />
       </div>
     </div>
   </div>
-  <!-- </div> -->
 </template>
 
 <style scoped>
