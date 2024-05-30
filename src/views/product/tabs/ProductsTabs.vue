@@ -20,6 +20,7 @@
         :is="tab.component"
         :key="index"
         v-show="activeTab === index"
+        :product="product"
         v-bind="tab.props"
       />
     </div>
@@ -34,22 +35,21 @@ import Recommendations from './Recommendations.vue'
 
 export default {
   components: { ProductInfo, Reviews, InstallmentOptions, Recommendations },
+  props: {
+    product: Object, // product verisi props olarak tanımlanıyor
+  },
   data() {
     return {
       activeTab: 0,
       tabs: [
-        { title: 'Ürün Bilgisi', component: 'ProductInfo', props: { productInfo: 'Burada ürün bilgisi olacak' } },
-        { title: 'Yorumlar', component: 'Reviews', props: { reviews: 'Burada yorumlar olacak' } },
+        { title: 'Ürün Bilgisi', component: ProductInfo, props: {} },
+        { title: 'Yorumlar', component: Reviews, props: { reviews: 'Burada yorumlar olacak' } },
         {
           title: 'Taksit Seçenekleri',
-          component: 'InstallmentOptions',
+          component: InstallmentOptions,
           props: { installmentOptions: 'Burada taksit seçenekleri olacak' },
         },
-        {
-          title: 'Önerileriniz',
-          component: 'Recommendations',
-          props: { recommendations: 'Burada önerileriniz olacak' },
-        },
+        { title: 'Önerileriniz', component: Recommendations, props: { recommendations: 'Burada önerileriniz olacak' } },
       ],
     }
   },
@@ -64,11 +64,11 @@ export default {
 <style scoped>
 .tab-headers {
   display: flex;
-  justify-content: center; /* Başlıkları yatayda ortala */
+  justify-content: center;
 }
 
 .tab-header {
-  display: inline-block; /* Başlıkları yatayda hizala */
+  display: inline-block;
   padding: 15px 20px;
   cursor: pointer;
   background-color: #f5f5f5;
