@@ -51,23 +51,29 @@
           </div>
           <!-- Additional Actions -->
           <div class="mt-4 flex items-center tab-buttons">
-            <button class="text-third-100 border-third-100 border-2 px-1 py-3 rounded-md">
-              <i class="ri-heart-line"></i> Favori ürün
+            <button class="tab-button">
+              <i class="ri-heart-line"></i>
+              <span>Favorile</span>
             </button>
-            <button class="text-third-100 border-third-100 border-2 px-1 py-3 rounded-md">
-              <i class="ri-bar-chart-grouped-line"></i> Karşılaştır
+            <button class="tab-button">
+              <i class="ri-bar-chart-grouped-line"></i>
+              <span>Karşılaştır</span>
             </button>
-            <button class="text-third-100 border-third-100 border-2 px-1 py-3 rounded-md">
-              <i class="ri-share-line"></i> Paylaş
+            <button class="tab-button">
+              <i class="ri-share-line"></i>
+              <span>Paylaş</span>
             </button>
-            <button class="text-third-100 border-third-100 border-2 px-1 py-3 rounded-md">
-              <i class="ri-mail-line"></i> Tavisye Et
+            <button class="tab-button">
+              <i class="ri-mail-line"></i>
+              <span>Tavsiye Et</span>
             </button>
-            <button class="text-third-100 border-third-100 border-2 px-1 py-3 rounded-md">
-              <i class="ri-chat-3-line"></i> Yorum Yaz
+            <button class="tab-button">
+              <i class="ri-chat-3-line"></i>
+              <span>Yorum Yaz</span>
             </button>
-            <button class="text-third-100 border-third-100 border-2 px-1 py-3 rounded-md">
-              <i class="ri-notification-2-line"></i> Fiyat Alarmı
+            <button class="tab-button">
+              <i class="ri-notification-2-line"></i>
+              <span>Fiyat Alarmı</span>
             </button>
           </div>
         </div>
@@ -75,7 +81,19 @@
 
       <!-- Reviews -->
       <div class="w-full">
-        <ProductsTab />
+        <ProductsTab :product="product" />
+      </div>
+      <div>
+        <h4 style="font-size: x-large">Benzer Ürünler</h4>
+        <div class="border-b-[1px] pb-4"></div>
+        <div
+          class="w-full flex flex-wrap justify-start p-15 gap-5 mt-8"
+          v-if="smilarProduct && smilarProduct.data && smilarProduct.data.length >= 0"
+        >
+          <div v-for="product in smilarProduct.data.slice(0, 14)" :key="product.id" class="flex justify-center">
+            <ProductCardForDetails :product="product" />
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -91,12 +109,13 @@ import BreadCrumb from '@/components/commons/BreadCrumb.vue'
 import ThumbnailsProduct from '@/components/products/ThumbnailsProduct.vue'
 import ProductsTab from '@/views/product/tabs/ProductsTabs.vue'
 // services
-import { getProductApi } from '@/services/product.service'
+import { getProductApi, getProductsApi } from '@/services/product.service'
 import { addToCartApi } from '@/services/cart.service'
 // stores
 import store from '@/stores/master.store'
 import { usePopupStore } from '@/stores/common.store'
 import { getCategoryApi, getSubCategoryApi } from '@/services/category.service'
+import ProductCardForDetails from '@/components/products/ProductCardForDetail.vue'
 
 const popupStore = usePopupStore()
 const route = useRoute()
@@ -109,6 +128,7 @@ const routes = ref([
 ])
 
 const product = ref({})
+const smilarProduct = ref({})
 const typeSelected = ref(null)
 const quantity = ref(1)
 const cart = ref({})
@@ -118,6 +138,9 @@ const getProduct = async () => {
   try {
     const res = await getProductApi(route.params.id)
     product.value = res.data.data
+    const resForSimilar = await getProductsApi({ subCategoryId: product.value.data.subCategoryId })
+    smilarProduct.value = resForSimilar.data.data
+    console.log('halla halla', smilarProduct.value)
     const routeCategory = await getCategoryApi(product.value.data.categoryId)
     const categoryPath = `/categories/${routeCategory.data.data.data.slug}`
     const category_name = routeCategory.data.data.data.category_name
@@ -214,27 +237,43 @@ const buyNow = () => {
   display: flex;
   justify-content: center;
   margin-top: 25px;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
-.tab-buttons button {
+.tab-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 110px; /* Buton genişliği */
+  height: 110px; /* Buton yüksekliği */
   padding: 10px;
-  margin: 0 5px; /* İstenilen boşluğu ayarlayın */
-  border: 1px solid #ccc;
   border-radius: 8px;
   background-color: #fff;
   cursor: pointer;
   transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+  text-align: center;
 }
 
-.tab-buttons button:hover {
+.tab-button i {
+  font-size: 24px; /* İkon boyutu */
+  margin-bottom: 5px; /* İkon ile metin arası boşluk */
+}
+
+.tab-button span {
+  font-size: 14px; /* Metin boyutu */
+}
+
+.tab-button:hover {
   background-color: #f5f5f5;
 }
 
-.tab-buttons button:focus {
+.tab-button:focus {
   outline: none;
 }
 
-.tab-buttons button.active {
+.tab-button.active {
   background-color: #e0e0e0;
 }
 </style>
