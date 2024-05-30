@@ -2,8 +2,10 @@ import axiosApiInstance from '@/plugins/api'
 const BASE_INVENTORY_ENDPOINT = '/api'
 const BASE_SALES_ENDPOINT = '/shopping'
 
-export const getProductsApi = async () => {
-  return await axiosApiInstance.get(`/products`)
+export const getProductsApi = async (filter) => {
+  return await axiosApiInstance.get(`/products`, {
+    params: filter,
+  })
 }
 
 export const getProductApi = async (id) => {
