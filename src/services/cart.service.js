@@ -12,6 +12,10 @@ export const addToCartApi = async (id, data) => {
   return await axiosApiInstance.post(`/carts/${id}`, data)
 }
 
+export const updateCartItemApi = async (id, data) => {
+  return await axiosApiInstance.patch(`/carts/${id}`, data)
+}
+
 export const decreaseFromCartApi = async (id, data) => {
   return await axiosApiInstance.patch(`/carts/${id}`, data)
 }

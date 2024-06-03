@@ -11,7 +11,6 @@
       <div class="w-full flex flex-col gap-10">
         <div class="flex flex-row-reverse gap-20">
           <div>
-            <ShippingAddressDropdown v-model="shippingAddressId" />
             <div class="mt-5 shadow-d-20 w-[370px] h-fit rounded-lg border-[1px]">
               <div class="p-5 flex justify-between items-center border-b-[1px]">
                 <p class="text-base font-semibold">Sepet Özeti</p>
@@ -45,10 +44,11 @@
             </div>
           </div>
           <div class="flex-auto flex flex-col gap-7">
+            <div class="border-b-[1px] mt-7"></div>
             <div v-for="item in store.state.cart.items" :key="item.id">
               <div class="flex gap-4 items-center">
                 <LazyImg
-                  class-style="w-[80px] h-[80px] rounded-md"
+                  class-style="w-[150px] h-[150px] rounded-md"
                   :src="`../../../public/images/products/${item.product.photos}`"
                   alt=""
                 />
@@ -59,16 +59,16 @@
                   <div style="width: 120px; height: 30px; margin-top: 10px">
                     <ANumberInput :item="item" />
                   </div>
+                  <div class="flex justify-start items-center mt-3">
+                    <div class="button-container">
+                      <button class="tab-button" @click="removeFromCart(item.product._id)">
+                        <i class="ri-delete-bin-6-line"></i>
+                        <span>Sepetimden Çıkar</span>
+                      </button>
+                    </div>
+                  </div>
                 </div>
                 <p class="ml-auto text-base font-semibold">{{ item.product.price * item.quantity }} TL</p>
-              </div>
-              <div class="flex justify-end items-center mt-3 pl-7">
-                <div class="button-container">
-                  <button class="tab-button" @click="removeFromCart(item.product._id)">
-                    <i class="ri-delete-bin-6-line"></i>
-                    <span>Sepetimden Çıkar</span>
-                  </button>
-                </div>
               </div>
               <div class="border-b-[1px] mt-7"></div>
             </div>
@@ -83,17 +83,14 @@ import { ref, onBeforeMount } from 'vue'
 // components
 import AButton from '@/components/commons/atoms/AButton.vue'
 import ANumberInput from '@/components/commons/atoms/ANumberInput.vue'
-import ShippingAddressDropdown from '@/components/commons/atoms/ShippingAddressDropdown.vue'
 // services
-import { orderApi, addTrackingApi } from '@/services/order.service'
 import { removeProductFromCartApi } from '@/services/cart.service'
 // stores
 import store from '@/stores/master.store'
-import { usePopupStore } from '@/stores/common.store'
-const popupStore = usePopupStore()
 
 import { useRoute, useRouter } from 'vue-router'
 import LazyImg from '@/components/commons/atoms/LazyImg.vue'
+import authStore from '@/stores/auth.store'
 const route = useRoute()
 const router = useRouter()
 
@@ -101,45 +98,14 @@ onBeforeMount(async () => {
   listCheckout.value = store.state.cart.items
 })
 
-const shippingAddressId = ref('')
 const checkout = async () => {
-  if (errValidate.value) {
-    return
+  if (!authStore.state.isLoggedIn) {
+    router.push({ name: 'login', query: { redirect: router.currentRoute.value.fullPath } })
+  } else {
+    router.push('/siparis') // Yönlendirmek istediğiniz sayfanın yolunu buraya yazın
   }
-  popupStore.showPopup({
-    content: 'Do you want to checkout now?',
-    type: 'confirm',
-    isAsync: true,
-    onConfirm: async () => {
-      try {
-        const method = 'TakeFromCart'
-        await orderApi(
-          {
-            shippingAddressId: shippingAddressId.value,
-            cartItemIds: selectItems.value,
-          },
-          method
-        )
-        await addTracking(route.params.id)
-        router.push({ name: 'checkout-success', params: { id: route.params.id } })
-      } catch (error) {
-        console.log(error)
-      }
-    },
-  })
 }
 
-const addTracking = async (productId) => {
-  const data = {
-    createdAt: '2023-12-27T00:30:11.512Z',
-    code: productId,
-    title: 'Picking up your item',
-    content: 'Your item is being picked up by the courier',
-    time: '2048-09-23T18:43:01.829Z',
-    shipper: 'Computers',
-  }
-  return await addTrackingApi(data)
-}
 const listCheckout = ref([])
 
 const removeFromCart = async (productId) => {
@@ -149,24 +115,16 @@ const removeFromCart = async (productId) => {
 </script>
 
 <style scoped>
-.button-container {
-  display: flex;
-  justify-content: flex-end;
-  padding: 10px;
-}
-
 .tab-button {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 10px;
+  padding: 5px;
   border: 1px solid #ccc;
   border-radius: 8px;
   background-color: #fff;
   cursor: pointer;
   transition: background-color 0.3s, color 0.3s, border-color 0.3s, opacity 0.3s;
   opacity: 0.4; /* Başlangıçta soluk */
-  margin-left: auto; /* Butonu sağa hizala */
+  margin-top: 15px;
 }
 
 .tab-button i {

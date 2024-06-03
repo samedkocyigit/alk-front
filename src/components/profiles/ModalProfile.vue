@@ -1,13 +1,10 @@
 <script setup>
 import { ref } from 'vue'
-import { AuthStore, logoutAuthStore } from '@/stores/auth.store'
+import authStore from '@/stores/auth.store'
 import ModalInfo from './ModalInfo.vue'
 import ModalChangePassword from './ModalChangePassword.vue'
-import axios from 'axios'
 import { logoutApi } from '@/services/auth.service'
-import store from '@/stores/master.store'
 
-const authStore = AuthStore.value
 const modal = ref({
   isShowSettings: false,
   isShowProfile: false,
@@ -33,7 +30,7 @@ const logout = async () => {
   try {
     await logoutApi()
     localStorage.removeItem('access_token')
-    logoutAuthStore()
+    authStore.dispatch('logoutAuthStore')
     window.location.href = '/'
   } catch (err) {
     console.log(err)
@@ -45,7 +42,7 @@ const logout = async () => {
   <ModalChangePassword v-if="modal.isShowChangePassword" @close="closeModal('isShowChangePassword')" />
   <div class="relative">
     <div class="flex items-center gap-2">
-      <p>{{ authStore.user.name }}</p>
+      <p>{{ authStore.state.user.name }}</p>
       <img
         src="@@/images/avatar-default.jpg"
         class="w-8 h-8 rounded-full object-cover cursor-pointer"
@@ -65,8 +62,8 @@ const logout = async () => {
         <div class="flex gap-4 items-center border-b-[1px] pb-2 px-2">
           <img src="@@/images/avatar-default.jpg" class="w-8 h-8 rounded-full object-cover" alt="" />
           <div class="flex flex-col">
-            <p class="">{{ authStore.user.name }}</p>
-            <p class="text-xs">{{ authStore.user.email }}</p>
+            <p class="">{{ authStore.state.user.name }}</p>
+            <p class="text-xs">{{ authStore.state.user.email }}</p>
           </div>
         </div>
         <!-- end header -->
@@ -78,14 +75,14 @@ const logout = async () => {
             class="flex gap-2 py-2 px-2 mt-2 hover:bg-slate-100 rounded-lg cursor-pointer"
           >
             <i class="ri-user-line"></i>
-            <p>Profile</p>
+            <p>Hesabım</p>
           </RouterLink>
           <RouterLink
             to="/dashboard/manage-product"
             class="flex gap-2 py-2 px-2 mt-2 hover:bg-slate-100 rounded-lg cursor-pointer"
           >
             <i class="ri-pass-pending-line"></i>
-            <p>Your post</p>
+            <p>Siparişlerim</p>
           </RouterLink>
           <!-- <div class="flex gap-2 py-2 px-2 mt-2 hover:bg-slate-100 rounded-lg cursor-pointer">
             <i class="ri-qr-scan-2-line"></i>
@@ -101,7 +98,7 @@ const logout = async () => {
         </div>
         <div class="flex gap-2 py-2 px-2 mt-2 hover:bg-slate-100 rounded-lg cursor-pointer" @click="logout">
           <i class="ri-login-box-line"></i>
-          <p>Logout</p>
+          <p>Çıkış Yap</p>
         </div>
       </div>
     </div>

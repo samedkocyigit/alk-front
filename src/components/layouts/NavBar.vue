@@ -1,26 +1,39 @@
 <script setup>
-// <!-- eslint-disable no-unused-vars -->
 import { ref, computed } from 'vue'
-import { AuthStore } from '@/stores/auth.store'
-// import { useMasterStore } from '@/stores/master.store'
 import ModalProfile from '@/components/profiles/ModalProfile.vue'
 import SearchWrapper from '@/components/search/SearchWrapper.vue'
 import CartModal from '../products/CartModal.vue'
 import HeaderBottom from './HeaderBottom.vue'
 import store from '@/stores/master.store'
-const authStore = AuthStore.value
-// const masterStore = useMasterStore.value
+import authStore from '@/stores/auth.store'
+import { useRouter, useRoute } from 'vue-router'
+
+const router = useRouter()
+const route = useRoute()
 
 const modal = ref({
   changeAvatar: false,
   showCart: false,
 })
 
-const closeModalCart = () => {
-  console.log('closeModalCart')
-  modal.value.showCart = false
+let closeModalTimer = null
+
+const openCartModal = () => {
+  clearTimeout(closeModalTimer)
+  if (route.path !== '/checkout') {
+    modal.value.showCart = true
+  }
 }
 
+const closeCartModal = () => {
+  closeModalTimer = setTimeout(() => {
+    modal.value.showCart = false
+  }, 200)
+}
+
+const goToCheckout = () => {
+  router.push('/checkout')
+}
 const totalQuantity = computed(() => {
   if (!store.state.cart || !store.state.cart.items) {
     return 0
@@ -29,7 +42,16 @@ const totalQuantity = computed(() => {
   // Tüm quantity değerlerini topla
   return store.state.cart.items.reduce((total, item) => total + item.quantity, 0)
 })
+const handleMouseLeave = (event) => {
+  const cartIcon = event.currentTarget
+  const cartModal = document.querySelector('.cart-modal')
+
+  if (!cartModal.contains(event.relatedTarget) && !cartIcon.contains(event.relatedTarget)) {
+    closeCartModal()
+  }
+}
 </script>
+
 <template>
   <div class="nav-bar">
     <div class="header">
@@ -80,7 +102,7 @@ const totalQuantity = computed(() => {
       </div>
       <SearchWrapper class="max-md:hidden mr-[250px]" />
       <div class="flex">
-        <div v-if="authStore.isLoggedIn === false" class="flex gap-3">
+        <div v-if="authStore.state.isLoggedIn === false" class="flex gap-3">
           <router-link to="/users/login" class="cursor-pointer mt-1">
             <i class="ri-heart-line text-xl mr-5"></i>
           </router-link>
@@ -93,8 +115,20 @@ const totalQuantity = computed(() => {
               {{ totalQuantity }}
             </div>
 
-            <i class="cursor-pointer ri-shopping-cart-line text-xl" @click.stop="modal.showCart = true"></i>
-            <CartModal v-show="modal.showCart" v-touch-outside="closeModalCart" @close="closeModalCart" />
+            <i
+              class="cursor-pointer ri-shopping-cart-line text-xl"
+              @click.stop="goToCheckout"
+              @mouseover="openCartModal"
+              @mouseleave="closeCartModal"
+            ></i>
+            <CartModal
+              v-show="modal.showCart"
+              v-touch-outside="closeCartModal"
+              @mouseover="openCartModal"
+              @mouseleave="closeCartModal"
+              @close="closeCartModal"
+              class="cart-modal"
+            />
           </div>
           <router-link to="/users/login">
             <button class="border-[#5a4098] border-[1px] h-[30px] px-3 rounded-[4px] font-base text-sm">
@@ -109,10 +143,10 @@ const totalQuantity = computed(() => {
             </button>
           </router-link>
         </div>
-        <div v-if="authStore.isLoggedIn === true" class="ml-3 flex gap-5 items-center">
+        <div v-if="authStore.state.isLoggedIn === true" class="ml-3 flex gap-5 items-center">
           <!-- tool left -->
           <router-link
-            v-if="authStore.user.role === 'admin'"
+            v-if="authStore.state.user.role === 'admin'"
             to="/dashboard/create-product"
             class="max-md:hidden border-[1px] bg-[#5a4098] text-white cursor-pointer hover:shadow-lg border-[#5a4098] py-1 px-2 rounded-md"
           >
@@ -126,8 +160,20 @@ const totalQuantity = computed(() => {
             >
               {{ totalQuantity }}
             </div>
-            <i class="cursor-pointer ri-shopping-cart-line text-xl" @click.stop="modal.showCart = true"></i>
-            <CartModal v-show="modal.showCart" v-touch-outside="closeModalCart" @close="closeModalCart" />
+            <i
+              class="cursor-pointer ri-shopping-cart-line text-xl"
+              @click.stop="goToCheckout"
+              @mouseover="openCartModal"
+              @mouseleave="closeCartModal"
+            ></i>
+            <CartModal
+              v-show="modal.showCart"
+              v-touch-outside="closeCartModal"
+              @mouseover="openCartModal"
+              @mouseleave="closeCartModal"
+              @close="closeCartModal"
+              class="cart-modal"
+            />
           </div>
           <div class="cursor-pointer">
             <RouterLink to="/dashboard/favorite-items">

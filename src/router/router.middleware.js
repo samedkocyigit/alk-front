@@ -1,29 +1,27 @@
 /* eslint-disable no-unused-vars */
 import router from '.'
-import { AuthStore } from '@/stores/auth.store'
+// import { AuthStore } from '@/stores/auth.store'
+import authStore from '@/stores/auth.store'
+
 export const authMiddleware = () => {
   router.beforeEach((to, from, next) => {
-    const authStore = AuthStore.value
     const isLoggedIn = localStorage.getItem('access_token')
     if (to.matched.some((record) => record.meta.requiresAuth)) {
       if (!isLoggedIn) {
         return next({ name: 'login' })
       } else {
         // handle logged in user permission
-        const user = authStore.user
-        if (!user) {
+        if (!authStore.state.user) {
           // // Kullanıcı bilgisi henüz yüklenmediyse, başlatma işlemini bekleyin
           // startAuthStore().then(() => {
-          const userRole = authStore.user.role
-          if (to.meta.roles && !to.meta.roles.includes(userRole)) {
+          if (to.meta.roles && !to.meta.roles.includes(authStore.state.user.role)) {
             console.log('403')
             return next({ name: 'login' })
           }
           next()
           // })
         } else {
-          const userRole = user.role
-          if (to.meta.roles && !to.meta.roles.includes(userRole)) {
+          if (to.meta.roles && !to.meta.roles.includes(authStore.state.user.role)) {
             console.log('403')
             return next({ name: 'home' })
           }

@@ -1,22 +1,24 @@
 /* eslint-disable no-unused-vars */
-import { AuthStore, startAuthStore } from './auth.store'
 // import { initCart } from './master.store'
 import { createEmptyCartApi } from '../services/cart.service'
 import store from './master.store'
+import authStore from './auth.store'
 
 export const initMasterStore = async () => {
   try {
-    store.dispatch('initCategories')
-    store.dispatch('initSliders')
-    store.dispatch('initBrands')
+    await store.dispatch('initCategories')
+    await store.dispatch('initSliders')
+    await store.dispatch('initBrands')
     await createEmptyCart()
   } catch (error) {
     console.log(error)
   }
 }
+
 export const initAuthStore = async () => {
-  await startAuthStore()
+  await authStore.dispatch('startAuthStore')
 }
+
 const initAuthMasterStore = async (cart) => {
   store
     .dispatch('initCart', cart)
@@ -27,6 +29,7 @@ const initAuthMasterStore = async (cart) => {
       console.error('initCart action çağrılırken hata oluştu:', error)
     })
 }
+
 const createEmptyCart = async () => {
   try {
     const emptyCart = {

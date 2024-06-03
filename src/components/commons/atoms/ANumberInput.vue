@@ -20,7 +20,7 @@
 </template>
 
 <script setup>
-import { addToCartApi, decreaseFromCartApi } from '@/services/cart.service'
+import { updateCartItemApi } from '@/services/cart.service'
 import store from '@/stores/master.store'
 import { ref, computed, defineProps, defineEmits } from 'vue'
 
@@ -83,18 +83,18 @@ const decreaseQuantity = () => {
 }
 
 const decreaseFromCart = async (id) => {
-  const res = await decreaseFromCartApi(store.state.cart._id, {
+  const res = await updateCartItemApi(store.state.cart._id, {
     items: [
       {
         product: id,
-        quantity: 1,
+        quantity: -1,
       },
     ],
   })
   store.dispatch('updateCart', res.data.data.data)
 }
 const addToCart = async (id) => {
-  const res = await addToCartApi(store.state.cart._id, {
+  const res = await updateCartItemApi(store.state.cart._id, {
     items: [{ product: id, quantity: 1 }],
   })
   store.dispatch('updateCart', res.data.data.data)
