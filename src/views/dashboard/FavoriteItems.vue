@@ -3,7 +3,7 @@
     <div class="flex w-full flex-col gap-2 max-w-[1200px] max-[1254px]:w-full h-fit rounded-[8px] justify-center py-10">
       <div class="w-full"></div>
       <div class="w-full flex flex-col gap-10">
-        <p class="text-xl font-bold">Favori Ürünlerim ({{ authStore.user.favoriteItems.length }})</p>
+        <p class="text-xl font-bold">Favori Ürünlerim ({{ authStore.state.user.favoriteItems.length }})</p>
         <table class="min-w-full bg-white border">
           <thead>
             <tr>
@@ -14,7 +14,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="item in authStore.user.favoriteItems" :key="item._id">
+            <tr v-for="item in authStore.state.user.favoriteItems" :key="item._id">
               <td class="py-2 px-4 border flex items-center">
                 <LazyImg
                   class-style="w-[50px] h-[50px] rounded-md"
@@ -39,19 +39,17 @@
 </template>
 
 <script setup>
-import { AuthStore } from '@/stores/auth.store'
+import authStore from '@/stores/auth.store'
 import LazyImg from '@/components/commons/atoms/LazyImg.vue'
-import { ref } from 'vue'
 import { updateUserApi } from '@/services/user.service'
 
-const authStore = AuthStore.value
 const vatRate = 0.2 // %18 KDV oranı
 
 const removeItem = async (id) => {
-  const userId = authStore.user._id
+  const userId = authStore.state.user._id
   const res = await updateUserApi(userId, {
     $pull: { favoriteItems: id },
   })
-  authStore.user.favoriteItems = res.data.data.data.favoriteItems
+  authStore.state.user.favoriteItems = res.data.data.data.favoriteItems
 }
 </script>

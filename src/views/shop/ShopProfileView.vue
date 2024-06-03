@@ -1,6 +1,6 @@
 <template>
   <div class="w-full max-w-[1440px] flex flex-col items-center px-5 pt-10">
-    <ShopProfile type="view" :user="authStore.user" />
+    <ShopProfile type="view" :user="authStore.state.user" />
     <div class="max-lg:flex-col flex gap-5 w-full mt-10">
       <!-- information -->
       <div class="w-[300px] min-w-[300px] bg-slate-50 rounded-md p-5">
@@ -24,11 +24,10 @@
   </div>
 </template>
 <script setup>
-import { AuthStore } from '@/stores/auth.store'
+import authStore from '@/stores/auth.store'
 import { ref } from 'vue'
 import ShopProfile from '@/components/profiles/ShopProfile.vue'
 import ProductCard from '@/components/products/ProductCard.vue'
-const authStore = AuthStore.value
 const products = ref([
   {
     name: 'Long Product Name 1 You Might Forget the BeginningYou Might Forget the Beginning',

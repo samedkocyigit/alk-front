@@ -1,11 +1,9 @@
 <script setup>
 import { ref, onBeforeMount } from 'vue'
 import BreadCrumb from '@/components/commons/BreadCrumb.vue'
-import { AuthStore } from '@/stores/auth.store'
 import AButton from '@/components/commons/atoms/AButton.vue'
 // services
 import { getMyProductsApi } from '@/services/product.service'
-const authStore = AuthStore.value
 import { useRouter } from 'vue-router'
 const router = useRouter()
 // breadcrumb
@@ -20,10 +18,7 @@ const routes = ref([
   },
 ])
 
-const userData = ref(null)
 onBeforeMount(async () => {
-  console.log('authStore', authStore)
-  userData.value = { ...authStore?.user }
   await getMyProducts()
 })
 

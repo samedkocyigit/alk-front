@@ -49,7 +49,6 @@ import { ref } from 'vue'
 import store from '@/stores/master.store'
 
 const categories = ref(store.state.categories)
-// console.log('categories', categories.value)
 const visibleCategoryIndex = ref(-1)
 const windowWidth = ref(1420)
 const windowLeft = ref(0)

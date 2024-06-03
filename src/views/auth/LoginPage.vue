@@ -58,7 +58,7 @@
 import AInput from '@/components/commons/atoms/AInput.vue'
 import * as yup from 'yup'
 import { useForm } from 'vee-validate'
-import { loginAuthStore } from '@/stores/auth.store'
+import authStore from '@/stores/auth.store'
 import { useRouter } from 'vue-router'
 import { toast } from 'vue3-toastify'
 import { loginApi } from '@/services/auth.service'
@@ -74,9 +74,8 @@ const submit = async (val) => {
       const token = res.data.token
       const user = res.data.data.data
       localStorage.setItem('access_token', token)
-      console.log('responseUser-->', user)
 
-      await loginAuthStore(user)
+      authStore.dispatch('loginAuthStore', user)
       const redirect = localStorage.getItem('redirect')
 
       if (store.state.cart.items.length > 0) {
@@ -93,7 +92,6 @@ const submit = async (val) => {
         localStorage.removeItem('redirect')
       }
     } else {
-      console.log('girmiyo mu la')
       throw new Error('Invalid response status: ' + res.status)
     }
   } catch (err) {

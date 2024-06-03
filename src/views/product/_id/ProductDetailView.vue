@@ -51,7 +51,24 @@
           </div>
           <!-- Additional Actions -->
           <div class="mt-4 flex items-center tab-buttons">
-            <button class="tab-button">
+            <RouterLink
+              v-if="authStore.state.isLoggedIn === false"
+              to="/users/login"
+              @mouseover="hovering = true"
+              @mouseleave="hovering = false"
+            >
+              <button class="tab-button">
+                <i class="ri-heart-line" :title="hovering ? 'Favorilere Ekle' : ''"></i>
+                <span>Favorile</span>
+              </button>
+            </RouterLink>
+            <button
+              v-else
+              class="tab-button"
+              @mouseover="hovering = true"
+              @mouseleave="hovering = false"
+              @click="toggleFavorite"
+            >
               <i class="ri-heart-line"></i>
               <span>Favorile</span>
             </button>
@@ -110,12 +127,14 @@ import ThumbnailsProduct from '@/components/products/ThumbnailsProduct.vue'
 import ProductsTab from '@/views/product/tabs/ProductsTabs.vue'
 // services
 import { getProductApi, getProductsApi } from '@/services/product.service'
-import { addToCartApi } from '@/services/cart.service'
+import { updateCartItemApi } from '@/services/cart.service'
 // stores
 import store from '@/stores/master.store'
 import { usePopupStore } from '@/stores/common.store'
 import { getCategoryApi, getSubCategoryApi } from '@/services/category.service'
 import ProductCardForDetails from '@/components/products/ProductCardForDetail.vue'
+import authStore from '@/stores/auth.store'
+import { updateUserApi } from '@/services/user.service'
 
 const popupStore = usePopupStore()
 const route = useRoute()
@@ -132,6 +151,7 @@ const smilarProduct = ref({})
 const typeSelected = ref(null)
 const quantity = ref(1)
 const cart = ref({})
+const hovering = ref(false)
 cart.value = store.state.cart
 
 const getProduct = async () => {
@@ -196,7 +216,7 @@ const addItemToCart = async () => {
       return
     }
     let res = ref({})
-    res = await addToCartApi(cart.value._id, {
+    res = await updateCartItemApi(cart.value._id, {
       items: [
         {
           product: product.value.data.id,
@@ -205,10 +225,30 @@ const addItemToCart = async () => {
       ],
     })
     store.dispatch('updateCart', res.data.data.data)
-    toast.success('Add to cart success')
+    toast.success('Ürün Sepetinize Eklendi')
   } catch (error) {
     console.log(error)
-    toast.error('Add to cart fail')
+    toast.error('Sepete Ekleme Başarısız')
+  }
+}
+
+const isFavorite = ref(false)
+
+const toggleFavorite = async () => {
+  const userId = authStore.state.user._id
+  const productId = product.value._id
+  isFavorite.value = !isFavorite.value
+
+  if (isFavorite.value) {
+    const res = await updateUserApi(userId, {
+      $push: { favoriteItems: productId },
+    })
+    authStore.state.user.favoriteItems = res.data.data.data.favoriteItems
+  } else {
+    const res = await updateUserApi(userId, {
+      $pull: { favoriteItems: productId },
+    })
+    authStore.state.user.favoriteItems = res.data.data.data.favoriteItems
   }
 }
 

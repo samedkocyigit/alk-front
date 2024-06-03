@@ -3,13 +3,12 @@
 import { defineProps, ref, onMounted } from 'vue'
 import LazyImg from '../commons/atoms/LazyImg.vue'
 // import { addToCart, useMasterStore } from '@/stores/master.store'
-import { addToCartApi } from '@/services/cart.service'
+import { updateCartItemApi } from '@/services/cart.service'
 import { toast } from 'vue3-toastify'
 import store from '@/stores/master.store'
-import { AuthStore } from '@/stores/auth.store'
+import authStore from '@/stores/auth.store'
 import { updateUserApi } from '@/services/user.service'
 import { RouterLink } from 'vue-router'
-const authStore = AuthStore.value
 
 const props = defineProps({
   product: {
@@ -30,8 +29,8 @@ const hovering = ref(false)
 onMounted(() => {
   photoName.value = props.product.photos[0]
 
-  if (authStore.isLoggedIn) {
-    const favoriteItems = Array.from(authStore.user.favoriteItems)
+  if (authStore.state.isLoggedIn) {
+    const favoriteItems = Array.from(authStore.state.user.favoriteItems)
     const productId = props.product._id
     const isFavoriteProduct = favoriteItems.some((item) => item._id === productId)
     isFavorite.value = isFavoriteProduct
@@ -39,24 +38,25 @@ onMounted(() => {
 })
 
 const toggleFavorite = async () => {
-  const userId = authStore.user._id
+  const userId = authStore.state.user._id
   const productId = props.product._id
   isFavorite.value = !isFavorite.value
   if (isFavorite.value) {
     const res = await updateUserApi(userId, {
       $push: { favoriteItems: productId },
     })
-    authStore.user.favoriteItems = res.data.data.data.favoriteItems
+    authStore.state.user.favoriteItems = res.data.data.data.favoriteItems
   } else {
     const res = await updateUserApi(userId, {
       $pull: { favoriteItems: productId },
     })
-    authStore.user.favoriteItems = res.data.data.data.favoriteItems
+    authStore.state.user.favoriteItems = res.data.data.data.favoriteItems
   }
 }
+
 const addItemToCart = async () => {
   try {
-    const res = await addToCartApi(store.state.cart._id, {
+    const res = await updateCartItemApi(store.state.cart._id, {
       items: [
         {
           product: props.product.id,
@@ -64,11 +64,12 @@ const addItemToCart = async () => {
         },
       ],
     })
+    console.log('neden neden', res.data.data.data)
     store.dispatch('updateCart', res.data.data.data)
-    toast.success('Add to cart success')
+    toast.success('Ürün Sepetinize Eklendi')
   } catch (error) {
     console.log(error)
-    toast.error('Add to cart fail')
+    toast.error('Sepete Ekleme Başarısız')
   }
 }
 </script>
@@ -79,7 +80,7 @@ const addItemToCart = async () => {
     :class="`flex flex-col h-[330px] overflow-hidden product-card-shadow bg-white rounded-xl ${width}`"
   >
     <div
-      v-if="authStore.isLoggedIn === false"
+      v-if="authStore.state.isLoggedIn === false"
       class="fav-icon-container"
       @mouseover="hovering = true"
       @mouseleave="hovering = false"

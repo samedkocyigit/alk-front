@@ -1,9 +1,8 @@
 <template>
-  <div v-if="!authStore.isLoggedIn">
+  <div v-if="!authStore.state.isLoggedIn">
     <slot></slot>
   </div>
 </template>
 <script setup>
-import { AuthStore } from '@/stores/auth.store'
-const authStore = AuthStore.value
+import authStore from '@/stores/auth.store'
 </script>

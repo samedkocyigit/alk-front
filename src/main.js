@@ -23,8 +23,8 @@ const initApp = async () => {
   const pinia = createPinia()
   const app = createApp(App)
   app.use(pinia)
-  await initAuthStore()
   await initMasterStore()
+  await initAuthStore()
   app.use(router)
   authMiddleware()
   app.use(touchOutSide)
@@ -37,9 +37,10 @@ const initApp = async () => {
     position: 'top-center',
     duration: 3000,
   })
-  router.isReady().then(() => {
-    console.log('router ready')
-    app.mount('#app', true)
-  })
+
+  await router.isReady()
+
+  console.log('Router ready')
+  app.mount('#app', true)
 }
 initApp()
